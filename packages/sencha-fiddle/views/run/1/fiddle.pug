@@ -1,0 +1,31 @@
+script(type="text/javascript").
+    (opener || parent).postMessage('{"event": "beforefiddlerun"}', '*');
+
+- var hasCss = false;
+
+each asset in data.assets
+    if asset.type === 'css' && asset.code && !asset.remote && asset.code !== '__remote__'
+        if !hasCss
+            | <!-- css -->
+        | <!-- #{asset.name} -->
+        style(type="text/css") !{asset.code}
+        - hasCss = true;
+
+| <!-- javascript -->
+- var appJs;
+each asset in data.assets
+    if asset.name === 'app.js'
+        - appJs = asset
+    else if (asset.code === '__remote__' || asset.remote) && (asset.type === 'js' || asset.type === 'javascript')
+        script(type="text/javascript" src=`${asset.name}`)
+    else if asset.type === 'js' || asset.type === 'javascript'
+        <!-- #{asset.name} -->
+        script(type="text/javascript") !{asset.code}
+
+<!-- app.js -->
+script(type="text/javascript") !{appJs.code}
+
+script(type="text/javascript").
+    Ext.onReady(function() {
+        (opener || parent).postMessage('{"event": "fiddleready"}', '*');
+    });

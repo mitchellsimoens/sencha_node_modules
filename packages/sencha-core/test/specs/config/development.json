@@ -1,0 +1,7 @@
+{
+    "foo" : "dev",
+    "bar" : "dev bar",
+    "obj" : {
+        "nested" : 2
+    }
+}

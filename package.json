@@ -1,0 +1,16 @@
+{
+  "name": "engops_npm_modules",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "lerna clean",
+    "eslint": "clear && eslint --config ./.eslintrc.json ./packages",
+    "increment": "lerna publish --skip-git --skip-npm",
+    "install:clean": "npm cache clear --force && lerna clean && npm install",
+    "postinstall": "lerna bootstrap"
+  },
+  "devDependencies": {
+    "eslint": "^4.3.0",
+    "lerna": "^2.0.0"
+  }
+}

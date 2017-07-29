@@ -1,0 +1,23 @@
+{
+  "name": "sencha-direct-example",
+  "version": "1.0.0",
+  "description": "Example for @extjs/sencha-direct module",
+  "main": "index.js",
+  "scripts": {
+    "break": "clear && ENV=development node --inspect --debug-brk index",
+    "debug": "clear && node --inspect --debug index",
+    "start": "clear && node index"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@extjs/sencha-application": "^1.0.3",
+    "@extjs/sencha-debug": "^1.0.2",
+    "@extjs/sencha-expressjs": "^1.0.2",
+    "express": "^4.15.3"
+  }
+}

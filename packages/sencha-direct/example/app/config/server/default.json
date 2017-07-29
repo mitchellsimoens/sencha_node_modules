@@ -1,0 +1,6 @@
+{
+    "autoStart"         : true,
+    "disabledPoweredBy" : true,
+    "favicon"           : "views/favicon.ico",
+    "port"              : 3000
+}

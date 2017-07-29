@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+}
+
+.buttonbar {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.buttonbar > div {
+    background: #3e8ddd;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    padding: 5px 10px 0;
+}
+
+.buttonbar .tab-active {
+    background: white;
+    border: 1px solid #3e8ddd;
+    border-bottom: 0;
+    color: #1976d4;
+    padding-top: 4px;
+}
+
+.display-hidden {
+    display: none;
+}
+
+#file-bar {
+    height: 20px;
+}
+
+#open-link {
+    float: right;
+    margin: 4px 10px;
+}
+
+a,
+a:visited {
+    color: #00f;
+    text-decoration: none;
+}
+
+iframe {
+    border: 0;
+}

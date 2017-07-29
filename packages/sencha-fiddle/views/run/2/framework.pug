@@ -1,0 +1,19 @@
+if data.framework
+    | <!-- framework css -->
+    each asset in data.framework.assets
+        if asset.type === 'css'
+            link(rel="stylesheet" href=`${asset.file}`)
+
+    | <!-- framework javascript -->
+    each asset in data.framework.assets
+        if asset.type === 'js' || asset.type === 'javascript'
+            script(type="text/javascript" src=`${asset.file}`)
+
+if data.framework.uxPath
+    | <!-- framework Ext.ux path -->
+    script(type="text/javascript").
+        if (Ext.Loader) {
+            Ext.Loader.setPath({
+                'Ext.ux' : '#{data.framework.uxPath}'
+            });
+        }

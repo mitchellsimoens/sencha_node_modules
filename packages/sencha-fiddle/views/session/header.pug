@@ -1,0 +1,5 @@
+if session && session.id
+    if data.baseUrl
+        base(href=data.baseUrl + session.id + "/")
+
+    script(type="text/javascript") window.fiddleSessionId="#{session.id}";

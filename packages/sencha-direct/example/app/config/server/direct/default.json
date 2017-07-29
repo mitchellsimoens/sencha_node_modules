@@ -1,0 +1,17 @@
+{
+    "url"       : "/direct",
+    "providers" : {
+        "remoting" : {
+            "maxRetries" : 0,
+            "actions"    : {
+                "FooAction" : {
+                    "doSomething"  : "direct/Foo",
+                    "anotherThing" : "direct/Bar"
+                },
+                "BarAction" : {
+                    "doSomething" : "direct/Baz"
+                }
+            }
+        }
+    }
+}

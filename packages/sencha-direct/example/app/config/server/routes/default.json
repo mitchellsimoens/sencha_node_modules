@@ -1,0 +1,4 @@
+{
+    "/direct" : "routes/Direct",
+    "/"       : "routes/Public"
+}

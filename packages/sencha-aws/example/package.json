@@ -1,0 +1,16 @@
+{
+  "name": "sencha-aws-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "break": "clear && ENV=development node --inspect --debug-brk index",
+    "debug": "clear && node --inspect --debug index",
+    "start": "clear && node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.66.0"
+  }
+}

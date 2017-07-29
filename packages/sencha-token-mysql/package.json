@@ -1,0 +1,40 @@
+{
+  "name": "@extjs/sencha-token-mysql",
+  "version": "1.0.3",
+  "description": "MySQL operations for the sencha-token module",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-token-mysql#readme",
+  "dependencies": {
+    "@extjs/sencha-mysql": "^1.0.0",
+    "@extjs/sencha-token": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chai-spies": "^0.7.1",
+    "co-mocha": "^1.1.3",
+    "eslint": "^3.12.2",
+    "mocha": "^3.2.0",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.7",
+    "sinon-as-promised": "^4.0.2",
+    "sinon-chai": "^2.8.0"
+  }
+}

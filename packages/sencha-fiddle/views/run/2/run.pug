@@ -1,0 +1,27 @@
+doctype html
+html
+    head
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+        meta(charset="UTF-8")
+
+        if data.title
+            title Sencha Fiddle Preview - #{data.title}
+        else
+            title Sencha Fiddle Preview
+
+        include ../../session/header.pug
+
+        if hasReactor
+            include ../require.pug
+
+        include ./framework.pug
+        include ./package.pug
+        include ./fiddle.pug
+        include ../../inspector/init.pug
+        include ../../session/javascript.pug
+    body
+        each asset in data.assets
+            if asset.type === 'html' && asset.code && asset.name === 'index.html'
+                <!-- #{asset.name} -->
+                | !{asset.code}

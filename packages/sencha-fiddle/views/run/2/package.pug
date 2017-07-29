@@ -1,0 +1,13 @@
+if data.packages
+    | <!-- packages -->
+    each pkg in data.packages
+        if pkg
+            | <!-- package css -->
+            each asset in pkg.assets
+                if asset.type === 'css'
+                    link(rel="stylesheet" href=`${asset.file}`)
+
+            | <!-- package javascript -->
+            each asset in pkg.assets
+                if asset.type === 'js' || asset.type === 'javascript'
+                    script(type="text/javascript" src=`${asset.file}`)

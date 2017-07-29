@@ -1,0 +1,42 @@
+script(type="text/javascript") (opener || parent).postMessage('{"event": "beforefiddlerun"}', '*');
+
+- var hasCss = false;
+
+each asset in data.assets
+    if asset.type === 'css'
+        if !hasCss
+            | <!-- css -->
+        if /^http:/i.test(asset.name)
+            link(rel="stylesheet" href=`/proxy/${asset.name}`)
+        else
+            link(rel="stylesheet" href=`${asset.name}`)
+        - hasCss = true;
+
+| <!-- javascript -->
+each asset in data.assets
+    if asset.name !== 'app.js' && ((asset.code === '__remote__' || asset.remote) && (asset.type === 'js' || asset.type === 'javascript'))
+        if /^http:/i.test(asset.name)
+            script(type="text/javascript" src=`/proxy/${asset.name}`)
+        else
+            script(type="text/javascript" src=`${asset.name}`)
+
+script(type="text/javascript" src=`app.js`)
+
+script(type="text/javascript").
+    var onFiddleReady = function() {
+        (opener || parent).postMessage('{"event": "fiddleready"}', '*');
+    };
+
+    if (window.Ext) {
+        Ext.onReady(onFiddleReady);
+    } else {
+        var oldOnLoad = window.onload;
+
+        window.onload = function(e) {
+            onFiddleReady();
+
+            if (oldOnLoad) {
+                oldOnLoad.call(this, e);
+            }
+        };
+    }

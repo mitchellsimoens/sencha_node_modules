@@ -1,0 +1,36 @@
+{
+  "name": "@extjs/sencha-fiddle",
+  "version": "1.0.8",
+  "description": "Package to manage Sencha Fiddle",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://mitchellsimoens.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-fiddle#readme",
+  "dependencies": {
+    "@extjs/sencha-mysql": "^1.0.0",
+    "dummy-json": "^1.0.1",
+    "pug": "^2.0.0-beta6",
+    "vm2": "^3.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
+    "eslint": "^3.12.2",
+    "mocha": "^3.2.0"
+  }
+}

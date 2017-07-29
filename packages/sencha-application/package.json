@@ -1,0 +1,38 @@
+{
+  "name": "@extjs/sencha-application",
+  "version": "1.0.4",
+  "description": "Allow some MVC styles to be used.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-application#readme",
+  "dependencies": {
+    "@extjs/sencha-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.1",
+    "co-mocha": "^1.2.0",
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
+    "proxyquire": "^1.8.0",
+    "sinon": "^2.3.2",
+    "sinon-chai": "^2.10.0"
+  }
+}

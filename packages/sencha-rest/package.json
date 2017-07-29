@@ -1,0 +1,33 @@
+{
+  "name": "@extjs/sencha-rest",
+  "version": "1.0.2",
+  "description": "A simple REST module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-rest#readme",
+  "dependencies": {
+    "@extjs/sencha-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
+    "eslint": "^3.12.2",
+    "mocha": "^3.2.0"
+  }
+}

@@ -1,0 +1,116 @@
+- var JsAssets    = data.assets.filter(asset => asset.type === 'javascript' || asset.type === 'js').map(asset => { asset.type === 'javascript'; return asset; }).sort(function(a, b) {if (a.name < b.name) {return -1;}if (a.name > b.name) {return 1;} return 0; });
+- var CssAssets   = data.assets.filter(asset => asset.type === 'css').sort(function(a, b) {if (a.name < b.name) {return -1;}if (a.name > b.name) {return 1;} return 0; });
+- var HtmlAssets  = data.assets.filter(asset => asset.type === 'html').map(asset => { if (asset.code) { asset.code = String(asset.code).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); } return asset;}).sort(function(a, b) {if (a.name < b.name) {return -1;}if (a.name > b.name) {return 1;} return 0; });
+- var DataAssets  = data.mockdata.slice().sort(function(a, b) {if (a.name < b.name) {return -1;}if (a.name > b.name) {return 1;} return 0; });
+- var HasMultiple = JsAssets.length > 1 || CssAssets.length > 1 || HtmlAssets.length > 1 || DataAssets.length > 1;
+
+- var InitialCode = '';
+- var InitialName = '';
+- var InitialType = '';
+- var ActiveType  = '';
+- var ItemHeight  = height - 22 - (HasMultiple ? 20 : 0);
+
+doctype html
+html
+    head
+        title Sencha Fiddle - #{data.title}
+
+        link(rel="stylesheet" href="/embed/embed.css")
+
+        script(type="text/javascript" src="/classic/resources/ace/src-noconflict/ace.js")
+        script(type="text/javascript" src="/embed/embed.js")
+
+        style.
+            #editor,
+            iframe {
+                height: !{ItemHeight}px;
+                width: 100%;
+            }
+
+    body
+        div#fiddle
+            div(class="buttonbar")
+                each asset in JsAssets
+                    if asset.name === 'app.js'
+                        div#tab-javascript(class="tab-active" onClick="FiddleEditor.onTabClick('javascript')") JavaScript
+
+                        - InitialCode = asset.code;
+                        - InitialType = 'ace/mode/javascript';
+                        - InitialName = asset.name;
+                        - ActiveType = 'javascript';
+                        - break;
+
+                each asset in CssAssets
+                    if asset.code
+                        div#tab-css(onClick="FiddleEditor.onTabClick('css')") CSS
+
+                        if !InitialCode
+                            - InitialCode = asset.code;
+                            - InitialType = 'ace/mode/css';
+                            - InitialName = asset.name;
+                            - ActiveType  = 'css';
+
+                        - break;
+
+                each asset in HtmlAssets
+                    if asset.code && asset.name === 'index.html'
+                        div#tab-html(onClick="FiddleEditor.onTabClick('html')") HTML
+
+                        if !InitialCode
+                            - InitialCode = asset.code;
+                            - InitialType = 'ace/mode/html';
+                            - InitialName = asset.name;
+                            - ActiveType  = 'html';
+
+                        - break;
+
+                each asset in DataAssets
+                    if asset.data
+                        div#tab-data(onClick="FiddleEditor.onTabClick('data')") Data
+
+                        if !InitialCode
+                            - InitialCode = asset.data;
+                            - InitialType = 'ace/mode/javascript';
+                            - InitialName = asset.name;
+                            - ActiveType  = 'data';
+
+                        - break;
+
+                div#tab-preview(onClick="FiddleEditor.runPreview(this)") Run Code
+                a#open-link(href="/#fiddle/" + id target="_blank") Open in Fiddle
+
+            if HasMultiple
+                div#file-bar
+                    select#file-picker(onchange="FiddleEditor.onFileChange(this)")
+                        if JsAssets.length > 0
+                            - FileArr = JsAssets;
+                        else if CssAssets.length > 0
+                            - FileArr = CssAssets;
+                        else if HtmlAssets.length > 0
+                            - FileArr = HtmlAssets;
+
+                        each asset in FileArr
+                            if asset.code
+                                if asset.name === InitialName
+                                    option(selected) #{asset.name}
+                                else
+                                    option #{asset.name}
+
+            div#editor #{InitialCode}
+
+        script(type="text/javascript").
+            var assets = {
+                css        : !{JSON.stringify(CssAssets,  null, 4)},
+                data       : !{JSON.stringify(DataAssets,  null, 4)},
+                html       : !{JSON.stringify(HtmlAssets, null, 4)},
+                javascript : !{JSON.stringify(JsAssets,   null, 4)}
+            };
+
+            window.FiddleEditor = new Fiddle({
+                activeType  : '!{ActiveType}',
+                assets      : assets,
+                el          : 'editor',
+                id          : '!{id}',
+                initialType : '#{InitialType}',
+                readOnly    : true
+            });

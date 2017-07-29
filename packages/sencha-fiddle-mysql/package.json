@@ -1,0 +1,36 @@
+{
+  "name": "@extjs/sencha-fiddle-mysql",
+  "version": "1.0.3",
+  "description": "MySQL adapter for the sencha-fiddle module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-fiddle-mysql#readme",
+  "dependencies": {
+    "@extjs/sencha-mysql": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
+    "eslint": "^3.12.2",
+    "mocha": "^3.2.0"
+  },
+  "peerDependencies": {
+    "@extjs/sencha-fiddle": "^1.0.0"
+  }
+}

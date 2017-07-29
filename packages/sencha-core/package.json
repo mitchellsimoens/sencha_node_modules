@@ -1,0 +1,38 @@
+{
+  "name": "@extjs/sencha-core",
+  "version": "1.0.3",
+  "description": "Core of the Sencha framework",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencha/EngOpsServer.git"
+  },
+  "scripts": {
+    "eslint": "clear && eslint --config ./.eslintrc.json .",
+    "open-cov": "open -a Google\\ Chrome coverage/lcov-report/index.html",
+    "test": "clear && istanbul cover _mocha -- 'test/**/*.spec.js'",
+    "testBrk": "clear && mocha --debug-brk --inspect 'test/**/*.spec.js'"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sencha/EngOpsServer/issues"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-core#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "co-mocha": "^1.2.0",
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.1",
+    "nyc": "^11.0.1",
+    "proxyquire": "^1.8.0",
+    "sinon": "^2.2.0",
+    "sinon-chai": "^2.10.0"
+  }
+}

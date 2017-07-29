@@ -1,0 +1,20 @@
+if session && session.url && session.id
+    script(type="text/javascript" src="/socket.io/socket.io.js")
+    script(type="text/javascript").
+        var socket = io('#{session.url}');
+
+        function __attachFiddleSocket() {
+            socket.emit('ext-direct-router', {
+                action : 'FiddleAction',
+                method : 'attachServer',
+                data   : ['#{session.sessionid}', false]
+            }, function() {});
+        }
+
+        __attachFiddleSocket();
+
+        socket.on('reconnect', __attachFiddleSocket);
+
+        socket.on('dorun', function(data) {
+            location.reload(true);
+        });

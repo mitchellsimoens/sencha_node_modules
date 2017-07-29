@@ -1,0 +1,8 @@
+example
+test
+
+.nyc_output
+.vscode
+coverage
+.DS_Store
+npm-debug.log
