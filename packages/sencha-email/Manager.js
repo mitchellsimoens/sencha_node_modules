@@ -1,5 +1,5 @@
-const { Base }     = require('@extjs/sencha-core');
-const { Provider } = require('./');
+const { Base, Managerable } = require('@extjs/sencha-core');
+const { Provider }          = require('./');
 
 /**
  * @class Sencha.email.Manager
@@ -9,7 +9,7 @@ class Manager extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Managerable'
+                Managerable
             ],
 
             prototype : {

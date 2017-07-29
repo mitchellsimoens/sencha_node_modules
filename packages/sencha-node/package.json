@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-node#readme",
   "dependencies": {
+    "@extjs/sencha-core": "^1.0.0",
     "@extjs/sencha-debug": "^1.0.0"
   },
   "devDependencies": {
