@@ -234,7 +234,7 @@ class Config extends Base {
      *
      * @returns {*} Will return the value looked up by the key.
      */
-    get (key, obj = this.configs) {
+    get (key, obj = this.configs) { // eslint-disable-line getter-return
         if (key) {
             const arr = key.split('.');
 
@@ -251,9 +251,9 @@ class Config extends Base {
             } else if (!arr.length) {
                 return obj[ key ];
             }
+        } else {
+            return obj;
         }
-
-        return obj;
     }
 
     /**

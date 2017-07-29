@@ -152,9 +152,9 @@ class Combiner extends Base {
                 if (root[ key ]) {
                     root = root[ key ];
                 } else {
-                    root = {};
+                    root[ key ] = {};
 
-                    root[ key ] = root;
+                    root = root[ key ];
                 }
 
                 this.setData(parts, root, data);
