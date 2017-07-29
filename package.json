@@ -7,7 +7,8 @@
     "eslint": "clear && eslint --config ./.eslintrc.json ./packages",
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "eslint": "^4.3.0",

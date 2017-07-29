@@ -10,7 +10,7 @@
   "scripts": {
     "eslint": "clear && eslint --config ./.eslintrc.json .",
     "open-cov": "open -a Google\\ Chrome coverage/lcov-report/index.html",
-    "test": "clear && istanbul cover _mocha -- 'test/**/*.spec.js'",
+    "test": "mocha 'test/**/*.spec.js'",
     "testBrk": "clear && mocha --debug-brk --inspect 'test/**/*.spec.js'"
   },
   "author": {

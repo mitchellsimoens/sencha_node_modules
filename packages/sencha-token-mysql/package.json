@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "eslint": "clear && eslint --config ./.eslintrc.json .",
-    "test": "clear && mocha --recursive 'test/**/*.spec.js'"
+    "test": "mocha 'test/**/*.spec.js'"
   },
   "repository": {
     "type": "git",
