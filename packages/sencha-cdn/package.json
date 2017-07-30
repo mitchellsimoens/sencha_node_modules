@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/sencha/EngOpsServer/issues"
   },
-  "homepage": "https://github.com/sencha/EngOpsServer/tree/sencha-cdn#readme",
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/npm_modules#readme",
   "dependencies": {
     "@extjs/sencha-core": "^1.0.0",
     "request": "^2.81.0"
