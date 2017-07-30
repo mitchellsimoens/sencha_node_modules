@@ -32,3 +32,22 @@ into chrome's address bar. If it's the `ws` protocol, open chrome dev tools and 
 the green node.js icon in the upper-left corner. If you click that icon it will open a new
 dev tools window. Either way, the debugger will be stopped so you can play it and it should then
 break on your `debugger;` statement.
+
+To only run tests on a single package, append the package name to `npm test`. For example, if you
+want to run tests for the `sencha-core` package only, you would run `npm test sencha-core`.
+
+## Test Coverage
+
+In order to run tests and produce test coverage using [istanbul](https://istanbul.js.org/),
+we use a tool called [nyc](https://github.com/istanbuljs/nyc). To run this, simple execute
+`npm run cov` instead of the normal `npm test`. This will run all tests and then output the test
+coverage in the cli and also create the lcov data in the `coverage` directory. Anything under 80%
+coverage is marked as bad, 80%-89% is ok and 90%+ is good to promote getting above 90% coverage.
+
+If you need to step through a test run, you should use th eabove `npm run testBrk` as you likely
+don't need test coverage also. However, you can run `npm run covBrk` just like the `testBrk`
+script.
+
+To only run tests with coverage on a single package, append the package name to `npm run cov`.
+For example, if you want to run tests for the `sencha-core` package only, you would run
+`npm run cov sencha-core`.

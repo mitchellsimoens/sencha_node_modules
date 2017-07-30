@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "clean": "lerna clean",
-    "cov": "nyc mocha 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'",
+    "cov": "./scripts/test.sh --coverage",
+    "covBrk": "./scripts/test.sh --coverage --break",
     "eslint": "eslint --config ./.eslintrc.json ./packages",
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",
     "postinstall": "lerna bootstrap",
-    "test": "mocha 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'",
-    "testBrk": "mocha --debug-brk --inspect 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'"
+    "test": "./scripts/test.sh",
+    "testBrk": "./scripts/test.sh --break"
   },
   "devDependencies": {
     "eslint": "^4.3.0",
