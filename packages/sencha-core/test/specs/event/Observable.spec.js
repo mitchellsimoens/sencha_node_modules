@@ -368,7 +368,7 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
                 instance.fire('foo');
 
-                expect(spy).to.have.been.called.once;
+                spy.should.have.been.calledOnce;
             });
         });
 
@@ -384,7 +384,7 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
 
                 setTimeout(() => {
-                    expect(spy).to.have.been.called;
+                    spy.should.have.been.calledOnce;
 
                     done();
                 }, 15);
@@ -402,7 +402,7 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
 
                 setTimeout(() => {
-                    expect(spy).to.have.been.called.once;
+                    spy.should.have.been.calledOnce;
 
                     done();
                 }, 15);
@@ -420,12 +420,12 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
 
                 setTimeout(() => {
-                    expect(spy).to.have.been.called.once;
+                    spy.should.have.been.calledOnce;
 
                     instance.fire('foo');
 
                     setTimeout(() => {
-                        expect(spy).to.have.been.called.twice;
+                        spy.should.have.been.calledTwice;
 
                         done();
                     }, 15);
@@ -445,7 +445,7 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
 
                 setTimeout(() => {
-                    expect(spy).to.have.been.called;
+                    spy.should.have.been.calledOnce;
 
                     done();
                 }, 15);
@@ -463,7 +463,7 @@ describe('Sencha.core.event.Observable', function () {
                 instance.fire('foo');
 
                 setTimeout(() => {
-                    expect(spy).to.have.been.called.twice;
+                    spy.should.have.been.calledTwice;
 
                     done();
                 }, 15);

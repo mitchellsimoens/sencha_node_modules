@@ -297,7 +297,7 @@ describe('Connection', function () {
             it('should create pool', function () {
                 connection.connect();
 
-                expect(spy).to.have.been.calledWith({
+                spy.should.have.been.calledWith({
                     connectionLimit    : 10,
                     database           : 'mydatabase',
                     host               : 'foo.com',
@@ -340,7 +340,7 @@ describe('Connection', function () {
             it('should create connection', function () {
                 connection.connect();
 
-                expect(spy).to.have.been.calledWith({
+                spy.should.have.been.calledWith({
                     database           : 'mydatabase',
                     host               : 'foo.com',
                     multipleStatements : true,
@@ -412,7 +412,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -448,7 +448,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -483,7 +483,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -527,7 +527,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('results');
 
-                        expect(queryStub).to.have.been.calledWith('SELECT ?;', [ 1 ]);
+                        queryStub.should.have.been.calledWith('SELECT ?;', [ 1 ]);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -563,7 +563,7 @@ describe('Connection', function () {
                     .catch(error => {
                         expect(error.message).to.equal('query failed');
 
-                        expect(queryStub).to.have.been.calledWith('SELECT ?;', [ 1 ]);
+                        queryStub.should.have.been.calledWith('SELECT ?;', [ 1 ]);
                     });
             });
         });
@@ -593,10 +593,9 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('results');
 
-                        expect(queryStub).to.have.been.calledWith('SELECT ?;', [ 1 ]);
+                        queryStub.should.have.been.calledWith('SELECT ?;', [ 1 ]);
                     })
                     .catch((e) => {
-                        console.log(e);
                         expect(false).to.be.true;
                     });
             });
@@ -618,7 +617,7 @@ describe('Connection', function () {
                     .catch(error => {
                         expect(error.message).to.equal('query failed');
 
-                        expect(queryStub).to.have.been.calledWith('SELECT ?;', [ 1 ]);
+                        queryStub.should.have.been.calledWith('SELECT ?;', [ 1 ]);
                     });
             });
 
@@ -639,7 +638,7 @@ describe('Connection', function () {
                         .then(ret => {
                             expect(ret).to.equal('results');
 
-                            expect(queryStub).to.have.been.calledWith('SELECT ?;', [ 1 ]);
+                            queryStub.should.have.been.calledWith('SELECT ?;', [ 1 ]);
                         })
                         .catch(() => {
                             expect(false).to.be.true;
@@ -668,8 +667,6 @@ describe('Connection', function () {
                             expect(false).to.be.true;
                         })
                         .catch(error => {
-                            console.log(error);
-
                             expect(destroy).to.have.been.called;
                             expect(end).to.not.have.been.called;
 
@@ -736,7 +733,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -809,7 +806,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -850,7 +847,7 @@ describe('Connection', function () {
                     .then(ret => {
                         expect(ret).to.equal('good');
 
-                        expect(stub).to.have.been.calledWith(query);
+                        stub.should.have.been.calledWith(query);
                     })
                     .catch(() => {
                         expect(false).to.be.true;

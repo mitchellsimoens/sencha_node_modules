@@ -8,7 +8,9 @@ describe('Sencha.direct.Manager', function () {
     let provider;
 
     afterEach(function () {
-        Manager.remove(provider);
+        if (!provider || !provider.destroyed) {
+            Manager.remove(provider);
+        }
 
         Manager.apiVariable =
             provider =
@@ -155,7 +157,7 @@ describe('Sencha.direct.Manager', function () {
                 expect(ret).to.equal('foo');
             });
 
-            const Action = this.createResolveAction('foo');
+            const Action = this[ 'sencha-direct' ].createResolveAction('foo');
 
             Manager.add(
                 'remoting',
@@ -192,7 +194,7 @@ describe('Sencha.direct.Manager', function () {
                 expect(error.message).to.equal('bad');
             });
 
-            const Action = this.createResolveAction('foo');
+            const Action = this[ 'sencha-direct' ].createResolveAction('foo');
 
             Manager.add(
                 'remoting',
@@ -229,7 +231,7 @@ describe('Sencha.direct.Manager', function () {
                 expect(ret).to.equal('foo');
             });
 
-            const Action = this.createResolveAction('foo');
+            const Action = this[ 'sencha-direct' ].createResolveAction('foo');
 
             Manager.add(
                 'polling',
@@ -261,7 +263,7 @@ describe('Sencha.direct.Manager', function () {
                 expect(ret).to.include('baz');
             });
 
-            const Action = this.createResolveAction([ 'foo', 'bar' ]);
+            const Action = this[ 'sencha-direct' ].createResolveAction([ 'foo', 'bar' ]);
 
             Manager.add(
                 'polling',
@@ -315,11 +317,11 @@ describe('Sencha.direct.Manager', function () {
                 expect(api).to.have.property('actions');
                 expect(api.actions).to.be.an('object');
 
-                expect(api).to.have.deep.property('actions.FooAction');
+                expect(api.actions).to.have.deep.property('FooAction');
                 expect(api.actions.FooAction).to.be.an('array');
                 expect(api.actions.FooAction).to.have.lengthOf(1);
 
-                expect(api).to.have.deep.property('actions.FooAction[0].name', 'bar');
+                expect(api.actions.FooAction[0]).to.have.deep.property('name', 'bar');
 
                 Manager.apiVariable = 'window.REMOTING_API';
 
@@ -352,17 +354,17 @@ describe('Sencha.direct.Manager', function () {
                 expect(api).to.have.property('actions');
                 expect(api.actions).to.be.an('object');
 
-                expect(api).to.have.deep.property('actions.BarAction');
+                expect(api.actions).to.have.deep.property('BarAction');
                 expect(api.actions.BarAction).to.be.an('array');
                 expect(api.actions.BarAction).to.have.lengthOf(1);
 
-                expect(api).to.have.deep.property('actions.FooAction');
+                expect(api.actions).to.have.deep.property('FooAction');
                 expect(api.actions.FooAction).to.be.an('array');
                 expect(api.actions.FooAction).to.have.lengthOf(2);
 
-                expect(api).to.have.deep.property('actions.BarAction[0].name', 'doBar');
-                expect(api).to.have.deep.property('actions.FooAction[0].name', 'doFoo');
-                expect(api).to.have.deep.property('actions.FooAction[1].name', 'doFooAgain');
+                expect(api.actions.BarAction[0]).to.have.deep.property('name', 'doBar');
+                expect(api.actions.FooAction[0]).to.have.deep.property('name', 'doFoo');
+                expect(api.actions.FooAction[1]).to.have.deep.property('name', 'doFooAgain');
 
                 Manager.apiVariable = 'window.REMOTING_API';
 
@@ -402,22 +404,22 @@ describe('Sencha.direct.Manager', function () {
                 expect(api).to.be.an('array');
                 expect(api).to.have.lengthOf(2);
 
-                expect(api).to.have.deep.property('[0].type', 'remoting');
-                expect(api).to.have.deep.property('[0].actions');
+                expect(api[0]).to.have.deep.property('type', 'remoting');
+                expect(api[0]).to.have.deep.property('actions');
                 expect(api[0].actions).to.be.an('object');
-                expect(api).to.have.deep.property('[0].actions.BarAction');
+                expect(api[0].actions).to.have.deep.property('BarAction');
                 expect(api[0].actions.BarAction).to.be.an('array');
                 expect(api[0].actions.BarAction).to.have.lengthOf(1);
-                expect(api).to.have.deep.property('[0].actions.BarAction[0].name', 'doBar');
+                expect(api[0].actions.BarAction[0]).to.have.deep.property('name', 'doBar');
 
-                expect(api).to.have.deep.property('[1].type', 'polling');
-                expect(api).to.have.deep.property('[1].actions');
+                expect(api[1]).to.have.deep.property('type', 'polling');
+                expect(api[1]).to.have.deep.property('actions');
                 expect(api[1].actions).to.be.an('object');
-                expect(api).to.have.deep.property('[1].actions.FooAction');
+                expect(api[1].actions).to.have.deep.property('FooAction');
                 expect(api[1].actions.FooAction).to.be.an('array');
                 expect(api[1].actions.FooAction).to.have.lengthOf(2);
-                expect(api).to.have.deep.property('[1].actions.FooAction[0].name', 'doFoo');
-                expect(api).to.have.deep.property('[1].actions.FooAction[1].name', 'doFooAgain');
+                expect(api[1].actions.FooAction[0]).to.have.deep.property('name', 'doFoo');
+                expect(api[1].actions.FooAction[1]).to.have.deep.property('name', 'doFooAgain');
 
                 Manager.apiVariable = 'window.REMOTING_API';
 
@@ -448,10 +450,10 @@ describe('Sencha.direct.Manager', function () {
                 expect(api).to.have.deep.property('type', 'remoting');
                 expect(api).to.have.deep.property('actions');
                 expect(api.actions).to.be.an('object');
-                expect(api).to.have.deep.property('actions.FooAction');
+                expect(api.actions).to.have.deep.property('FooAction');
                 expect(api.actions.FooAction).to.be.an('array');
                 expect(api.actions.FooAction).to.have.lengthOf(1);
-                expect(api).to.have.deep.property('actions.FooAction[0].name', 'doFoo');
+                expect(api.actions.FooAction[0]).to.have.deep.property('name', 'doFoo');
 
                 Manager.apiVariable = 'window.REMOTING_API';
 
@@ -486,22 +488,22 @@ describe('Sencha.direct.Manager', function () {
                 expect(api).to.be.an('array');
                 expect(api).to.have.lengthOf(2);
 
-                expect(api).to.have.deep.property('[0].type', 'polling');
-                expect(api).to.have.deep.property('[0].actions');
+                expect(api[0]).to.have.deep.property('type', 'polling');
+                expect(api[0]).to.have.deep.property('actions');
                 expect(api[0].actions).to.be.an('object');
-                expect(api).to.have.deep.property('[0].actions.BarAction');
+                expect(api[0].actions).to.have.deep.property('BarAction');
                 expect(api[0].actions.BarAction).to.be.an('array');
                 expect(api[0].actions.BarAction).to.have.lengthOf(2);
-                expect(api).to.have.deep.property('[0].actions.BarAction[0].name', 'doBar');
-                expect(api).to.have.deep.property('[0].actions.BarAction[1].name', 'doBarAgain');
+                expect(api[0].actions.BarAction[0]).to.have.deep.property('name', 'doBar');
+                expect(api[0].actions.BarAction[1]).to.have.deep.property('name', 'doBarAgain');
 
-                expect(api).to.have.deep.property('[1].type', 'remoting');
-                expect(api).to.have.deep.property('[1].actions');
+                expect(api[1]).to.have.deep.property('type', 'remoting');
+                expect(api[1]).to.have.deep.property('actions');
                 expect(api[1].actions).to.be.an('object');
-                expect(api).to.have.deep.property('[1].actions.FooAction');
+                expect(api[1].actions).to.have.deep.property('FooAction');
                 expect(api[1].actions.FooAction).to.be.an('array');
                 expect(api[1].actions.FooAction).to.have.lengthOf(1);
-                expect(api).to.have.deep.property('[1].actions.FooAction[0].name', 'doFoo');
+                expect(api[1].actions.FooAction[0]).to.have.deep.property('name', 'doFoo');
 
                 Manager.apiVariable = 'window.REMOTING_API';
 

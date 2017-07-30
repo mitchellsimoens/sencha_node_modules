@@ -258,7 +258,7 @@ const ClassMixin = function (parent) {
             }
 
             prototype.mixins = mixinMap;
-            me.mixins         = staticMixinMap;
+            me.mixins        = staticMixinMap;
 
             const finalMeta = {
                 class : me,

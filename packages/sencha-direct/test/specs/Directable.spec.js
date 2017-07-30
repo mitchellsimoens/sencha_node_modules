@@ -23,7 +23,7 @@ describe('Sencha.direct.Directable', function () {
             expect(meta.prototype).to.not.be.empty;
 
             expect(Object.keys(meta.prototype)).to.have.lengthOf(1);
-            expect(meta).to.have.deep.property('prototype.isDirectable', true);
+            expect(meta.prototype).to.have.deep.property('isDirectable', true);
         });
 
         it('should mix into class', function () {

@@ -1,5 +1,4 @@
-const chai       = require('chai');
-const expect     = chai.expect;
+const { expect } = require('chai');
 const proxyquire = require('proxyquire');
 
 describe('Token', function () {
@@ -85,9 +84,7 @@ describe('Token', function () {
                 token : 'abcd'
             });
 
-            return promise.then(() => {
-                expect(promise).to.be.fulfilled;
-            });
+            return this.expectResolved(promise);
         });
 
         it('should return a token', function * () {
@@ -129,9 +126,7 @@ describe('Token', function () {
                 token : 'abcd'
             });
 
-            return promise.then(() => {
-                expect(promise).to.be.fulfilled;
-            });
+            return this.expectResolved(promise);
         });
     });
 });

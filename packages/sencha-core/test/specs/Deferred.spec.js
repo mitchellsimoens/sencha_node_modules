@@ -32,7 +32,7 @@ describe('Sencha.core.Deferred', function () {
 
             return promise
                 .then(() => {
-                    expect(spy).to.have.been.calledWith('foo');
+                    spy.should.have.been.calledWith('foo');
                 })
                 .catch(() => {
                     // should execute, trigger a failure if it does
@@ -70,7 +70,7 @@ describe('Sencha.core.Deferred', function () {
 
             return promise
                 .then(() => {
-                    expect(spy).to.have.been.calledWith(err);
+                    spy.should.have.been.calledWith(err);
                 })
                 .catch(() => {
                     // should execute, trigger a failure if it does
@@ -92,7 +92,7 @@ describe('Sencha.core.Deferred', function () {
                     expect(false).to.be.true;
                 })
                 .catch(() => {
-                    expect(spy).to.have.been.calledWith(err);
+                    spy.should.have.been.calledWith(err);
                 });
         });
     });

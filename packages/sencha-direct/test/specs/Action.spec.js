@@ -64,7 +64,8 @@ describe('Sencha.direct.Action', function () {
                 params : [ 1 ]
             });
 
-            expect(action).to.have.deep.property('params[0]', 1);
+            //expect(action.params).to.have.deep.property('[0]', 1);
+            expect(action.params[0]).to.equal(1);
         });
 
         it('should set paramOrder', function () {
@@ -72,7 +73,8 @@ describe('Sencha.direct.Action', function () {
                 paramOrder : [ 'foo', 'bar' ]
             });
 
-            expect(action).to.have.deep.property('paramOrder[1]', 'bar');
+            //expect(action.paramOrder).to.have.deep.property('[1]', 'bar');
+            expect(action.paramOrder[1]).to.equal('bar');
         });
 
         it('should set paramsAsHash', function () {
@@ -144,7 +146,8 @@ describe('Sencha.direct.Action', function () {
                 params : [ 1 ]
             });
 
-            expect(action.serialize).to.have.deep.property('params[0]', 1);
+            //expect(action.serialize.params).to.have.deep.property('[0]', 1);
+            expect(action.serialize.params[0]).to.equal(1);
         });
 
         it('should serialize with paramOrder', function () {
@@ -152,7 +155,8 @@ describe('Sencha.direct.Action', function () {
                 paramOrder : [ 'foo', 'bar' ]
             });
 
-            expect(action.serialize).to.have.deep.property('paramOrder[1]', 'bar');
+            //expect(action.serialize.paramOrder).to.have.deep.property('[1]', 'bar');
+            expect(action.serialize.paramOrder[1]).to.equal('bar');
         });
 
         it('should serialize with paramsAsHash', function () {
@@ -204,7 +208,8 @@ describe('Sencha.direct.Action', function () {
 
                 expect(args).to.be.a('array');
                 expect(args).to.have.length(1);
-                expect(args).to.have.deep.property('[0]', 'abc');
+                //expect(args).to.have.deep.property('[0]', 'abc');
+                expect(args[0]).to.equal('abc');
             });
 
             it('should return empty array with null len and passing empty array', function () {
@@ -246,7 +251,8 @@ describe('Sencha.direct.Action', function () {
 
                 expect(args).to.be.a('array');
                 expect(args).to.have.length(1);
-                expect(args).to.have.deep.property('[0]', 1);
+                //expect(args).to.have.deep.property('[0]', 1);
+                expect(args[0]).to.equal(1);
             });
 
             it('should return empty array with null len and passing non-empty array', function () {
@@ -258,7 +264,8 @@ describe('Sencha.direct.Action', function () {
 
                 expect(args).to.be.a('array');
                 expect(args).to.have.length(1);
-                expect(args).to.have.deep.property('[0]', 1);
+                //expect(args).to.have.deep.property('[0]', 1);
+                expect(args[0]).to.equal(1);
             });
         });
     });

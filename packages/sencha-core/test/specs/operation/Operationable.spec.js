@@ -45,7 +45,7 @@ describe('Operationable', function () {
         beforeEach(function () {
             instance = new Cls();
 
-            instance.adapter = this.createAdapter();
+            instance.adapter = this[ 'sencha-core' ].createAdapter();
         });
 
         it('should get operation passing a string', function () {
@@ -55,7 +55,7 @@ describe('Operationable', function () {
         });
 
         it('should return if an operation is passed', function () {
-            const cls       = this.getOperation('foo.bar');
+            const cls       = this[ 'sencha-core' ].getOperation('foo.bar');
             const operation = instance.getOperation(cls);
 
             expect(operation).to.equal(cls);
@@ -66,7 +66,7 @@ describe('Operationable', function () {
         beforeEach(function () {
             instance = new Cls();
 
-            instance.adapter = this.createAdapter();
+            instance.adapter = this[ 'sencha-core' ].createAdapter();
         });
 
         it('should instantiate operation when string is passed', function () {
@@ -77,7 +77,7 @@ describe('Operationable', function () {
         });
 
         it('should instantiate operation when class is passed', function () {
-            const cls = this.getOperation('foo.bar');
+            const cls = this[ 'sencha-core' ].getOperation('foo.bar');
 
             operation = instance.instantiateOperation(cls);
 

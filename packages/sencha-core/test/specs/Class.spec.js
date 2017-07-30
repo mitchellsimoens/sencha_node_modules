@@ -153,7 +153,7 @@ describe('Sencha.core.Class', function () {
 
             instance = new Foo(config);
 
-            expect(spy).to.have.been.calledWith(config);
+            spy.should.have.been.calledWith(config);
         });
 
         it('should execute dtor', function () {
@@ -266,7 +266,7 @@ describe('Sencha.core.Class', function () {
 
                     instance = new cls(config);
 
-                    expect(spy).to.have.been.calledWith(config, instance, 'before-constructor', cls);
+                    spy.should.have.been.calledWith(config, instance, 'before-constructor', cls);
                 });
 
                 it('should trigger after-constructor', function () {
@@ -276,7 +276,7 @@ describe('Sencha.core.Class', function () {
 
                     instance = new cls();
 
-                    expect(spy).to.have.been.calledWith(instance, 'after-constructor', cls);
+                    spy.should.have.been.calledWith(instance, 'after-constructor', cls);
                 });
             });
 
@@ -289,7 +289,7 @@ describe('Sencha.core.Class', function () {
 
                     instance = new cls(config);
 
-                    expect(spy).to.have.been.calledWith(config, instance, 'before-ctor', cls);
+                    spy.should.have.been.calledWith(config, instance, 'before-ctor', cls);
                 });
 
                 it('should trigger after-ctor', function () {
@@ -299,7 +299,7 @@ describe('Sencha.core.Class', function () {
 
                     instance = new cls();
 
-                    expect(spy).to.have.been.calledWith(instance, 'after-ctor', cls);
+                    spy.should.have.been.calledWith(instance, 'after-ctor', cls);
                 });
             });
 
@@ -313,7 +313,7 @@ describe('Sencha.core.Class', function () {
 
                     instance.destroy();
 
-                    expect(spy).to.have.been.calledWith(instance, 'before-dtor', cls);
+                    spy.should.have.been.calledWith(instance, 'before-dtor', cls);
 
                     instance = null;
                 });
@@ -327,7 +327,7 @@ describe('Sencha.core.Class', function () {
 
                     instance.destroy();
 
-                    expect(spy).to.have.been.calledWith(instance, 'after-dtor', cls);
+                    spy.should.have.been.calledWith(instance, 'after-dtor', cls);
 
                     instance = null;
                 });
@@ -417,7 +417,7 @@ describe('Sencha.core.Class', function () {
                     }
                 );
 
-                expect(obj).to.have.deep.property('foo.baz', 'foobar');
+                expect(obj.foo).to.have.deep.property('baz', 'foobar');
             });
 
             it('should apply array on non-existing key', function () {
@@ -465,7 +465,7 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
         });
@@ -478,7 +478,7 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
@@ -486,7 +486,7 @@ describe('Sencha.core.Class', function () {
 
             Class.addWatcher('bar', fn2);
 
-            expect(Class).to.have.deep.property('_watchers.bar');
+            expect(Class._watchers).to.have.deep.property('bar');
             expect(Class._watchers.bar).to.be.an('array').that.includes(fn2);
             expect(Class._watchers.bar).to.have.lengthOf(1);
         });
@@ -499,7 +499,7 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
@@ -507,7 +507,7 @@ describe('Sencha.core.Class', function () {
 
             Class.addWatcher('foo', fn2);
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn2);
             expect(Class._watchers.foo).to.have.lengthOf(2);
         });
@@ -526,13 +526,13 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
             Class.removeWatcher('foo', fn);
 
-            expect(Class).to.not.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.not.have.deep.property('foo');
         });
 
         it('should not remove unknown watcher name', function () {
@@ -543,13 +543,13 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
             Class.removeWatcher('bar', fn);
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
         });
 
         it('should not remove watcher with unknown function', function () {
@@ -561,13 +561,13 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
             Class.removeWatcher('foo', fn2);
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
         });
 
         it('should remove watcher but keep other watcher', function () {
@@ -580,13 +580,13 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(2);
 
             Class.removeWatcher('foo', fn2);
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
         });
@@ -607,18 +607,18 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
-            expect(Class).to.have.deep.property('_watchers.bar');
+            expect(Class._watchers).to.have.deep.property('bar');
             expect(Class._watchers.bar).to.be.an('array').that.includes(fn2);
             expect(Class._watchers.bar).to.have.lengthOf(1);
 
             Class.removeWatchers();
 
-            expect(Class).to.not.have.deep.property('_watchers.foo');
-            expect(Class).to.not.have.deep.property('_watchers.bar');
+            expect(Class._watchers).to.not.have.deep.property('foo');
+            expect(Class._watchers).to.not.have.deep.property('bar');
         });
 
         it('should remove all name watchers', function () {
@@ -631,18 +631,18 @@ describe('Sencha.core.Class', function () {
             expect(Class).to.have.property('_watchers');
             expect(Class._watchers).to.be.an('object');
 
-            expect(Class).to.have.deep.property('_watchers.foo');
+            expect(Class._watchers).to.have.deep.property('foo');
             expect(Class._watchers.foo).to.be.an('array').that.includes(fn);
             expect(Class._watchers.foo).to.have.lengthOf(1);
 
-            expect(Class).to.have.deep.property('_watchers.bar');
+            expect(Class._watchers).to.have.deep.property('bar');
             expect(Class._watchers.bar).to.be.an('array').that.includes(fn2);
             expect(Class._watchers.bar).to.have.lengthOf(1);
 
             Class.removeWatchers('foo');
 
-            expect(Class).to.not.have.deep.property('_watchers.foo');
-            expect(Class).to.have.deep.property('_watchers.bar');
+            expect(Class._watchers).to.not.have.deep.property('foo');
+            expect(Class._watchers).to.have.deep.property('bar');
         });
     });
 
@@ -664,8 +664,10 @@ describe('Sencha.core.Class', function () {
 
                 expect(executed).to.be.an('array');
                 expect(executed).to.have.lengthOf(2);
-                expect(executed).to.have.deep.property('[0]', 'bar');
-                expect(executed).to.have.deep.property('[1]', undefined);
+                //expect(executed).to.have.deep.property('[0]', 'bar');
+                //expect(executed).to.have.deep.property('[1]', undefined);
+                expect(executed[0]).to.equal('bar');
+                expect(executed[1]).to.equal(undefined);
             });
         });
     });
@@ -726,8 +728,10 @@ describe('Sencha.core.Class', function () {
 
             expect(executed).to.be.an('array');
             expect(executed).to.have.lengthOf(2);
-            expect(executed).to.have.deep.property('[0]', 'foo');
-            expect(executed).to.have.deep.property('[1]', 'bar');
+            //expect(executed).to.have.deep.property('[0]', 'foo');
+            //expect(executed).to.have.deep.property('[1]', 'bar');
+            expect(executed[0]).to.equal('foo');
+            expect(executed[1]).to.equal('bar');
         });
 
         it('should call a chain in order', function () {
@@ -751,8 +755,10 @@ describe('Sencha.core.Class', function () {
 
             expect(executed).to.be.an('array');
             expect(executed).to.have.lengthOf(2);
-            expect(executed).to.have.deep.property('[0]', 'superclass');
-            expect(executed).to.have.deep.property('[1]', 'subclass');
+            //expect(executed).to.have.deep.property('[0]', 'superclass');
+            //expect(executed).to.have.deep.property('[1]', 'subclass');
+            expect(executed[0]).to.equal('superclass');
+            expect(executed[1]).to.equal('subclass');
         });
 
         it('should call a chain in reverse order', function () {
@@ -776,8 +782,10 @@ describe('Sencha.core.Class', function () {
 
             expect(executed).to.be.an('array');
             expect(executed).to.have.lengthOf(2);
-            expect(executed).to.have.deep.property('[0]', 'subclass');
-            expect(executed).to.have.deep.property('[1]', 'superclass');
+            //expect(executed).to.have.deep.property('[0]', 'subclass');
+            //expect(executed).to.have.deep.property('[1]', 'superclass');
+            expect(executed[0]).to.equal('subclass');
+            expect(executed[1]).to.equal('superclass');
         });
     });
 

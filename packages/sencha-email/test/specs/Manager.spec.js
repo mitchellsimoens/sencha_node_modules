@@ -37,14 +37,14 @@ describe('Manager', function () {
         it('should send an email', function () {
             const sendSpy = this.sandbox.spy();
 
-            Manager.add('foo', this.createProvider({
+            Manager.add('foo', this[ 'sencha-email' ].createProvider({
                 sendSpy
             }));
 
             return Manager
                 .send('foo', 'fake email')
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith('fake email');
+                    sendSpy.should.have.been.calledWith('fake email');
 
                     expect(ret).to.be.undefined;
                 })
@@ -55,7 +55,7 @@ describe('Manager', function () {
 
         it('should send an email passing provider instance', function () {
             const sendSpy  = this.sandbox.spy();
-            const provider = this.createProvider({
+            const provider = this[ 'sencha-email' ].createProvider({
                 sendSpy
             });
 
@@ -64,7 +64,7 @@ describe('Manager', function () {
             return Manager
                 .send(provider, 'fake email')
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith('fake email');
+                    sendSpy.should.have.been.calledWith('fake email');
 
                     expect(ret).to.be.undefined;
                 })
@@ -76,18 +76,18 @@ describe('Manager', function () {
         it('should send passing email only', function () {
             const sendSpy = this.sandbox.spy();
 
-            Manager.add('foo', this.createProvider({
+            Manager.add('foo', this[ 'sencha-email' ].createProvider({
                 sendSpy
             }));
 
-            const email = this.createEmail({
+            const email = this[ 'sencha-email' ].createEmail({
                 provider : 'foo'
             });
 
             return Manager
                 .send(email)
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith(email);
+                    sendSpy.should.have.been.calledWith(email);
 
                     expect(ret).to.be.undefined;
                 })
@@ -99,18 +99,18 @@ describe('Manager', function () {
         it('should send passing email only and provider undefined', function () {
             const sendSpy = this.sandbox.spy();
 
-            Manager.add('foo', this.createProvider({
+            Manager.add('foo', this[ 'sencha-email' ].createProvider({
                 sendSpy
             }));
 
-            const email = this.createEmail({
+            const email = this[ 'sencha-email' ].createEmail({
                 provider : 'foo'
             });
 
             return Manager
                 .send(null, email)
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith(email);
+                    sendSpy.should.have.been.calledWith(email);
 
                     expect(ret).to.be.undefined;
                 })
@@ -122,12 +122,12 @@ describe('Manager', function () {
         it('should handle an error', function () {
             const sendSpy = this.sandbox.spy();
 
-            Manager.add('foo', this.createProvider({
+            Manager.add('foo', this[ 'sencha-email' ].createProvider({
                 sendSpy,
                 sendError : new Error('send failed')
             }));
 
-            const email = this.createEmail({
+            const email = this[ 'sencha-email' ].createEmail({
                 provider : 'foo'
             });
 
@@ -137,7 +137,7 @@ describe('Manager', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(sendSpy).to.have.been.calledWith(email);
+                    sendSpy.should.have.been.calledWith(email);
 
                     expect(error.message).to.equal('send failed');
                 });

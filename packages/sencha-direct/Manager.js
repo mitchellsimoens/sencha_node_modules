@@ -1,4 +1,8 @@
-const { Base }     = require('@extjs/sencha-core');
+const {
+    Base, Managerable,
+    event : { Observable }
+} = require('@extjs/sencha-core');
+
 const { Provider } = require('./');
 
 /**
@@ -10,12 +14,13 @@ const { Provider } = require('./');
  * description to be returned to the client and a means to dispatch requests to the
  * appropriate {@link Sencha.direct.Action}.
  */
+
 class Manager extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/event/Observable', // eslint-disable-line array-element-newline
-                '@extjs/sencha-core/Managerable'
+                Observable, // eslint-disable-line array-element-newline
+                Managerable
             ],
 
             prototype : {

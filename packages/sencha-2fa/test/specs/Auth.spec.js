@@ -207,7 +207,7 @@ describe('Auth', function () {
 
                 expect(valid).to.be.true;
 
-                expect(verify).to.have.been.calledWith({
+                verify.should.have.been.calledWith({
                     encoding : 'base32',
                     secret   : instance.secret.base32,
                     token    : '123456'
@@ -236,7 +236,7 @@ describe('Auth', function () {
 
                 expect(valid).to.be.true;
 
-                expect(verify).to.have.been.calledWith({
+                verify.should.have.been.calledWith({
                     encoding : 'base32',
                     secret   : 'ABCDEFG',
                     token    : '123456'

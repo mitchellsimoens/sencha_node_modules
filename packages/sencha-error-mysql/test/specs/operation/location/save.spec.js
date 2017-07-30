@@ -30,16 +30,16 @@ describe('location save operation', function () {
 
     describe('save', function () {
         beforeEach(function () {
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return a promise', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/location/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -59,12 +59,12 @@ describe('location save operation', function () {
         });
 
         it('should add query to batch', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/location/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -85,17 +85,17 @@ describe('location save operation', function () {
 
             return promise
                 .then(() => {
-                    expect(spy).to.have.been.called;
+                    spy.should.have.been.called;
                 });
         });
 
         it('should resolve if query resolves', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/location/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -122,12 +122,12 @@ describe('location save operation', function () {
         });
 
         it('should reject if query rejects', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/location/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             rejectWith : 'foobar'
                         })
                     }
@@ -157,7 +157,7 @@ describe('location save operation', function () {
     describe('$parse', function () {
         beforeEach(function () {
             operation = new save();
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return valid error data', function () {
@@ -170,15 +170,15 @@ describe('location save operation', function () {
 
             expect(data).to.be.an('object');
 
-            expect(data).to.have.deep.property('hash',     '#login');
-            expect(data).to.have.deep.property('host',     'support.sencha.com');
-            expect(data).to.have.deep.property('href',     'https://support.sencha.com/#login');
-            expect(data).to.have.deep.property('origin',   'https://support.sencha.com');
-            expect(data).to.have.deep.property('pathname', '/');
-            expect(data).to.have.deep.property('port',     null);
-            expect(data).to.have.deep.property('protocol', 'https:');
-            expect(data).to.have.deep.property('referer',  '');
-            expect(data).to.have.deep.property('search',   '');
+            expect(data).to.have.property('hash',     '#login');
+            expect(data).to.have.property('host',     'support.sencha.com');
+            expect(data).to.have.property('href',     'https://support.sencha.com/#login');
+            expect(data).to.have.property('origin',   'https://support.sencha.com');
+            expect(data).to.have.property('pathname', '/');
+            expect(data).to.have.property('port',     null);
+            expect(data).to.have.property('protocol', 'https:');
+            expect(data).to.have.property('referer',  '');
+            expect(data).to.have.property('search',   '');
         });
     });
 });

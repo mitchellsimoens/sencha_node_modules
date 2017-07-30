@@ -54,8 +54,10 @@ class SSLServer extends Server {
         if (certificates) {
             const { appRoot } = Config;
 
-            for (const type in certificates) {
-                certificates[ type ] = path.join(appRoot, certificates[ type ]);
+            if (appRoot) {
+                for (const type in certificates) {
+                    certificates[ type ] = path.join(appRoot, certificates[ type ]);
+                }
             }
         }
 

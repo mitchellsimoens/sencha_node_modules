@@ -50,7 +50,7 @@ describe('Response', function() {
                     createMockExpressRes('json', spy)
                 );
 
-                expect(spy).to.have.been.calledWithExactly(ret);
+                spy.should.have.been.calledWithExactly(ret);
             });
 
             it('should render view', function(done) {

@@ -52,7 +52,7 @@ describe('Sencha.core.event.Listener', function () {
             listener = new Listener(instance, options);
 
             expect(listener).to.have.property('options', options);
-            expect(listener).to.have.deep.property('options.single', true);
+            expect(listener.options).to.have.deep.property('single', true);
         });
 
         it('should set listenFns', function () {
@@ -73,7 +73,7 @@ describe('Sencha.core.event.Listener', function () {
             listener = new Listener(instance, options);
 
             expect(listener).to.have.property('options', options);
-            expect(listener).to.have.deep.property('listenFns.foo', fn);
+            expect(listener.listenFns).to.have.deep.property('foo', fn);
         })
     });
 
@@ -88,7 +88,7 @@ describe('Sencha.core.event.Listener', function () {
 
             listener.doAdd('foo', fn);
 
-            expect(listener).to.have.deep.property('listenFns.foo', fn);
+            expect(listener.listenFns).to.have.deep.property('foo', fn);
         });
 
         describe('options', function () {
@@ -100,7 +100,7 @@ describe('Sencha.core.event.Listener', function () {
                     buffer : 10
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
 
@@ -112,7 +112,7 @@ describe('Sencha.core.event.Listener', function () {
                     delay : 500
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
 
@@ -124,7 +124,7 @@ describe('Sencha.core.event.Listener', function () {
                     single : true
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
         });
@@ -138,7 +138,7 @@ describe('Sencha.core.event.Listener', function () {
                     buffer : 10
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
 
@@ -150,7 +150,7 @@ describe('Sencha.core.event.Listener', function () {
                     delay : 500
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
 
@@ -162,7 +162,7 @@ describe('Sencha.core.event.Listener', function () {
                     single : true
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
                 expect(spy).to.have.been.called;
             });
 
@@ -176,7 +176,7 @@ describe('Sencha.core.event.Listener', function () {
                     scope
                 });
 
-                expect(listener).to.have.deep.property('listenFns.foo');
+                expect(listener.listenFns).to.have.deep.property('foo');
             });
         });
     });
@@ -190,21 +190,21 @@ describe('Sencha.core.event.Listener', function () {
         it('should remove listener', function () {
             listener.doAdd('foo', () => {});
 
-            expect(listener).to.have.deep.property('listenFns.foo');
+            expect(listener.listenFns).to.have.deep.property('foo');
 
             listener.doRemove('foo');
 
-            expect(listener).to.have.deep.property('listenFns.foo', null);
+            expect(listener.listenFns).to.have.deep.property('foo', null);
         });
 
         it('should not remove non-added listener', function () {
             listener.doAdd('foo', () => {});
 
-            expect(listener).to.have.deep.property('listenFns.foo');
+            expect(listener.listenFns).to.have.deep.property('foo');
 
             listener.doRemove('bar');
 
-            expect(listener).to.have.deep.property('listenFns.foo');
+            expect(listener.listenFns).to.have.deep.property('foo');
         });
     });
 
@@ -255,7 +255,7 @@ describe('Sencha.core.event.Listener', function () {
             buffered('foo');
 
             setTimeout(() => {
-                expect(fn).to.have.been.calledWith('foo');
+                fn.should.have.been.calledWith('foo');
 
                 done();
             }, 10);
@@ -268,7 +268,7 @@ describe('Sencha.core.event.Listener', function () {
             buffered('foo', 'bar');
 
             setTimeout(() => {
-                expect(fn).to.have.been.calledWith('foo', 'bar');
+                fn.should.have.been.calledWith('foo', 'bar');
 
                 done();
             }, 10);
@@ -283,7 +283,7 @@ describe('Sencha.core.event.Listener', function () {
 
             setTimeout(() => {
                 expect(fn).to.have.been.calledOnce;
-                expect(fn).to.have.been.calledWith('bar');
+                fn.should.have.been.calledWith('bar');
 
                 done();
             }, 10);
@@ -327,7 +327,7 @@ describe('Sencha.core.event.Listener', function () {
             expect(fn).to.not.have.been.called;
 
             setTimeout(() => {
-                expect(fn).to.have.been.calledWith('foo');
+                fn.should.have.been.calledWith('foo');
 
                 done();
             }, 10);
@@ -342,7 +342,7 @@ describe('Sencha.core.event.Listener', function () {
             expect(fn).to.not.have.been.called;
 
             setTimeout(() => {
-                expect(fn).to.have.been.calledWith('foo', 'bar', 'baz');
+                fn.should.have.been.calledWith('foo', 'bar', 'baz');
 
                 done();
             }, 10);
@@ -368,11 +368,11 @@ describe('Sencha.core.event.Listener', function () {
 
             listener.doAdd('foo', wrapped);
 
-            expect(listener).to.have.deep.property('listenFns.foo', wrapped);
+            expect(listener.listenFns).to.have.deep.property('foo', wrapped);
 
             wrapped();
 
-            expect(listener).to.have.deep.property('listenFns.foo', null);
+            expect(listener.listenFns).to.have.deep.property('foo', null);
         });
     });
 });

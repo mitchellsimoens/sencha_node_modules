@@ -1,5 +1,4 @@
-const chai   = require('chai');
-const expect = chai.expect;
+const { expect } = require('chai');
 
 const Manager = require('../../Manager');
 

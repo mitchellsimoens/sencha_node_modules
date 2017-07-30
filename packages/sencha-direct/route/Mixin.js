@@ -47,9 +47,11 @@ class Mixin extends Base {
             let { data } = params;
 
             if (typeof data === 'string') {
-                const temp = JSON.parse(data);
+                try {
+                    const temp = JSON.parse(data);
 
-                data = temp;
+                    data = temp;
+                } catch (e) {} // eslint-disable-line no-empty
             }
 
             return {

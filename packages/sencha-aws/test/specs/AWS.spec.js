@@ -46,7 +46,8 @@ describe('AWS', function () {
 
             AWS.config = 'bar';
 
-            expect(spy).to.have.been.calledWith('bar');
+            spy.should.have.been.calledWith('bar');
+
             expect(AWS).to.have.property('config', 'bar');
         });
 

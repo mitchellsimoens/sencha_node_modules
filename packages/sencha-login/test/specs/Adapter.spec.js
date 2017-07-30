@@ -20,7 +20,7 @@ describe('Adapter', function () {
 
     describe('operations', function () {
         beforeEach(function () {
-            adapter = this.createAdapter({
+            adapter = this[ 'sencha-login' ].createAdapter({
                 callThru  : true,
                 ForumGet  : 'fake.forum',
                 SenchaGet : 'fake.sencha'
@@ -38,7 +38,7 @@ describe('Adapter', function () {
     describe('getOperation', function () {
         describe('resolve', function () {
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-login' ].createAdapter({
                     callThru : true
                 });
             });
@@ -67,7 +67,7 @@ describe('Adapter', function () {
             const SenchaGet = { isloginOperation : true };
 
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-login' ].createAdapter({
                     ForumGet, SenchaGet,
                     callThru : true
                 });
@@ -100,7 +100,7 @@ describe('Adapter', function () {
     describe('instantiateOperation', function () {
         describe('resolve', function () {
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-login' ].createAdapter({
                     callThru : true
                 });
             });
@@ -129,7 +129,7 @@ describe('Adapter', function () {
             class SenchaGet {}
 
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-login' ].createAdapter({
                     ForumGet, SenchaGet,
                     callThru : true
                 });

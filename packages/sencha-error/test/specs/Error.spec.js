@@ -19,7 +19,7 @@ describe('Error', function () {
         });
 
         it('should handle payload', function () {
-            error = new Error(this.createPayload());
+            error = new Error(this[ 'sencha-error' ].createPayload());
 
             expect(error).to.have.property('date');
             expect(error).to.have.property('ua');
@@ -40,7 +40,7 @@ describe('Error', function () {
 
     describe('save', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter({
+            Manager.adapter = this[ 'sencha-error' ].createAdapter({
                 callThru : true
             });
         });
@@ -50,7 +50,7 @@ describe('Error', function () {
         });
 
         it('should return a promise', function () {
-            error = new Error(this.createPayload());
+            error = new Error(this[ 'sencha-error' ].createPayload());
 
             const promise = error.save();
 
@@ -60,7 +60,7 @@ describe('Error', function () {
         });
 
         it('should combine all operations', function () {
-            error = new Error(this.createPayload());
+            error = new Error(this[ 'sencha-error' ].createPayload());
 
             const promise = error.save({});
 
@@ -75,7 +75,7 @@ describe('Error', function () {
         });
 
         it('should execute connection if one is passed', function () {
-            error = new Error(this.createPayload());
+            error = new Error(this[ 'sencha-error' ].createPayload());
 
             const batch      = 'fakebatch';
             const spy        = this.sandbox.spy();
@@ -90,8 +90,8 @@ describe('Error', function () {
             return promise
                 .then(ret => {
                     expect(ret).to.equal(error);
-                    expect(spy).to.have.been.called;
-                    expect(spy).to.have.been.calledWith('fakebatch');
+                    spy.should.have.been.calledOnce;
+                    spy.should.have.been.calledWith('fakebatch');
                 })
                 .catch(() => {
                     //this shouldn't be called so this can trigger a failure

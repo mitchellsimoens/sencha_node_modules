@@ -303,7 +303,7 @@ describe('Query', function () {
                 query.debug();
 
                 expect(log.callCount).to.equal(5);
-                expect(log.thirdCall).to.have.been.calledWith('SELECT 1;\n');
+                log.thirdCall.should.have.been.calledWith('SELECT 1;\n');
             });
 
             it('should debug with inserts', function () {
@@ -318,7 +318,7 @@ describe('Query', function () {
                 query.debug();
 
                 expect(log.callCount).to.equal(5);
-                expect(log.thirdCall).to.have.been.calledWith('SELECT 1;\n');
+                log.thirdCall.should.have.been.calledWith('SELECT 1;\n');
             });
         });
 
@@ -334,7 +334,7 @@ describe('Query', function () {
                 query.debug();
 
                 expect(log.callCount).to.equal(5);
-                expect(log.thirdCall).to.have.been.calledWith('SELECT 1;\nSELECT 2;\n');
+                log.thirdCall.should.have.been.calledWith('SELECT 1;\nSELECT 2;\n');
             });
 
             it('should debug with inserts', function () {
@@ -349,7 +349,7 @@ describe('Query', function () {
                 query.debug();
 
                 expect(log.callCount).to.equal(5);
-                expect(log.thirdCall).to.have.been.calledWith('SELECT 1;\nSELECT 2;\n');
+                log.thirdCall.should.have.been.calledWith('SELECT 1;\nSELECT 2;\n');
             });
         });
     });

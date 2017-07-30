@@ -52,7 +52,8 @@ describe('Login', function () {
                     expect(ret).to.equal('foo');
 
                     expect(stub).to.have.been.calledOnce;
-                    expect(stub).to.have.been.calledWith({
+
+                    stub.should.have.been.calledWith({
                         forum  : 'abcd',
                         sencha : undefined
                     });
@@ -77,7 +78,8 @@ describe('Login', function () {
                     expect(ret).to.equal('foo');
 
                     expect(stub).to.have.been.calledOnce;
-                    expect(stub).to.have.been.calledWith({
+
+                    stub.should.have.been.calledWith({
                         forum  : undefined,
                         sencha : 'edgh'
                     });
@@ -103,7 +105,8 @@ describe('Login', function () {
                     expect(ret).to.equal('foo');
 
                     expect(stub).to.have.been.calledOnce;
-                    expect(stub).to.have.been.calledWith({
+
+                    stub.should.have.been.calledWith({
                         forum     : undefined,
                         sencha    : undefined,
                         vbulletin : {
@@ -171,8 +174,8 @@ describe('Login', function () {
 
             expect(result).to.have.property('vbulletin');
             expect(result.vbulletin).to.be.an('object');
-            expect(result).to.have.deep.property('vbulletin.bb_password', 'mypassword');
-            expect(result).to.have.deep.property('vbulletin.bb_userid', 1234);
+            expect(result.vbulletin).to.have.deep.property('bb_password', 'mypassword');
+            expect(result.vbulletin).to.have.deep.property('bb_userid', 1234);
         });
 
         it('should ignore vbulletin if only one cookie exists', function () {
@@ -233,7 +236,10 @@ describe('Login', function () {
                         expect(result).to.equal('good');
 
                         expect(stub).to.have.been.calledOnce;
-                        expect(stub).to.have.been.calledWith({ sencha : 'abcd' });
+
+                        stub.should.have.been.calledWith({
+                            sencha : 'abcd'
+                        });
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -254,7 +260,11 @@ describe('Login', function () {
                         expect(result).to.equal('good');
 
                         expect(stub).to.have.been.calledOnce;
-                        expect(stub).to.have.been.calledWith({ forum : 'efgh', sencha : 'abcd' });
+
+                        stub.should.have.been.calledWith({
+                            forum  : 'efgh',
+                            sencha : 'abcd'
+                        });
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -277,8 +287,8 @@ describe('Login', function () {
                         expect(result).to.have.property('forum',  'efgh');
                         expect(result).to.have.property('sencha', 'abcd');
 
-                        expect(result).to.have.deep.property('vbulletin.bb_password', 'somepassword');
-                        expect(result).to.have.deep.property('vbulletin.bb_userid',   1234);
+                        expect(result.vbulletin).to.have.deep.property('bb_password', 'somepassword');
+                        expect(result.vbulletin).to.have.deep.property('bb_userid',   1234);
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -300,7 +310,10 @@ describe('Login', function () {
                         expect(result).to.equal('good');
 
                         expect(stub).to.have.been.calledOnce;
-                        expect(stub).to.have.been.calledWith({ forum : 'efgh' });
+
+                        stub.should.have.been.calledWith({
+                            forum : 'efgh'
+                        });
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -326,7 +339,8 @@ describe('Login', function () {
                         expect(result).to.equal('good');
 
                         expect(forum).to.have.been.calledOnce;
-                        expect(forum).to.have.been.calledWith({
+
+                        forum.should.have.been.calledWith({
                             vbulletin : {
                                 bb_password : 'somepassword',
                                 bb_userid   : 1234
@@ -334,7 +348,8 @@ describe('Login', function () {
                         });
 
                         expect(sencha).to.have.been.calledOnce;
-                        expect(sencha).to.have.been.calledWith('good');
+
+                        sencha.should.have.been.calledWith('good');
                     })
                     .catch(() => {
                         expect(false).to.be.true;
@@ -345,7 +360,7 @@ describe('Login', function () {
 
     describe('buildSenchaFromForum', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -388,16 +403,16 @@ describe('Login', function () {
                     expect(result).to.have.property('forum', 'abcd');
 
                     expect(result).to.have.property('sencha');
-                    expect(result).to.have.deep.property('sencha.access.token',  'access-token');
-                    expect(result).to.have.deep.property('sencha.access.type',   'access');
-                    expect(result).to.have.deep.property('sencha.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('sencha.refresh.type',  'refresh');
+                    expect(result.sencha.access).to.have.deep.property('token',  'access-token');
+                    expect(result.sencha.access).to.have.deep.property('type',   'access');
+                    expect(result.sencha.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.sencha.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getForumByToken).to.have.been.calledOnce;
-                    expect(getForumByToken).to.have.been.calledWith('abcd');
+                    getForumByToken.should.have.been.calledWith('abcd');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -438,19 +453,19 @@ describe('Login', function () {
                     expect(result).to.have.property('forum', 'abcd');
 
                     expect(result).to.have.property('sencha');
-                    expect(result).to.have.deep.property('sencha.access.token',  'access-token');
-                    expect(result).to.have.deep.property('sencha.access.type',   'access');
-                    expect(result).to.have.deep.property('sencha.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('sencha.refresh.type',  'refresh');
+                    expect(result.sencha.access).to.have.deep.property('token',  'access-token');
+                    expect(result.sencha.access).to.have.deep.property('type',   'access');
+                    expect(result.sencha.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.sencha.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(result).to.have.property('vbulletin');
-                    expect(result).to.have.deep.property('vbulletin.bb_password', 'b2a4ff5b5b540519212b9ad92fe5ee12');
+                    expect(result.vbulletin).to.have.deep.property('bb_password', 'b2a4ff5b5b540519212b9ad92fe5ee12');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getForumByToken).to.have.been.calledOnce;
-                    expect(getForumByToken).to.have.been.calledWith('abcd');
+                    getForumByToken.should.have.been.calledWith('abcd');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -462,7 +477,7 @@ describe('Login', function () {
 
     describe('createSenchaFromForum', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -488,10 +503,10 @@ describe('Login', function () {
                 .then(cookies => {
                     expect(cookies.sencha).to.be.an('object');
 
-                    expect(cookies).to.have.deep.property('sencha.access.token',  'access-token');
-                    expect(cookies).to.have.deep.property('sencha.access.type',   'access');
-                    expect(cookies).to.have.deep.property('sencha.refresh.token', 'refresh-token');
-                    expect(cookies).to.have.deep.property('sencha.refresh.type',  'refresh');
+                    expect(cookies.sencha.access).to.have.deep.property('token',  'access-token');
+                    expect(cookies.sencha.access).to.have.deep.property('type',   'access');
+                    expect(cookies.sencha.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(cookies.sencha.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -518,10 +533,10 @@ describe('Login', function () {
                 .then(cookies => {
                     expect(cookies.sencha).to.be.an('object');
 
-                    expect(cookies).to.have.deep.property('sencha.access.token',  'access-token');
-                    expect(cookies).to.have.deep.property('sencha.access.type',   'access');
-                    expect(cookies).to.have.deep.property('sencha.refresh.token', 'refresh-token');
-                    expect(cookies).to.have.deep.property('sencha.refresh.type',  'refresh');
+                    expect(cookies.sencha.access).to.have.deep.property('token',  'access-token');
+                    expect(cookies.sencha.access).to.have.deep.property('type',   'access');
+                    expect(cookies.sencha.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(cookies.sencha.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -533,7 +548,7 @@ describe('Login', function () {
 
     describe('buildForumFromSencha', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -576,16 +591,16 @@ describe('Login', function () {
                     expect(result).to.have.property('sencha', 'abcd');
 
                     expect(result).to.have.property('forum');
-                    expect(result).to.have.deep.property('forum.access.token',  'access-token');
-                    expect(result).to.have.deep.property('forum.access.type',   'access');
-                    expect(result).to.have.deep.property('forum.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('forum.refresh.type',  'refresh');
+                    expect(result.forum.access).to.have.deep.property('token',  'access-token');
+                    expect(result.forum.access).to.have.deep.property('type',   'access');
+                    expect(result.forum.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.forum.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getSenchaByToken).to.have.been.calledOnce;
-                    expect(getSenchaByToken).to.have.been.calledWith('abcd');
+                    getSenchaByToken.should.have.been.calledWith('abcd');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -626,19 +641,19 @@ describe('Login', function () {
                     expect(result).to.have.property('sencha', 'abcd');
 
                     expect(result).to.have.property('forum');
-                    expect(result).to.have.deep.property('forum.access.token',  'access-token');
-                    expect(result).to.have.deep.property('forum.access.type',   'access');
-                    expect(result).to.have.deep.property('forum.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('forum.refresh.type',  'refresh');
+                    expect(result.forum.access).to.have.deep.property('token',  'access-token');
+                    expect(result.forum.access).to.have.deep.property('type',   'access');
+                    expect(result.forum.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.forum.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(result).to.have.property('vbulletin');
-                    expect(result).to.have.deep.property('vbulletin.bb_password', 'b2a4ff5b5b540519212b9ad92fe5ee12');
+                    expect(result.vbulletin).to.have.deep.property('bb_password', 'b2a4ff5b5b540519212b9ad92fe5ee12');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getSenchaByToken).to.have.been.calledOnce;
-                    expect(getSenchaByToken).to.have.been.calledWith('abcd');
+                    getSenchaByToken.should.have.been.calledWith('abcd');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -650,7 +665,7 @@ describe('Login', function () {
 
     describe('createForumFromSencha', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -676,10 +691,10 @@ describe('Login', function () {
                 .then(cookies => {
                     expect(cookies.forum).to.be.an('object');
 
-                    expect(cookies).to.have.deep.property('forum.access.token',  'access-token');
-                    expect(cookies).to.have.deep.property('forum.access.type',   'access');
-                    expect(cookies).to.have.deep.property('forum.refresh.token', 'refresh-token');
-                    expect(cookies).to.have.deep.property('forum.refresh.type',  'refresh');
+                    expect(cookies.forum.access).to.have.deep.property('token',  'access-token');
+                    expect(cookies.forum.access).to.have.deep.property('type',   'access');
+                    expect(cookies.forum.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(cookies.forum.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -691,7 +706,7 @@ describe('Login', function () {
 
     describe('buildForumFromVBulletin', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -730,19 +745,19 @@ describe('Login', function () {
                     expect(result).to.be.an('object');
 
                     expect(result).to.have.property('vbulletin');
-                    expect(result).to.have.deep.property('vbulletin.bb_userid',   1234);
+                    expect(result.vbulletin).to.have.deep.property('bb_userid',   1234);
 
                     expect(result).to.have.property('forum');
-                    expect(result).to.have.deep.property('forum.access.token',  'access-token');
-                    expect(result).to.have.deep.property('forum.access.type',   'access');
-                    expect(result).to.have.deep.property('forum.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('forum.refresh.type',  'refresh');
+                    expect(result.forum.access).to.have.deep.property('token',  'access-token');
+                    expect(result.forum.access).to.have.deep.property('type',   'access');
+                    expect(result.forum.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.forum.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('forum.get');
+                    instantiateOp.should.have.been.calledWith('forum.get');
 
                     expect(getById).to.have.been.calledOnce;
-                    expect(getById).to.have.been.calledWith(1234);
+                    getById.should.have.been.calledWith(1234);
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -754,7 +769,7 @@ describe('Login', function () {
 
     describe('buildSenchaFromVBulletin', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -793,19 +808,19 @@ describe('Login', function () {
                     expect(result).to.be.an('object');
 
                     expect(result).to.have.property('vbulletin');
-                    expect(result).to.have.deep.property('vbulletin.bb_userid',   1234);
+                    expect(result.vbulletin).to.have.deep.property('bb_userid',   1234);
 
                     expect(result).to.have.property('sencha');
-                    expect(result).to.have.deep.property('sencha.access.token',  'access-token');
-                    expect(result).to.have.deep.property('sencha.access.type',   'access');
-                    expect(result).to.have.deep.property('sencha.refresh.token', 'refresh-token');
-                    expect(result).to.have.deep.property('sencha.refresh.type',  'refresh');
+                    expect(result.sencha.access).to.have.deep.property('token',  'access-token');
+                    expect(result.sencha.access).to.have.deep.property('type',   'access');
+                    expect(result.sencha.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(result.sencha.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getSenchaFromForum).to.have.been.calledOnce;
-                    expect(getSenchaFromForum).to.have.been.calledWith(1234);
+                    getSenchaFromForum.should.have.been.calledWith(1234);
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -817,7 +832,7 @@ describe('Login', function () {
 
     describe('createForumFromVBulletin', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -842,10 +857,10 @@ describe('Login', function () {
                 .then(cookies => {
                     expect(cookies.forum).to.be.an('object');
 
-                    expect(cookies).to.have.deep.property('forum.access.token',  'access-token');
-                    expect(cookies).to.have.deep.property('forum.access.type',   'access');
-                    expect(cookies).to.have.deep.property('forum.refresh.token', 'refresh-token');
-                    expect(cookies).to.have.deep.property('forum.refresh.type',  'refresh');
+                    expect(cookies.forum.access).to.have.deep.property('token',  'access-token');
+                    expect(cookies.forum.access).to.have.deep.property('type',   'access');
+                    expect(cookies.forum.refresh).to.have.deep.property('token', 'refresh-token');
+                    expect(cookies.forum.refresh).to.have.deep.property('type',  'refresh');
 
                     expect(stub).to.have.been.calledOnce;
                 })
@@ -857,7 +872,7 @@ describe('Login', function () {
 
     describe('buildVBulletinFromForum', function () {
         beforeEach(function () {
-            Manager.adapter = this.createAdapter();
+            Manager.adapter = this[ 'sencha-login' ].createAdapter();
         });
 
         afterEach(function () {
@@ -879,9 +894,9 @@ describe('Login', function () {
             expect(result).to.equal(cookies)
             expect(result).to.have.property('vbulletin');
 
-            expect(result).to.have.deep.property('vbulletin.expiration');
-            expect(result).to.have.deep.property('vbulletin.bb_password', '49e3a750d7861fc09fbe7593137439bc');
-            expect(result).to.have.deep.property('vbulletin.bb_userid',   1234);
+            expect(result.vbulletin).to.have.deep.property('expiration');
+            expect(result.vbulletin).to.have.deep.property('bb_password', '49e3a750d7861fc09fbe7593137439bc');
+            expect(result.vbulletin).to.have.deep.property('bb_userid',   1234);
         });
 
         it('should lookup forum by token and create vbulletin', function () {
@@ -909,15 +924,15 @@ describe('Login', function () {
                     expect(result).to.be.an('object');
                     expect(result).to.have.property('vbulletin');
 
-                    expect(result).to.have.deep.property('vbulletin.expiration');
-                    expect(result).to.have.deep.property('vbulletin.bb_password', '49e3a750d7861fc09fbe7593137439bc');
-                    expect(result).to.have.deep.property('vbulletin.bb_userid',   1234);
+                    expect(result.vbulletin).to.have.deep.property('expiration');
+                    expect(result.vbulletin).to.have.deep.property('bb_password', '49e3a750d7861fc09fbe7593137439bc');
+                    expect(result.vbulletin).to.have.deep.property('bb_userid',   1234);
 
                     expect(instantiateOp).to.have.been.calledOnce;
-                    expect(instantiateOp).to.have.been.calledWith('login.get');
+                    instantiateOp.should.have.been.calledWith('login.get');
 
                     expect(getForumByToken).to.have.been.calledOnce;
-                    expect(getForumByToken).to.have.been.calledWith('abcd');
+                    getForumByToken.should.have.been.calledWith('abcd');
                 })
                 .catch(() => {
                     expect(false).to.be.true;

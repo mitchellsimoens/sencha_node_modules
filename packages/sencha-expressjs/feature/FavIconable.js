@@ -48,7 +48,13 @@ class FavIconable extends Mixin {
     }
 
     applyFavicon (favicon) {
-        return path.join(Config.appRoot, favicon);
+        const { appRoot } = Config;
+
+        if (appRoot) {
+            favicon = path.join(Config.appRoot, favicon);
+        }
+
+        return favicon;
     }
 }
 

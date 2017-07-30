@@ -80,7 +80,7 @@ describe('Application', function () {
 
         describe('set', function () {
             it('should set controllers with a string', function () {
-                Config.appRoot = this.getAppRoot();
+                Config.appRoot = this[ 'sencha-application' ].getAppRoot();
 
                 instance = new Application();
 

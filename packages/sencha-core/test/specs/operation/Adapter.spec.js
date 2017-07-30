@@ -35,7 +35,7 @@ describe('Adapter', function () {
 
     describe('getOperation', function () {
         beforeEach(function () {
-            instance = this.createAdapter();
+            instance = this[ 'sencha-core' ].createAdapter();
         });
 
         it('should get operation by loading from rootPath', function () {
@@ -45,7 +45,7 @@ describe('Adapter', function () {
         });
 
         it('should return if an operation is passed', function () {
-            const cls       = this.getOperation('foo.bar');
+            const cls       = this[ 'sencha-core' ].getOperation('foo.bar');
             const operation = instance.getOperation(cls);
 
             expect(operation).to.equal(cls);
@@ -56,7 +56,7 @@ describe('Adapter', function () {
         let operation;
 
         beforeEach(function () {
-            instance = this.createAdapter();
+            instance = this[ 'sencha-core' ].createAdapter();
         });
 
         afterEach(function () {
@@ -74,7 +74,7 @@ describe('Adapter', function () {
         });
 
         it('should instantiate operation when class is passed', function () {
-            const cls = this.getOperation('foo.bar');
+            const cls = this[ 'sencha-core' ].getOperation('foo.bar');
 
             operation = instance.instantiateOperation(cls);
 

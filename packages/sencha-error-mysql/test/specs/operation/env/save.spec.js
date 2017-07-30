@@ -30,16 +30,16 @@ describe('env save operation', function () {
 
     describe('save', function () {
         beforeEach(function () {
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return a promise', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/env/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -59,12 +59,12 @@ describe('env save operation', function () {
         });
 
         it('should add query to batch', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/env/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -85,17 +85,17 @@ describe('env save operation', function () {
 
             return promise
                 .then(() => {
-                    expect(spy).to.have.been.called;
+                    spy.should.have.been.called;
                 });
         });
 
         it('should resolve if query resolves', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/env/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -122,12 +122,12 @@ describe('env save operation', function () {
         });
 
         it('should reject if query rejects', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/env/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             rejectWith : 'foobar'
                         })
                     }
@@ -157,7 +157,7 @@ describe('env save operation', function () {
     describe('$parse', function () {
         beforeEach(function () {
             operation = new save();
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return valid env data', function () {
@@ -170,26 +170,25 @@ describe('env save operation', function () {
 
             expect(data).to.be.an('object');
 
-            expect(data).to.have.deep.property('availHeight',          1000);
-            expect(data).to.have.deep.property('availLeft',            0);
-            expect(data).to.have.deep.property('availTop',             0);
-            expect(data).to.have.deep.property('availWidth',           2000);
-            expect(data).to.have.deep.property('Browser',              'Chrome');
-            expect(data).to.have.deep.property('Browser-Height',       1000);
-            expect(data).to.have.deep.property('Browser-MajorVersion', '59');
-            expect(data).to.have.deep.property('Browser-Name',         'Chrome 59.0.3071.82');
-            expect(data).to.have.deep.property('Browser-Version',      '59.0.3071.82');
-            expect(data).to.have.deep.property('Browser-Width',        2000);
-            expect(data).to.have.deep.property('colorDepth',           24);
-            expect(data).to.have.deep.property('height',               1000);
-            expect(data).to.have.deep.property('os',                   'macOS Sierra');
-            expect(data).to.have.deep.property('orientation_angle',    0);
-            expect(data).to.have.deep.property('orientation_type',     'landscape-primary');
-            expect(data).to.have.deep.property('pixelDepth',           24);
-            expect(data).to.have.deep.property('Platform',             'Apple Mac');
-            expect(data).to.have.deep.property('ua',                   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36');
-            expect(data).to.have.deep.property('UtcOffset',            -4);
-            expect(data).to.have.deep.property('width',                2000);
+            expect(data).to.have.property('availHeight',          1000);
+            expect(data).to.have.property('availLeft',            0);
+            expect(data).to.have.property('availTop',             0);
+            expect(data).to.have.property('availWidth',           2000);
+            expect(data).to.have.property('Browser',              'Chrome');
+            expect(data).to.have.property('Browser-Height',       1000);
+            expect(data).to.have.property('Browser-MajorVersion', '59');
+            expect(data).to.have.property('Browser-Name',         'Chrome 59.0.3071.82');
+            expect(data).to.have.property('Browser-Version',      '59.0.3071.82');
+            expect(data).to.have.property('Browser-Width',        2000);
+            expect(data).to.have.property('colorDepth',           24);
+            expect(data).to.have.property('os',                   'macOS Sierra');
+            expect(data).to.have.property('orientation_angle',    0);
+            expect(data).to.have.property('orientation_type',     'landscape-primary');
+            expect(data).to.have.property('pixelDepth',           24);
+            expect(data).to.have.property('Platform',             'Apple Mac');
+            expect(data).to.have.property('ua',                   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36');
+            expect(data).to.have.property('UtcOffset',            -4);
+            expect(data).to.have.property('width',                2000);
         });
     });
 });

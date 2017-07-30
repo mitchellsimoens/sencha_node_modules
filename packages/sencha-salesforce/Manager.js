@@ -1,4 +1,4 @@
-const { Base } = require('@extjs/sencha-core');
+const { Base, Managerable } = require('@extjs/sencha-core');
 
 const { Connection } = require('./');
 
@@ -12,7 +12,7 @@ class Manager extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Managerable'
+                Managerable
             ],
 
             prototype : {

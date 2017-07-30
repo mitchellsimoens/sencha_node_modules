@@ -151,8 +151,8 @@ describe('Combiner', function () {
                 buffered('foo', 'bar');
 
                 setTimeout(() => {
-                    expect(fn).to.be.calledOnce;
-                    expect(fn).to.be.calledWith('foo', 'bar');
+                    fn.should.have.been.calledOnce;
+                    fn.should.have.been.calledWith('foo', 'bar');
 
                     done();
                 }, 10);
@@ -166,8 +166,8 @@ describe('Combiner', function () {
                 buffered('bar', 'baz');
 
                 setTimeout(() => {
-                    expect(fn).to.be.calledOnce;
-                    expect(fn).to.be.calledWith('bar', 'baz');
+                    fn.should.have.been.calledOnce;
+                    fn.should.have.been.calledWith('bar', 'baz');
 
                     done();
                 }, 10);
@@ -180,8 +180,8 @@ describe('Combiner', function () {
                 buffered('foo', 'bar');
 
                 setTimeout(() => {
-                    expect(fn).to.be.calledOnce;
-                    expect(fn).to.be.calledWith('bar', 'baz');
+                    fn.should.have.been.calledOnce;
+                    fn.should.have.been.calledWith('bar', 'baz');
 
                     done();
                 }, 10);
@@ -214,7 +214,7 @@ describe('Combiner', function () {
 
             return promise
                 .then(() => {
-                    expect(combiner).to.have.deep.property('data.foo', 'bar');
+                    expect(combiner.data).to.have.deep.property('foo', 'bar');
                 });
         });
 
@@ -226,7 +226,7 @@ describe('Combiner', function () {
 
             return promise
                 .catch(() => {
-                    expect(combiner).to.have.deep.property('hasError', error);
+                    expect(combiner).to.have.property('hasError', error);
                 });
         });
 
@@ -239,7 +239,7 @@ describe('Combiner', function () {
 
             return promise
                 .then(() => {
-                    expect(combiner).to.have.deep.property('data.foo', 'bar');
+                    expect(combiner.data).to.have.deep.property('foo', 'bar');
                 });
         });
     });
@@ -260,7 +260,7 @@ describe('Combiner', function () {
         it('should set data', function () {
             combiner.onData('foo.bar', 'baz');
 
-            expect(combiner).to.have.deep.property('data.foo.bar', 'baz');
+            expect(combiner.data.foo).to.have.deep.property('bar', 'baz');
         });
     });
 
@@ -315,7 +315,7 @@ describe('Combiner', function () {
 
             combiner.setData(key, root, 'baz');
 
-            expect(root).to.have.deep.property('foo.bar', 'baz');
+            expect(root.foo).to.have.deep.property('bar', 'baz');
         });
 
         it('should set simple data overriding existing data', function () {
@@ -339,7 +339,7 @@ describe('Combiner', function () {
 
             combiner.setData(key, root, 'baz');
 
-            expect(root).to.have.deep.property('foo.bar', 'baz');
+            expect(root.foo).to.have.deep.property('bar', 'baz');
         });
 
         it('should set data if it is an object', function () {
@@ -352,7 +352,7 @@ describe('Combiner', function () {
 
             combiner.setData(key, root, { foobar : true });
 
-            expect(root).to.have.deep.property('foo.bar.foobar', true);
+            expect(root.foo.bar).to.have.deep.property('foobar', true);
         });
 
         it('should merge objects', function () {
@@ -368,8 +368,8 @@ describe('Combiner', function () {
 
             combiner.setData(key, root, { foobar : true });
 
-            expect(root).to.have.deep.property('foo.bar.foobar', true);
-            expect(root).to.have.deep.property('foo.bar.barbaz', 1);
+            expect(root.foo.bar).to.have.deep.property('foobar', true);
+            expect(root.foo.bar).to.have.deep.property('barbaz', 1);
         });
     });
 });

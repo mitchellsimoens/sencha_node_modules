@@ -43,6 +43,8 @@ const events = require('events');
 class Observable extends Mixin {
     static get meta () {
         return {
+            mixinId : 'observable',
+
             prototype : {
                 /**
                  * @readonly

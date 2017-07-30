@@ -15,7 +15,7 @@ describe('Sencha.direct.route.Express', function () {
             instance = null;
         }
 
-        if (provider) {
+        if (!provider || !provider.destroyed) {
             Manager.remove(provider);
         }
     });
@@ -42,7 +42,7 @@ describe('Sencha.direct.route.Express', function () {
         });
 
         it('should use apiVariable', function () {
-            const Action = this.createResolveAction('foo');
+            const Action = this[ 'sencha-direct' ].createResolveAction('foo');
 
             Manager.add(
                 'remoting',
@@ -61,9 +61,13 @@ describe('Sencha.direct.route.Express', function () {
 
             const api = instance.api();
 
-            expect(api).to.eventually.have.property('data', 'window.REMOTING_API={"type":"remoting","actions":{"FooAction":[{"name":"bar"}]}};');
-
-            return api;
+            return api
+                .then(ret => {
+                    expect(ret).to.have.property('data', 'window.REMOTING_API={"type":"remoting","actions":{"FooAction":[{"name":"bar"}]}};');
+                })
+                .catch(() => {
+                    expect(false).to.be.true;
+                });
         });
     });
 
@@ -72,14 +76,14 @@ describe('Sencha.direct.route.Express', function () {
             const spy = this.sandbox.spy(function (ret) {
                 expect(ret).to.contain.all.keys([ 'action', 'method', 'tid', 'type', 'data' ]);
 
-                expect(ret).to.have.deep.property('data.success', true);
-                expect(ret).to.have.deep.property('data.msg',     'hello');
+                expect(ret.data).to.have.deep.property('success', true);
+                expect(ret.data).to.have.deep.property('msg',     'hello');
             });
 
-            this.createManagerResolve();
+            this[ 'sencha-direct' ].createManagerResolve();
 
             return instance
-                .router(this.createMockReq(), this.createMockRes())
+                .router(this[ 'sencha-direct' ].createMockReq(), this[ 'sencha-direct' ].createMockRes())
                 .then(spy, spy);
         });
 
@@ -87,14 +91,14 @@ describe('Sencha.direct.route.Express', function () {
             const spy = this.sandbox.spy(function (ret) {
                 expect(ret).to.contain.all.keys([ 'action', 'method', 'tid', 'type', 'data' ]);
 
-                expect(ret).to.have.deep.property('data.success', false);
-                expect(ret).to.have.deep.property('data.msg',     'something happened');
+                expect(ret.data).to.have.deep.property('success', false);
+                expect(ret.data).to.have.deep.property('msg',     'something happened');
             });
 
-            this.createManagerReject();
+            this[ 'sencha-direct' ].createManagerReject();
 
             return instance
-                .router(this.createMockReq(), this.createMockRes())
+                .router(this[ 'sencha-direct' ].createMockReq(), this[ 'sencha-direct' ].createMockRes())
                 .then(null, spy);
         });
     });

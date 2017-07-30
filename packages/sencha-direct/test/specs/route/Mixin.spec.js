@@ -45,11 +45,11 @@ describe('Sencha.direct.route.Mixin', function () {
             expect(info).to.have.property('tid',      1);
             expect(info).to.have.property('type',     'remoting');
 
-            expect(info).to.have.deep.property('data.extAction', 'FooAction');
-            expect(info).to.have.deep.property('data.extMethod', 'doSomething');
-            expect(info).to.have.deep.property('data.extTID',    1);
-            expect(info).to.have.deep.property('data.extType',   'remoting');
-            expect(info).to.have.deep.property('data.extUpload', true);
+            expect(info.data).to.have.deep.property('extAction', 'FooAction');
+            expect(info.data).to.have.deep.property('extMethod', 'doSomething');
+            expect(info.data).to.have.deep.property('extTID',    1);
+            expect(info.data).to.have.deep.property('extType',   'remoting');
+            expect(info.data).to.have.deep.property('extUpload', true);
         });
 
         it('should get info', function () {
@@ -69,7 +69,8 @@ describe('Sencha.direct.route.Mixin', function () {
             expect(info).to.have.property('data');
             expect(info.data).to.be.an('array');
             expect(info.data).to.have.lengthOf(1);
-            expect(info).to.have.deep.property('data[0]', 'foo');
+            //expect(info.data).to.have.deep.property('[0]', 'foo');
+            expect(info.data[0]).to.equal('foo');
         });
 
         it('should parse data as a string into JSON', function () {
@@ -89,7 +90,8 @@ describe('Sencha.direct.route.Mixin', function () {
             expect(info).to.have.property('data');
             expect(info.data).to.be.an('array');
             expect(info.data).to.have.lengthOf(1);
-            expect(info).to.have.deep.property('data[0]', 'foo');
+            //expect(info.data).to.have.deep.property('[0]', 'foo');
+            expect(info.data[0]).to.equal('foo');
         });
 
         it('should handle malformed data json', function () {
@@ -121,8 +123,8 @@ describe('Sencha.direct.route.Mixin', function () {
 
                 expect(ret.data).to.be.an('object');
 
-                expect(ret).to.have.deep.property('data.success', false);
-                expect(ret).to.have.deep.property('data.msg',     'foo bar');
+                expect(ret.data).to.have.deep.property('success', false);
+                expect(ret.data).to.have.deep.property('msg',     'foo bar');
                 expect(ret.data.stack).to.be.an('array');
                 expect(ret.data.stack).to.have.length.above(2);
             });
@@ -152,8 +154,8 @@ describe('Sencha.direct.route.Mixin', function () {
 
                 expect(ret.data).to.be.an('object');
 
-                expect(ret).to.have.deep.property('data.success', false);
-                expect(ret).to.have.deep.property('data.msg',     'foo bar');
+                expect(ret.data).to.have.deep.property('success', false);
+                expect(ret.data).to.have.deep.property('msg',     'foo bar');
                 expect(ret.data.stack).to.be.undefined;
             });
             const info     = {

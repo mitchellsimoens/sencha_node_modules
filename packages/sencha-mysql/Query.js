@@ -1,4 +1,4 @@
-const { Base } = require('@extjs/sencha-core');
+const { Base, Deferrable } = require('@extjs/sencha-core');
 
 const mysql = require('mysql');
 
@@ -13,7 +13,7 @@ class Query extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Deferrable'
+                Deferrable
             ],
 
             prototype : {

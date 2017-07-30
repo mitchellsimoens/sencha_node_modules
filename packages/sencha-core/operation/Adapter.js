@@ -48,7 +48,7 @@ class Adapter extends Base {
      * @return {Sencha.core.operation.Operation} The operation class.
      */
     getOperation (name) {
-        let operation = name.isClass && name.prototype.isOperation ? name : this.operations[ name ];
+        let operation = name && name.isClass && name.prototype.isOperation ? name : this.operations[ name ];
 
         if (!operation || typeof operation === 'string') {
             operation = require(path.join(this.rootPath, 'operation', name.replace(nameRe, '/'))); // eslint-disable-line global-require

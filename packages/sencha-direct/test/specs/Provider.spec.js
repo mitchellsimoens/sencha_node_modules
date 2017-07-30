@@ -232,12 +232,12 @@ describe('Sencha.direct.Provider', function () {
             expect(serialize).to.have.property('type', 'remoting');
             expect(serialize.actions).to.be.an('object');
 
-            expect(serialize).to.have.deep.property('actions.FooAction');
+            expect(serialize.actions).to.have.deep.property('FooAction');
             expect(serialize.actions.FooAction).to.be.an('array');
             expect(serialize.actions.FooAction).to.have.lengthOf(1);
 
             expect(serialize.actions.FooAction[0]).to.be.an('object');
-            expect(serialize).to.have.deep.property('actions.FooAction[0].name', 'bar');
+            expect(serialize.actions.FooAction[0]).to.have.deep.property('name', 'bar');
         });
     });
 

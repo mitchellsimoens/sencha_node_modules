@@ -28,7 +28,7 @@ class Shutdown extends Base {
                  * will be executed. Each callback may return a promise
                  * to delay the Node.js process from quitting.
                  */
-                callbacks : [], // eslint-disable-line sort-keys
+                //callbacks : [], // eslint-disable-line sort-keys
 
                 /**
                  * @property {Array} events The array of events that will be
@@ -44,6 +44,8 @@ class Shutdown extends Base {
     }
 
     ctor () {
+        this.callbacks = [];
+
         this.exec = this.exec.bind(this);
     }
 

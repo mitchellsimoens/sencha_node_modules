@@ -1,5 +1,4 @@
-const chai   = require('chai');
-const expect = chai.expect;
+const { expect } = require('chai');
 
 const Delete = require('../../../../../operation/api/token/delete');
 
@@ -36,11 +35,11 @@ describe('api.token.delete', function () {
                 type : 'access'
             });
 
-            return promise.then((result) => {
-                expect(promise).to.be.fullfilled;
-
-                expect(result).to.have.property('success', true);
-            });
+            return this
+                .expectResolved(promise)
+                .then((result) => {
+                    expect(result).to.have.property('success', true);
+                });
         });
 
         it('should throw an error', function () {
@@ -52,11 +51,11 @@ describe('api.token.delete', function () {
                 type : 'access'
             });
 
-            return promise.catch((error) => {
-                expect(promise).to.be.rejected;
-
-                expect(error).to.be.an('error');
-            });
+            return this
+                .expectRejected(promise)
+                .catch(error => {
+                    expect(error).to.be.an('error');
+                });
         });
     });
 });

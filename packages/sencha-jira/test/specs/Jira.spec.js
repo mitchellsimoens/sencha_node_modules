@@ -64,7 +64,7 @@ describe('Jira', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(findIssue).to.have.been.calledWith('ABC-123');
+                    findIssue.should.have.been.calledWith('ABC-123');
 
                     expect(error.message).to.equal('failed');
                 });
@@ -94,7 +94,7 @@ describe('Jira', function () {
 
             return promise
                 .then(issue => {
-                    expect(findIssue).to.have.been.calledWith('ABC-123');
+                    findIssue.should.have.been.calledWith('ABC-123');
 
                     expect(issue).to.be.instanceOf(Issue);
                     expect(issue).to.have.property('foo', 'bar');
@@ -133,7 +133,7 @@ describe('Jira', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(searchJira).to.have.been.calledWith('SOME JQL');
+                    searchJira.should.have.been.calledWith('SOME JQL');
 
                     expect(error.message).to.equal('failed');
                 });
@@ -164,7 +164,7 @@ describe('Jira', function () {
 
             return promise
                 .then(issues => {
-                    expect(searchJira).to.have.been.calledWith('SOME JQL', options);
+                    searchJira.should.have.been.calledWith('SOME JQL', options);
 
                     expect(issues).to.be.an('object');
 
@@ -205,7 +205,7 @@ describe('Jira', function () {
 
             return promise
                 .then(issues => {
-                    expect(searchJira).to.have.been.calledWith('SOME JQL', options);
+                    searchJira.should.have.been.calledWith('SOME JQL', options);
 
                     expect(issues).to.be.an('object');
                     expect(issues).to.not.have.property('issues');

@@ -30,16 +30,16 @@ describe('error save operation', function () {
 
     describe('save', function () {
         beforeEach(function () {
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return a promise', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/error/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -59,12 +59,12 @@ describe('error save operation', function () {
         });
 
         it('should add query to batch', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/error/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -85,17 +85,17 @@ describe('error save operation', function () {
 
             return promise
                 .then(() => {
-                    expect(spy).to.have.been.called;
+                    spy.should.have.been.called;
                 });
         });
 
         it('should resolve if query resolves', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/error/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             resolveWith : {}
                         })
                     }
@@ -122,12 +122,12 @@ describe('error save operation', function () {
         });
 
         it('should reject if query rejects', function () {
-            const Batch = this.createBatch();
+            const Batch = this[ 'sencha-error-mysql' ].createBatch();
             const save  = proxyquire(
                 '../../../../operation/error/save',
                 {
                     '@extjs/sencha-mysql' : {
-                        Query : this.createFakeQuery({
+                        Query : this[ 'sencha-error-mysql' ].createFakeQuery({
                             rejectWith : 'foobar'
                         })
                     }
@@ -157,7 +157,7 @@ describe('error save operation', function () {
     describe('$parse', function () {
         beforeEach(function () {
             operation = new save();
-            payload   = this.createPayload();
+            payload   = this[ 'sencha-error-mysql' ].createPayload();
         });
 
         it('should return valid error data', function () {
@@ -170,18 +170,18 @@ describe('error save operation', function () {
 
             expect(data).to.be.an('object');
 
-            //expect(data).to.have.deep.property('date',         new Date());
-            expect(data).to.have.deep.property('apiKey',       'abcd');
-            expect(data).to.have.deep.property('appVersion',   '2.1.0.1');
-            expect(data).to.have.deep.property('column',       14);
-            expect(data).to.have.deep.property('fileName',     'foo.js');
-            expect(data).to.have.deep.property('line',         23);
-            expect(data).to.have.deep.property('message',      'Script Error');
-            expect(data).to.have.deep.property('name',         'Error');
-            expect(data).to.have.deep.property('sourceClass',  'App.Foo');
-            expect(data).to.have.deep.property('sourceMethod', 'doSomething');
-            expect(data).to.have.deep.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
-            expect(data).to.have.deep.property('userid',       null);
+            //expect(data).to.have.property('date',         new Date());
+            expect(data).to.have.property('apiKey',       'abcd');
+            expect(data).to.have.property('appVersion',   '2.1.0.1');
+            expect(data).to.have.property('column',       14);
+            expect(data).to.have.property('fileName',     'foo.js');
+            expect(data).to.have.property('line',         23);
+            expect(data).to.have.property('message',      'Script Error');
+            expect(data).to.have.property('name',         'Error');
+            expect(data).to.have.property('sourceClass',  'App.Foo');
+            expect(data).to.have.property('sourceMethod', 'doSomething');
+            expect(data).to.have.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
+            expect(data).to.have.property('userid',       0);
         });
 
         it('should return valid error data with user data', function () {
@@ -198,18 +198,18 @@ describe('error save operation', function () {
 
             expect(data).to.be.an('object');
 
-            //expect(data).to.have.deep.property('date',         new Date());
-            expect(data).to.have.deep.property('apiKey',       'abcd');
-            expect(data).to.have.deep.property('appVersion',   '2.1.0.1');
-            expect(data).to.have.deep.property('column',       14);
-            expect(data).to.have.deep.property('fileName',     'foo.js');
-            expect(data).to.have.deep.property('line',         23);
-            expect(data).to.have.deep.property('message',      'Script Error');
-            expect(data).to.have.deep.property('name',         'Error');
-            expect(data).to.have.deep.property('sourceClass',  'App.Foo');
-            expect(data).to.have.deep.property('sourceMethod', 'doSomething');
-            expect(data).to.have.deep.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
-            expect(data).to.have.deep.property('userid',       1234);
+            //expect(data).to.have.property('date',         new Date());
+            expect(data).to.have.property('apiKey',       'abcd');
+            expect(data).to.have.property('appVersion',   '2.1.0.1');
+            expect(data).to.have.property('column',       14);
+            expect(data).to.have.property('fileName',     'foo.js');
+            expect(data).to.have.property('line',         23);
+            expect(data).to.have.property('message',      'Script Error');
+            expect(data).to.have.property('name',         'Error');
+            expect(data).to.have.property('sourceClass',  'App.Foo');
+            expect(data).to.have.property('sourceMethod', 'doSomething');
+            expect(data).to.have.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
+            expect(data).to.have.property('userid',       1234);
         });
 
         it('should return valid error data with stack as an array', function () {
@@ -224,18 +224,18 @@ describe('error save operation', function () {
 
             expect(data).to.be.an('object');
 
-            //expect(data).to.have.deep.property('date',         new Date());
-            expect(data).to.have.deep.property('apiKey',       'abcd');
-            expect(data).to.have.deep.property('appVersion',   '2.1.0.1');
-            expect(data).to.have.deep.property('column',       14);
-            expect(data).to.have.deep.property('fileName',     'foo.js');
-            expect(data).to.have.deep.property('line',         23);
-            expect(data).to.have.deep.property('message',      'Script Error');
-            expect(data).to.have.deep.property('name',         'Error');
-            expect(data).to.have.deep.property('sourceClass',  'App.Foo');
-            expect(data).to.have.deep.property('sourceMethod', 'doSomething');
-            expect(data).to.have.deep.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
-            expect(data).to.have.deep.property('userid',       null);
+            //expect(data).to.have.property('date',         new Date());
+            expect(data).to.have.property('apiKey',       'abcd');
+            expect(data).to.have.property('appVersion',   '2.1.0.1');
+            expect(data).to.have.property('column',       14);
+            expect(data).to.have.property('fileName',     'foo.js');
+            expect(data).to.have.property('line',         23);
+            expect(data).to.have.property('message',      'Script Error');
+            expect(data).to.have.property('name',         'Error');
+            expect(data).to.have.property('sourceClass',  'App.Foo');
+            expect(data).to.have.property('sourceMethod', 'doSomething');
+            expect(data).to.have.property('stack',        'Error: foo\n    at http://localhost:3001/app/Application.js?_dc=20170311065828:192:19');
+            expect(data).to.have.property('userid',       0);
         });
     });
 });

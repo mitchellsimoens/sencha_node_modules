@@ -1,4 +1,4 @@
-const { Base } = require('@extjs/sencha-core');
+const { Base, Deferrable } = require('@extjs/sencha-core');
 
 /**
  * @class Sencha.mysql.Batch
@@ -14,7 +14,7 @@ class Batch extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Deferrable'
+                Deferrable
             ],
 
             prototype : {

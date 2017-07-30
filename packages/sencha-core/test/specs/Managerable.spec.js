@@ -297,7 +297,8 @@ describe('Managerable', function () {
                 expect(instance.__$instances.size).to.equal(1);
                 expect(instance.__$instances.get('foo')).to.be.an('array');
                 expect(instance.__$instances.get('foo')).to.have.lengthOf(1);
-                expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
+                //expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
+                expect(instance.__$instances.get('foo')[0]).to.equal(foo);
             });
 
             it('should add instance to existing array', function () {
@@ -308,15 +309,18 @@ describe('Managerable', function () {
                 expect(instance.__$instances.size).to.equal(1);
                 expect(instance.__$instances.get('foo')).to.be.an('array');
                 expect(instance.__$instances.get('foo')).to.have.lengthOf(1);
-                expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
+                //expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
+                expect(instance.__$instances.get('foo')[0]).to.equal(foo);
 
                 instance.add('foo', bar);
 
                 expect(instance.__$instances.size).to.equal(1);
                 expect(instance.__$instances.get('foo')).to.be.an('array');
                 expect(instance.__$instances.get('foo')).to.have.lengthOf(2);
-                expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
-                expect(instance.__$instances.get('foo')).to.have.deep.property('[1]', bar);
+                //expect(instance.__$instances.get('foo')).to.have.deep.property('[0]', foo);
+                //expect(instance.__$instances.get('foo')).to.have.deep.property('[1]', bar);
+                expect(instance.__$instances.get('foo')[0]).to.equal(foo);
+                expect(instance.__$instances.get('foo')[1]).to.equal(bar);
             });
         })
     });

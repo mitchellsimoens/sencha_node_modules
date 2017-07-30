@@ -20,7 +20,7 @@ describe('Adapter', function () {
 
     describe('operations', function () {
         beforeEach(function () {
-            adapter = this.createAdapter({
+            adapter = this[ 'sencha-error' ].createAdapter({
                 callThru : true,
                 env      : 'fake.env',
                 error    : 'fake.error',
@@ -40,7 +40,7 @@ describe('Adapter', function () {
     describe('getOperation', function () {
         describe('resolve', function () {
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-error' ].createAdapter({
                     callThru : true
                 });
             });
@@ -76,7 +76,7 @@ describe('Adapter', function () {
             const location = { isErrorOperation : true };
 
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-error' ].createAdapter({
                     env, error, location,
                     callThru : true
                 });
@@ -115,7 +115,7 @@ describe('Adapter', function () {
     describe('instantiateOperation', function () {
         describe('resolve', function () {
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-error' ].createAdapter({
                     callThru : true
                 });
             });
@@ -151,7 +151,7 @@ describe('Adapter', function () {
             class location {}
 
             beforeEach(function () {
-                adapter = this.createAdapter({
+                adapter = this[ 'sencha-error' ].createAdapter({
                     env, error, location,
                     callThru : true
                 });

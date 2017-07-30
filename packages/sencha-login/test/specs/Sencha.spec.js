@@ -70,11 +70,11 @@ describe('Sencha', function () {
                 })
                 .then(ret => {
                     expect(ret).to.be.instanceOf(Sencha);
-                    expect(ret).to.have.deep.property('data.uid', 1234);
+                    expect(ret.data).to.have.deep.property('uid', 1234);
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.get');
-                    expect(getById).to.have.been.calledWith(1234, batch);
-                    expect(exec).to.have.been.calledWith(batch);
+                    instantiateOp.should.have.been.calledWith('sencha.get');
+                    getById.should.have.been.calledWith(1234, batch);
+                    exec.should.have.been.calledWith(batch);
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -102,10 +102,10 @@ describe('Sencha', function () {
                 })
                 .then(ret => {
                     expect(ret).to.be.instanceOf(Sencha);
-                    expect(ret).to.have.deep.property('data.uid', 1234);
+                    expect(ret.data).to.have.deep.property('uid', 1234);
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.get');
-                    expect(getById).to.have.been.calledWith(1234, batch);
+                    instantiateOp.should.have.been.calledWith('sencha.get');
+                    getById.should.have.been.calledWith(1234, batch);
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -176,9 +176,9 @@ describe('Sencha', function () {
                 .then(ret => {
                     expect(ret).to.be.true;
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.get');
-                    expect(checkPassword).to.have.been.calledWith(1234, 'mypassword', batch);
-                    expect(exec).to.have.been.calledWith(batch);
+                    instantiateOp.should.have.been.calledWith('sencha.get');
+                    checkPassword.should.have.been.calledWith(1234, 'mypassword', batch);
+                    exec.should.have.been.calledWith(batch);
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -208,8 +208,8 @@ describe('Sencha', function () {
                 .then(ret => {
                     expect(ret).to.be.true;
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.get');
-                    expect(checkPassword).to.have.been.calledWith(1234, 'mypassword', batch);
+                    instantiateOp.should.have.been.calledWith('sencha.get');
+                    checkPassword.should.have.been.calledWith(1234, 'mypassword', batch);
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -276,9 +276,9 @@ describe('Sencha', function () {
                 .then(ret => {
                     expect(ret).to.be.true;
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.save');
-                    expect(save).to.have.been.calledWith(1234, { uid : 1234, auth_data : 'foo' }, batch);
-                    expect(exec).to.have.been.calledWith(batch);
+                    instantiateOp.should.have.been.calledWith('sencha.save');
+                    save.should.have.been.calledWith(1234, { uid : 1234, auth_data : 'foo' }, batch);
+                    exec.should.have.been.calledWith(batch);
                 })
                 .catch(error => {
                     expect(error.message).to.equal('No "userid" to save with');
@@ -313,8 +313,8 @@ describe('Sencha', function () {
                 .then(ret => {
                     expect(ret).to.be.true;
 
-                    expect(instantiateOp).to.have.been.calledWith('sencha.save');
-                    expect(save).to.have.been.calledWith(1234, { uid : 1234, auth_data : 'foo' }, batch);
+                    instantiateOp.should.have.been.calledWith('sencha.save');
+                    save.should.have.been.calledWith(1234, { uid : 1234, auth_data : 'foo' }, batch);
                 })
                 .catch(error => {
                     expect(error.message).to.equal('No "userid" to save with');

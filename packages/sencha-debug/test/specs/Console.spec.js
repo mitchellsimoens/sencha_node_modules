@@ -22,7 +22,7 @@ describe('Console', function () {
 
     function makeEnabledDisabled (onInstance = true) {
         const rootProp = onInstance ? '' : 'prototype.';
-        let test;
+        let test, expected;
 
         describe(`${onInstance ? "static" : "instance"}`, function () {
             beforeEach(function () {
@@ -31,6 +31,8 @@ describe('Console', function () {
                 } else {
                     test = Console;
                 }
+
+                expected = onInstance ? test : test.prototype;
             });
 
             afterEach(function () {
@@ -44,25 +46,37 @@ describe('Console', function () {
                     it('should set all enabled', function () {
                         test[fn]();
 
-                        expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
+                        /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
                         expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  enable);
-                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   enable);
+                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   enable);*/
+
+                        expect(expected).to.have.deep.property(`errorEnabled`, enable);
+                        expect(expected).to.have.deep.property(`infoEnabled`,  enable);
+                        expect(expected).to.have.deep.property(`logEnabled`,   enable);
                     });
 
                     it('should handle a string', function () {
                         test[fn]('error');
 
-                        expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
+                        /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
                         expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  null);
-                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                        expect(expected).to.have.deep.property(`errorEnabled`, enable);
+                        expect(expected).to.have.deep.property(`infoEnabled`,  null);
+                        expect(expected).to.have.deep.property(`logEnabled`,   null);
                     });
 
                     it('should handle an array', function () {
                         test[fn]([ 'error', 'log' ]);
 
-                        expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
+                        /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, enable);
                         expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  null);
-                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   enable);
+                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   enable);*/
+
+                        expect(expected).to.have.deep.property(`errorEnabled`, enable);
+                        expect(expected).to.have.deep.property(`infoEnabled`,  null);
+                        expect(expected).to.have.deep.property(`logEnabled`,   enable);
                     });
 
                     it('should handle an object', function () {
@@ -71,9 +85,13 @@ describe('Console', function () {
                             info  : undefined // undefined should force default `true`
                         });
 
-                        expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
+                        /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
                         expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  enable);
-                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                        expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                        expect(expected).to.have.deep.property(`errorEnabled`, false);
+                        expect(expected).to.have.deep.property(`infoEnabled`,  enable);
+                        expect(expected).to.have.deep.property(`logEnabled`,   null);
                     });
                 });
             }
@@ -82,41 +100,61 @@ describe('Console', function () {
                 it('should set all enabled', function () {
                     test._setEnabled();
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  true);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, true);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  true);
+                    expect(expected).to.have.deep.property(`logEnabled`,   true);
                 });
 
                 it('should set all enabled passing a bool', function () {
                     test._setEnabled(true);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  true);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, true);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  true);
+                    expect(expected).to.have.deep.property(`logEnabled`,   true);
                 });
 
                 it('should set all disabled passing a bool', function () {
                     test._setEnabled(false);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  false);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   false);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   false);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, false);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  false);
+                    expect(expected).to.have.deep.property(`logEnabled`,   false);
                 });
 
                 it('should handle an array to enable', function () {
                     test._setEnabled([ 'error', 'log' ]);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  null);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, true);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  null);
+                    expect(expected).to.have.deep.property(`logEnabled`,   true);
                 });
 
                 it('should handle an array to disable', function () {
                     test._setEnabled([ 'error', 'info' ], false);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  false);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, false);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  false);
+                    expect(expected).to.have.deep.property(`logEnabled`,   null);
                 });
 
                 it('should handle an object', function () {
@@ -125,33 +163,49 @@ describe('Console', function () {
                         info  : undefined // undefined should force default `true`
                     });
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, false);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  true);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, false);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  true);
+                    expect(expected).to.have.deep.property(`logEnabled`,   null);
                 });
 
                 it('should handle a string to enable using default', function () {
                     test._setEnabled('log');
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, null);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, null);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  null);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   true);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, null);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  null);
+                    expect(expected).to.have.deep.property(`logEnabled`,   true);
                 });
 
                 it('should handle a string to enable passing true', function () {
                     test._setEnabled('error', true);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, true);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  null);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, true);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  null);
+                    expect(expected).to.have.deep.property(`logEnabled`,   null);
                 });
 
                 it('should handle a string to disable', function () {
                     test._setEnabled('info', false);
 
-                    expect(test).to.have.deep.property(`${rootProp}errorEnabled`, null);
+                    /*expect(test).to.have.deep.property(`${rootProp}errorEnabled`, null);
                     expect(test).to.have.deep.property(`${rootProp}infoEnabled`,  false);
-                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);
+                    expect(test).to.have.deep.property(`${rootProp}logEnabled`,   null);*/
+
+                    expect(expected).to.have.deep.property(`errorEnabled`, null);
+                    expect(expected).to.have.deep.property(`infoEnabled`,  false);
+                    expect(expected).to.have.deep.property(`logEnabled`,   null);
                 });
             });
 
@@ -229,14 +283,14 @@ describe('Console', function () {
 
             expect(Console.instances).to.be.an('object');
             expect(instance).to.be.instanceOf(Console);
-            expect(Console).to.have.deep.property('instances.foo', instance);
+            expect(Console.instances).to.have.deep.property('foo', instance);
         });
 
         it('should create a new instance', function () {
             instance = Console.find('foo');
 
             expect(instance).to.be.instanceOf(Console);
-            expect(Console).to.have.deep.property('instances.foo', instance);
+            expect(Console.instances).to.have.deep.property('foo', instance);
         });
 
         it('should return matching instance', function () {

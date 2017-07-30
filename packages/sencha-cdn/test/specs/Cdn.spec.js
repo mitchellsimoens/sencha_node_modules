@@ -94,7 +94,7 @@ describe('Cdn', function () {
                 const Cdn = proxyquire(
                     '../../Cdn',
                     {
-                        request : this.createRequest({
+                        request : this[ 'sencha-cdn' ].createRequest({
                             error : new Error('foobar')
                         })
                     }
@@ -121,7 +121,7 @@ describe('Cdn', function () {
                 const Cdn = proxyquire(
                     '../../Cdn',
                     {
-                        request : this.createRequest({
+                        request : this[ 'sencha-cdn' ].createRequest({
                             body : '{ "token": { "foo" : "body" }'
                         })
                     }
@@ -150,7 +150,7 @@ describe('Cdn', function () {
                 const Cdn = proxyquire(
                     '../../Cdn',
                     {
-                        request : this.createRequest({
+                        request : this[ 'sencha-cdn' ].createRequest({
                             body : '{ "token": { "foo" : "body" } }'
                         })
                     }
@@ -168,8 +168,7 @@ describe('Cdn', function () {
                         expect(ret).to.have.property('success', true);
                         expect(ret).to.have.property('data');
 
-                        //deep property broken in chai 4.0.1?
-                        //expect(ret).to.have.deep.property('data.foo', 'body');
+                        expect(ret.data).to.have.deep.property('foo', 'body');
                     })
                     .catch(() => {
                         //shouldn't happen, trigger a failure

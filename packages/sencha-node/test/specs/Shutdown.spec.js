@@ -53,6 +53,8 @@ describe('Sencha.node.Shutdown', function() {
             Shutdown.exec(true);
 
             expect(spy).to.have.been.called;
+
+            Shutdown.un(spy);
         });
     });
 });

@@ -17,7 +17,7 @@ describe('feature.FavIconable', function() {
 
         beforeEach(function() {
             server = new TestServer({
-                favicon : this.getAssetLocation('favicon.ico')
+                favicon : this[ 'sencha-expressjs' ].getAssetLocation('favicon.ico')
             });
         });
 

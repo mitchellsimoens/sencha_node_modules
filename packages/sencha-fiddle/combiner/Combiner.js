@@ -1,4 +1,4 @@
-const { Base } = require('@extjs/sencha-core');
+const { Base, Deferrable } = require('@extjs/sencha-core');
 
 /**
  * @class Sencha.fiddle.combiner.Combiner
@@ -10,7 +10,7 @@ class Combiner extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Deferrable'
+                Deferrable
             ],
 
             prototype : {

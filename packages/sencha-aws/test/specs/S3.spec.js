@@ -74,7 +74,7 @@ describe('S3', function () {
             expect(instance).to.have.property('s3');
 
             expect(executed).to.be.an('object');
-            expect(executed).to.have.deep.property('params.Bucket', 'mybucket');
+            expect(executed.params).to.have.deep.property('Bucket', 'mybucket');
         });
 
         it('should create aws.s3 instance with key', function () {
@@ -212,7 +212,7 @@ describe('S3', function () {
 
                 expect(get).to.have.been.calledOnce;
 
-                expect(get).to.have.been.calledWith('mime_type');
+                get.should.have.been.calledWith('mime_type');
             });
 
             it('should execute getter for type field', function () {
@@ -229,8 +229,8 @@ describe('S3', function () {
 
                 expect(get).to.have.been.calledTwice;
 
-                expect(get.firstCall).to.have.been.calledWith('mime_type');
-                expect(get.secondCall).to.have.been.calledWith('type');
+                get.firstCall.should.have.been.calledWith('mime_type');
+                get.secondCall.should.have.been.calledWith('type');
             });
 
             it('should execute getter for name field', function () {
@@ -248,9 +248,9 @@ describe('S3', function () {
 
                 expect(get).to.have.been.calledThrice;
 
-                expect(get.firstCall).to.have.been.calledWith('mime_type');
-                expect(get.secondCall).to.have.been.calledWith('type');
-                expect(get.thirdCall).to.have.been.calledWith('name');
+                get.firstCall.should.have.been.calledWith('mime_type');
+                get.secondCall.should.have.been.calledWith('type');
+                get.thirdCall.should.have.been.calledWith('name');
             });
 
             it('should return default type if getters do not return something', function () {
@@ -269,9 +269,9 @@ describe('S3', function () {
 
                 expect(get).to.have.been.calledThrice;
 
-                expect(get.firstCall).to.have.been.calledWith('mime_type');
-                expect(get.secondCall).to.have.been.calledWith('type');
-                expect(get.thirdCall).to.have.been.calledWith('name');
+                get.firstCall.should.have.been.calledWith('mime_type');
+                get.secondCall.should.have.been.calledWith('type');
+                get.thirdCall.should.have.been.calledWith('name');
             });
         });
     });
@@ -285,7 +285,7 @@ describe('S3', function () {
                 .returns('foo');
             const result = instance.getFile('mykey');
 
-            expect(stub).to.have.been.calledWith({ Key : 'mykey' });
+            stub.should.have.been.calledWith({ Key : 'mykey' });
             expect(result).to.equal('foo');
         });
     });
@@ -302,7 +302,7 @@ describe('S3', function () {
                 });
             const result  = instance.getFilePromise('mykey');
 
-            expect(stub).to.have.been.calledWith({ Key : 'mykey' });
+            stub.should.have.been.calledWith({ Key : 'mykey' });
             expect(result).to.be.a('promise');
         });
     });
@@ -319,7 +319,7 @@ describe('S3', function () {
                 });
             const result = instance.getFileStream('mykey');
 
-            expect(stub).to.have.been.calledWith({ Key : 'mykey' });
+            stub.should.have.been.calledWith({ Key : 'mykey' });
             expect(result).to.equal('stream');
         });
     });
@@ -362,7 +362,7 @@ describe('S3', function () {
 
             expect(result).to.be.a('promise');
             expect(send).to.have.been.called;
-            expect(stub).to.have.been.calledWith({
+            stub.should.have.been.calledWith({
                 Key  : 'mykey',
                 Body : { foo : 'bar' }
             });
@@ -391,8 +391,8 @@ describe('S3', function () {
 
             expect(result).to.be.a('promise');
             expect(send).to.have.been.called;
-            expect(stream).to.have.been.calledWith('myfile');
-            expect(stub).to.have.been.calledWith({
+            stream.should.have.been.calledWith('myfile');
+            stub.should.have.been.calledWith({
                 Key  : 'mykey',
                 Body : 'myfile content'
             });
@@ -411,7 +411,7 @@ describe('S3', function () {
 
             expect(result).to.be.a('promise');
             expect(send).to.have.been.called;
-            expect(stub).to.have.been.calledWith({
+            stub.should.have.been.calledWith({
                 Key  : 'mykey',
                 Body : { foo : 'bar' }
             });
@@ -438,7 +438,7 @@ describe('S3', function () {
 
             expect(result).to.be.a('promise');
             expect(send).to.have.been.called;
-            expect(stub).to.have.been.calledWith({
+            stub.should.have.been.calledWith({
                 Key  : 'mykey',
                 Body : { foo : 'bar' }
             });
@@ -462,7 +462,7 @@ describe('S3', function () {
                 .returns('foo');
             const result = instance.deleteFile('mykey');
 
-            expect(stub).to.have.been.calledWith({ Key : 'mykey' });
+            stub.should.have.been.calledWith({ Key : 'mykey' });
             expect(result).to.equal('foo');
         });
     });
@@ -479,7 +479,7 @@ describe('S3', function () {
                 });
             const result  = instance.deleteFilePromise('mykey');
 
-            expect(stub).to.have.been.calledWith({ Key : 'mykey' });
+            stub.should.have.been.calledWith({ Key : 'mykey' });
             expect(result).to.be.a('promise');
         });
     });
@@ -495,7 +495,7 @@ describe('S3', function () {
                 .returns('https://foo.com');
             const result = instance.getSignedUrl('mykey');
 
-            expect(stub).to.have.been.calledWith('getObject', { Key : 'mykey', Expires : 30, Bucket : 'foo' });
+            stub.should.have.been.calledWith('getObject', { Key : 'mykey', Expires : 30, Bucket : 'foo' });
             expect(result).to.equal('https://foo.com');
         });
 
@@ -511,7 +511,7 @@ describe('S3', function () {
                 Expires : 10
             });
 
-            expect(stub).to.have.been.calledWith('getObject', { Key : 'mykey', Expires : 10, Bucket : 'foo' });
+            stub.should.have.been.calledWith('getObject', { Key : 'mykey', Expires : 10, Bucket : 'foo' });
             expect(result).to.equal('https://foo.com');
         });
     });

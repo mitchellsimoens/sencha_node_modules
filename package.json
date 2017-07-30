@@ -8,10 +8,18 @@
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",
     "postinstall": "lerna bootstrap",
-    "test": "lerna run test"
+    "test": "mocha 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'",
+    "testBrk": "mocha --debug-brk --inspect 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'"
   },
   "devDependencies": {
     "eslint": "^4.3.0",
     "lerna": "^2.0.0"
+  },
+  "dependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2",
+    "proxyquire": "^1.8.0",
+    "sinon": "^2.4.1",
+    "sinon-chai": "^2.12.0"
   }
 }

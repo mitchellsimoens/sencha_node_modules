@@ -60,8 +60,8 @@ describe('Sencha.core.Config', function () {
                 })
                 .then(
                     Config => {
-                        expect(Config).to.have.deep.property('configs.foo', 'bar');
-                        expect(Config).to.have.deep.property('configs.bar', 'baz');
+                        expect(Config.configs).to.have.deep.property('foo', 'bar');
+                        expect(Config.configs).to.have.deep.property('bar', 'baz');
                     },
                     spy
                 );
@@ -80,8 +80,8 @@ describe('Sencha.core.Config', function () {
                 .read(__dirname)
                 .then(
                     Config => {
-                        expect(Config).to.have.deep.property('configs.foo', 'dev');
-                        expect(Config).to.have.deep.property('configs.bar', 'dev bar');
+                        expect(Config.configs).to.have.deep.property('foo', 'dev');
+                        expect(Config.configs).to.have.deep.property('bar', 'dev bar');
                     },
                     spy
                 );
@@ -102,8 +102,8 @@ describe('Sencha.core.Config', function () {
                 .read()
                 .then(
                     Config => {
-                        expect(Config).to.have.deep.property('configs.foo', 'dev');
-                        expect(Config).to.have.deep.property('configs.bar', 'dev bar');
+                        expect(Config.configs).to.have.deep.property('foo', 'dev');
+                        expect(Config.configs).to.have.deep.property('bar', 'dev bar');
                     },
                     spy
                 );
@@ -151,15 +151,15 @@ describe('Sencha.core.Config', function () {
             const spy = this.sandbox.spy();
 
             Config
-                    .read(__dirname)
-                    .then(
-                        () => {
-                            const value = Config.get('foo');
+                .read(__dirname)
+                .then(
+                    () => {
+                        const value = Config.get('foo');
 
-                            expect(value).to.be.equal('dev');
-                        },
-                        spy
-                    );
+                        expect(value).to.be.equal('dev');
+                    },
+                    spy
+                );
 
             setTimeout(() => {
                 expect(spy).to.not.have.been.called;
@@ -172,15 +172,15 @@ describe('Sencha.core.Config', function () {
             const spy = this.sandbox.spy();
 
             Config
-                    .read(__dirname)
-                    .then(
-                        () => {
-                            const value = Config.get('obj.nested');
+                .read(__dirname)
+                .then(
+                    () => {
+                        const value = Config.get('obj.nested');
 
-                            expect(value).to.be.equal(2);
-                        },
-                        spy
-                    );
+                        expect(value).to.be.equal(2);
+                    },
+                    spy
+                );
 
             setTimeout(() => {
                 expect(spy).to.not.have.been.called;
@@ -333,7 +333,7 @@ describe('Sencha.core.Config', function () {
             return promise
                 .then(config => {
                     expect(config).to.be.an('object');
-                    expect(config).to.have.deep.property('mykey.foo', 'bar');
+                    expect(config.mykey).to.have.deep.property('foo', 'bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -353,7 +353,7 @@ describe('Sencha.core.Config', function () {
             return promise
                 .then(config => {
                     expect(config).to.be.an('object');
-                    expect(config).to.have.deep.property('mykey.foo', 'bar');
+                    expect(config.mykey).to.have.deep.property('foo', 'bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -379,7 +379,7 @@ describe('Sencha.core.Config', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(readdir).to.have.been.calledWith('/foo/bar');
+                    readdir.should.have.been.calledWith('/foo/bar');
 
                     expect(error.message).to.equal('dir not found');
                 });
@@ -408,8 +408,8 @@ describe('Sencha.core.Config', function () {
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith('default.json', '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith(undefined,      '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith('default.json', '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith(undefined,      '/foo/bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -439,8 +439,8 @@ describe('Sencha.core.Config', function () {
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith(undefined,          '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith('development.json', '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith(undefined,          '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith('development.json', '/foo/bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -478,8 +478,8 @@ describe('Sencha.core.Config', function () {
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith('default.json',     '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith('development.json', '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith('default.json',     '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith('development.json', '/foo/bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -507,8 +507,8 @@ describe('Sencha.core.Config', function () {
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith(undefined, '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith(undefined, '/foo/bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -536,8 +536,8 @@ describe('Sencha.core.Config', function () {
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith(undefined, '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith(undefined, '/foo/bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -569,15 +569,15 @@ describe('Sencha.core.Config', function () {
                 .then(ret => {
                     expect(ret).to.be.an('array');
                     expect(ret).to.have.lengthOf(1);
-                    expect(ret).to.have.deep.property('[0].foo', 'bar');
+                    expect(ret[0]).to.have.deep.property('foo', 'bar');
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith(undefined, '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith(undefined, '/foo/bar');
 
                     expect(childReadDir).to.have.been.calledOnce;
-                    expect(childReadDir).to.have.been.calledWith('/foo/bar/baz');
+                    childReadDir.should.have.been.calledWith('/foo/bar/baz');
                 })
                 .catch((e) => {
                     console.log(e);
@@ -610,15 +610,15 @@ describe('Sencha.core.Config', function () {
                 .then(ret => {
                     expect(ret).to.be.an('array');
                     expect(ret).to.have.lengthOf(1);
-                    expect(ret).to.have.deep.property('[0].foo', 'bar');
+                    expect(ret[0]).to.have.deep.property('foo', 'bar');
 
                     expect(readFile).to.have.been.calledTwice;
 
-                    expect(readFile.firstCall) .to.have.been.calledWith(undefined, '/foo/bar');
-                    expect(readFile.secondCall).to.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.firstCall.should.have.been.calledWith(undefined, '/foo/bar');
+                    readFile.secondCall.should.have.been.calledWith(undefined, '/foo/bar');
 
                     expect(childReadDir).to.have.been.calledOnce;
-                    expect(childReadDir).to.have.been.calledWith('/foo/bar/baz');
+                    childReadDir.should.have.been.calledWith('/foo/bar/baz');
                 })
                 .catch((e) => {
                     console.log(e);
@@ -656,7 +656,7 @@ describe('Sencha.core.Config', function () {
             return Config
                 .readFile('/foo/bar')
                 .then(ret => {
-                    expect(readFile).to.have.been.calledWith(
+                    readFile.should.have.been.calledWith(
                         '/foo/bar',
                         { encoding : 'utf8' }
                     );
@@ -686,7 +686,7 @@ describe('Sencha.core.Config', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(readFile).to.have.been.calledWith(
+                    readFile.should.have.been.calledWith(
                         '/foo/bar',
                         { encoding : 'utf8' }
                     );
@@ -709,7 +709,7 @@ describe('Sencha.core.Config', function () {
             return Config
                 .readFile('/foo/bar')
                 .then(ret => {
-                    expect(readFile).to.have.been.calledWith(
+                    readFile.should.have.been.calledWith(
                         '/foo/bar',
                         { encoding : 'utf8' }
                     );
@@ -735,7 +735,7 @@ describe('Sencha.core.Config', function () {
             return Config
                 .readFile('bar', '/foo')
                 .then(ret => {
-                    expect(readFile).to.have.been.calledWith(
+                    readFile.should.have.been.calledWith(
                         '/foo/bar',
                         { encoding : 'utf8' }
                     );
@@ -794,27 +794,27 @@ describe('Sencha.core.Config', function () {
         it('should set a simple config', function () {
             Config.set('foo', 'bar');
 
-            expect(Config).to.have.deep.property('configs.foo', 'bar');
+            expect(Config.configs).to.have.deep.property('foo', 'bar');
         });
 
         it('should set a nested config', function () {
             Config.set('foo.nested', 'bar');
 
             expect(Config.configs.foo).to.be.an('object');
-            expect(Config).to.have.deep.property('configs.foo.nested', 'bar');
+            expect(Config.configs.foo).to.have.deep.property('nested', 'bar');
         });
 
         it('should merge objects', function () {
             Config.set('foo.nested', 'bar');
 
             expect(Config.configs.foo).to.be.an('object');
-            expect(Config).to.have.deep.property('configs.foo.nested', 'bar');
+            expect(Config.configs.foo).to.have.deep.property('nested', 'bar');
 
             Config.set('foo.nested2', 'baz');
 
             expect(Config.configs.foo).to.be.an('object');
-            expect(Config).to.have.deep.property('configs.foo.nested', 'bar');
-            expect(Config).to.have.deep.property('configs.foo.nested2', 'baz');
+            expect(Config.configs.foo).to.have.deep.property('nested', 'bar');
+            expect(Config.configs.foo).to.have.deep.property('nested2', 'baz');
         });
     });
 });

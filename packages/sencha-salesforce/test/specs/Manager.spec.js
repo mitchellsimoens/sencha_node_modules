@@ -34,7 +34,7 @@ describe('Connection', function () {
             return Manager
                 .invoke('foo', 'mymethod', 'myargs', 'myschema')
                 .then(result => {
-                    expect(stub).to.have.been.calledWith('mymethod', 'myargs', 'myschema');
+                    stub.should.have.been.calledWith('mymethod', 'myargs', 'myschema');
                     expect(result).to.be.an('object');
                 })
                 .catch(() => {
@@ -55,7 +55,7 @@ describe('Connection', function () {
             return Manager
                 .query('foo', 'SELECT *')
                 .then(result => {
-                    expect(stub).to.have.been.calledWith('SELECT *');
+                    stub.should.have.been.calledWith('SELECT *');
                     expect(result).to.be.an('object');
                 })
                 .catch(() => {

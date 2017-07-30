@@ -80,7 +80,7 @@ describe('Sencha.core.Deferrable', function () {
 
             return instance
                 .then(() => {
-                    expect(spy).to.have.been.calledWith('foo');
+                    spy.should.have.been.calledWith('foo');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -94,7 +94,7 @@ describe('Sencha.core.Deferrable', function () {
 
             instance.resolve('foo');
 
-            expect(spy).to.have.been.calledWith('foo');
+            spy.should.have.been.calledWith('foo');
         });
     });
 

@@ -10,8 +10,8 @@ describe('feature.SSLForceable', function() {
 
     beforeEach(function () {
         certificates = {
-            cert : this.getAssetLocation('localhost.crt', Config.appRoot),
-            key  : this.getAssetLocation('localhost.key', Config.appRoot)
+            cert : this[ 'sencha-expressjs' ].getAssetLocation('localhost.crt', Config.appRoot),
+            key  : this[ 'sencha-expressjs' ].getAssetLocation('localhost.key', Config.appRoot)
         }
 
         TestServer = class extends SSLServer {

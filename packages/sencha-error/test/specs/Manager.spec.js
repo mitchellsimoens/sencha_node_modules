@@ -8,7 +8,7 @@ describe('Manager', function () {
         getSpy         = this.sandbox.spy();
         instantiateSpy = this.sandbox.spy();
 
-        Manager.adapter = adapter = this.createAdapter({
+        Manager.adapter = adapter = this[ 'sencha-error' ].createAdapter({
             getSpy,
             instantiateSpy
         });
@@ -28,12 +28,12 @@ describe('Manager', function () {
     it('should get operation from adapter', function () {
         Manager.getOperation('foo.bar');
 
-        expect(getSpy).to.have.been.calledWith('foo.bar');
+        getSpy.should.have.been.calledWith('foo.bar');
     });
 
     it('should instantiate operation from adapter', function () {
         Manager.instantiateOperation('foo.bar', 'config');
 
-        expect(instantiateSpy).to.have.been.calledWith('foo.bar', 'config');
+        instantiateSpy.should.have.been.calledWith('foo.bar', 'config');
     });
 });

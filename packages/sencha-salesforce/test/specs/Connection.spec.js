@@ -33,10 +33,10 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -45,7 +45,7 @@ describe('Connection', function () {
                 username : 'myusername'
             });
 
-            expect(loginSpy).to.have.been.calledWith('myusername', 'foo');
+            loginSpy.should.have.been.calledWith('myusername', 'foo');
         });
 
         it('should not autostart then connection', function () {
@@ -53,10 +53,10 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -73,8 +73,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -92,8 +92,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -113,8 +113,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -135,10 +135,10 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -154,7 +154,7 @@ describe('Connection', function () {
                     expect(instance).to.have.property('force');
                     expect(instance).to.have.property('soap');
 
-                    expect(loginSpy).to.have.been.calledWith('myusername', 'mypassword');
+                    loginSpy.should.have.been.calledWith('myusername', 'mypassword');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -166,10 +166,10 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -187,7 +187,7 @@ describe('Connection', function () {
                     expect(instance).to.have.property('force');
                     expect(instance).to.have.property('soap');
 
-                    expect(loginSpy).to.have.been.calledWith('myusername', 'mypasswordabc');
+                    loginSpy.should.have.been.calledWith('myusername', 'mypasswordabc');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
@@ -199,11 +199,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy,
                         loginError : new Error('login failed')
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -223,7 +223,7 @@ describe('Connection', function () {
                     expect(instance).to.have.property('soap',  null);
                     expect(instance).to.have.property('connError');
 
-                    expect(loginSpy).to.have.been.calledWith('myusername', 'mypassword');
+                    loginSpy.should.have.been.calledWith('myusername', 'mypassword');
 
                     expect(error.message).to.equal('login failed');
                 });
@@ -234,11 +234,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         loginSpy,
                         loginError : 'login failed'
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -258,7 +258,7 @@ describe('Connection', function () {
                     expect(instance).to.have.property('soap',  null);
                     expect(instance).to.have.property('connError');
 
-                    expect(loginSpy).to.have.been.calledWith('myusername', 'mypassword');
+                    loginSpy.should.have.been.calledWith('myusername', 'mypassword');
 
                     expect(error).to.equal('login failed');
                 });
@@ -271,10 +271,10 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         logoutSpy
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -301,11 +301,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         logoutSpy,
                         logoutError : 'logout failed'
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -332,11 +332,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         logoutSpy,
                         logoutError : 'logout failed'
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -364,8 +364,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({
                         invokeSpy,
                         invokeResult : 'result'
                     })
@@ -382,7 +382,7 @@ describe('Connection', function () {
                 .start()
                 .then(instance.invoke.bind(instance, 'mymethod', 'myargs', 'myschema'))
                 .then(result => {
-                    expect(invokeSpy).to.have.been.calledWith('mymethod', 'myargs', 'myschema');
+                    invokeSpy.should.have.been.calledWith('mymethod', 'myargs', 'myschema');
 
                     expect(result).to.equal('result');
                 })
@@ -396,8 +396,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({
                         invokeSpy,
                         invokeError : 'invoke error'
                     })
@@ -417,7 +417,7 @@ describe('Connection', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(invokeSpy).to.have.been.calledWith('mymethod', 'myargs', 'myschema');
+                    invokeSpy.should.have.been.calledWith('mymethod', 'myargs', 'myschema');
 
                     expect(error).to.equal('invoke error');
                 });
@@ -427,8 +427,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -455,11 +455,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         querySpy,
                         queryResult : 'result'
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -473,7 +473,7 @@ describe('Connection', function () {
                 .start()
                 .then(instance.query.bind(instance, 'SELECT *'))
                 .then(result => {
-                    expect(querySpy).to.have.been.calledWith('SELECT *');
+                    querySpy.should.have.been.calledWith('SELECT *');
 
                     expect(result).to.equal('result');
                 })
@@ -487,11 +487,11 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({
                         querySpy,
                         queryError : 'query error'
                     }),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 
@@ -508,7 +508,7 @@ describe('Connection', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(querySpy).to.have.been.calledWith('SELECT *');
+                    querySpy.should.have.been.calledWith('SELECT *');
 
                     expect(error).to.equal('query error');
                 });
@@ -518,8 +518,8 @@ describe('Connection', function () {
             const Connection = proxyquire(
                 '../../Connection',
                 {
-                    jsforce            : this.createFakeConnection({}),
-                    'jsforce/lib/soap' : this.createFakeSoap({})
+                    jsforce            : this[ 'sencha-salesforce' ].createFakeConnection({}),
+                    'jsforce/lib/soap' : this[ 'sencha-salesforce' ].createFakeSoap({})
                 }
             );
 

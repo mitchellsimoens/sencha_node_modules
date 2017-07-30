@@ -32,14 +32,14 @@ describe('Email', function () {
         it('should send email', function () {
             const sendSpy = this.sandbox.spy();
 
-            Manager.add('foo', this.createProvider({
+            Manager.add('foo', this[ 'sencha-email' ].createProvider({
                 sendSpy
             }));
 
             return instance
                 .send('foo')
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith(instance);
+                    sendSpy.should.have.been.calledWith(instance);
 
                     expect(ret).to.be.undefined;
                 })
@@ -50,7 +50,7 @@ describe('Email', function () {
 
         it('should send email passing provider instance', function () {
             const sendSpy  = this.sandbox.spy();
-            const provider = this.createProvider({
+            const provider = this[ 'sencha-email' ].createProvider({
                 sendSpy,
                 sendResult : 'send result'
             });
@@ -60,7 +60,7 @@ describe('Email', function () {
             return instance
                 .send(provider)
                 .then(ret => {
-                    expect(sendSpy).to.have.been.calledWith(instance);
+                    sendSpy.should.have.been.calledWith(instance);
 
                     expect(ret).to.equal('send result');
                 })
@@ -71,7 +71,7 @@ describe('Email', function () {
 
         it('should handle an error', function () {
             const sendSpy  = this.sandbox.spy();
-            const provider = this.createProvider({
+            const provider = this[ 'sencha-email' ].createProvider({
                 sendSpy,
                 sendError : new Error('send failed')
             });
@@ -84,7 +84,7 @@ describe('Email', function () {
                     expect(false).to.be.true;
                 })
                 .catch(error => {
-                    expect(sendSpy).to.have.been.calledWith(instance);
+                    sendSpy.should.have.been.calledWith(instance);
 
                     expect(error.message).to.equal('send failed');
                 });

@@ -1,13 +1,14 @@
 const path = require('path');
 
-const { Action }       = require('./');
-const { Base, Config } = require('@extjs/sencha-core');
+const { Action } = require('./');
+
+const { Base, Config, Managerable } = require('@extjs/sencha-core');
 
 class Provider extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Managerable'
+                Managerable
             ],
 
             prototype : {

@@ -6,6 +6,8 @@ const { Base, Mixin } = require('./');
 class Managerable extends Mixin {
     static get meta () {
         return {
+            mixinId : 'managerable',
+
             prototype : {
                 /**
                  * @readonly
@@ -61,9 +63,7 @@ class Managerable extends Mixin {
     }
 
     ctor () {
-        const {
-            instancesProperty
-        } = this;
+        const { instancesProperty } = this;
 
         if (!this[ instancesProperty ]) {
             this[ instancesProperty ] = new Map();
@@ -71,9 +71,7 @@ class Managerable extends Mixin {
     }
 
     dtor () {
-        const {
-            instancesProperty
-        } = this;
+        const { instancesProperty } = this;
 
         this.remove(true);
 

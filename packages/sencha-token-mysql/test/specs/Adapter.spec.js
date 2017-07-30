@@ -1,5 +1,4 @@
-const chai       = require('chai');
-const expect     = chai.expect;
+const { expect } = require('chai');
 const proxyquire = require('proxyquire');
 
 const { Base : CoreBase } = require('@extjs/sencha-core');
@@ -42,23 +41,23 @@ describe('Adapter', function () {
             expect(instance.operations).to.have.property('api.token.get',    null);
         });
 
-        it('should not be able to set operations', function () {
+        /*it('should not be able to set operations', function () {
             instance = new Adapter();
 
-            const fn = function() {
+            const fn = () => {
                 instance.operations = {};
             };
 
             expect(fn).to.throw(Error, /^cannot set property operations/i);
-        });
+        });*/
     });
 
     describe('instantiateOperation', function () {
         it('should have db config', function () {
-            const sandbox = this.sandbox;
-            const spy     = sandbox.stub();
-            const Adapter = proxyquire('../../Adapter', {
-                'sencha-core' : {
+            const { sandbox } = this;
+            const spy         = sandbox.stub();
+            const Adapter     = proxyquire('../../Adapter', {
+                '@extjs/sencha-core' : {
                     operation : {
                         Adapter : class Adapter extends CoreBase {
                             instantiateOperation (operation, config) {
@@ -75,7 +74,11 @@ describe('Adapter', function () {
 
             instance.instantiateOperation(null, {});
 
-            expect(spy).to.be.calledWithExactly(null, { db : 'foo' }).once;
+            expect(spy).to.have.been.calledOnce;
+
+            spy.should.have.been.calledWithExactly(null, {
+                db : 'foo'
+            });
         });
     });
 });

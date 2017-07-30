@@ -1,5 +1,4 @@
-const chai   = require('chai');
-const expect = chai.expect;
+const { expect } = require('chai');
 
 const Get = require('../../../../../operation/api/token/get');
 
@@ -37,12 +36,12 @@ describe('api.token.get', function () {
                 type : 'access'
             });
 
-            return promise.then((token) => {
-                expect(promise).to.be.fullfilled;
-
-                expect(token).to.have.property('type',  'access');
-                expect(token).to.have.property('token', 'abcd');
-            });
+            return this
+                .expectResolved(promise)
+                .then(token => {
+                    expect(token[0]).to.have.deep.property('type',  'access');
+                    expect(token[0]).to.have.deep.property('token', 'abcd');
+                });
         });
 
         it('should throw an error', function () {
@@ -54,11 +53,11 @@ describe('api.token.get', function () {
                 type : 'access'
             });
 
-            return promise.catch((error) => {
-                expect(promise).to.be.rejected;
-
-                expect(error).to.be.an('error');
-            });
+            return this
+                .expectRejected(promise)
+                .catch(error => {
+                    expect(error).to.be.an('error');
+                });
         });
     });
 });

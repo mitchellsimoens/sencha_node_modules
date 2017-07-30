@@ -1,10 +1,10 @@
-const { Base } = require('@extjs/sencha-core');
+const { Base, Managerable } = require('@extjs/sencha-core');
 
 class Action extends Base {
     static get meta () {
         return {
             mixins : [
-                '@extjs/sencha-core/Managerable'
+                Managerable
             ],
 
             prototype : {
