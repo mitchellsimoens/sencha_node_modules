@@ -1,6 +1,4 @@
-const {
-    Base
-} = require('@extjs/sencha-core');
+const { Base } = require('@extjs/sencha-core');
 
 const QRCode    = require('qrcode');
 const speakeasy = require('speakeasy');

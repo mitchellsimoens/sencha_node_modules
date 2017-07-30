@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "clean": "lerna clean",
-    "eslint": "clear && eslint --config ./.eslintrc.json ./packages",
+    "cov": "nyc mocha 'test/**/*.helper.js' 'packages/*/test/**/*.helper.js' 'packages/*/test/**/*.spec.js'",
+    "eslint": "eslint --config ./.eslintrc.json ./packages",
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",
     "postinstall": "lerna bootstrap",
@@ -18,8 +19,29 @@
   "dependencies": {
     "chai": "^4.1.0",
     "mocha": "^3.4.2",
+    "nyc": "^11.1.0",
     "proxyquire": "^1.8.0",
     "sinon": "^2.4.1",
     "sinon-chai": "^2.12.0"
+  },
+  "nyc": {
+    "exclude": [
+      "node_modules",
+      "bin",
+      "coverage",
+      "**/*.spec.js",
+      "**/*.helper.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "watermarks": {
+      "lines": [80, 90],
+      "functions": [80, 90],
+      "branches": [80, 90],
+      "statements": [80, 90]
+    }
   }
 }
