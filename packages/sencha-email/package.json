@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-email",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An email manager to handle email providers",
   "main": "index.js",
   "repository": {

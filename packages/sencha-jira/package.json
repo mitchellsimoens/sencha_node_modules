@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-jira",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Manage the Jira API",
   "main": "index.js",
   "repository": {

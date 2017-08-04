@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-fiddle",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Package to manage Sencha Fiddle",
   "main": "index.js",
   "repository": {

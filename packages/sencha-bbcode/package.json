@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-bbcode",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Module containing APIs for working with BBCode",
   "main": "index.js",
   "repository": {

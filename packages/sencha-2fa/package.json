@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-2fa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A module to handle 2FA requests",
   "main": "index.js",
   "repository": {

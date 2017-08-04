@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-node",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Allow specific Node.js things to be used.",
   "main": "index.js",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-local-fiddle",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A module to handle local fiddle things",
   "main": "index.js",
   "repository": {

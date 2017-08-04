@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-aws",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Managing separate AWS services.",
   "main": "index.js",
   "repository": {

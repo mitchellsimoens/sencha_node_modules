@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-rest",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A simple REST module",
   "main": "index.js",
   "repository": {

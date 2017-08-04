@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-cdn",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Module containing APIs to work with Sencha's CDN",
   "main": "index.js",
   "repository": {

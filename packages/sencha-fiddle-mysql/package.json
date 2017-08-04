@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-fiddle-mysql",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "MySQL adapter for the sencha-fiddle module",
   "main": "index.js",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-error",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Module containing APIs to handle error reporting",
   "main": "index.js",
   "repository": {

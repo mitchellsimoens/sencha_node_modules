@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-expressjs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Module to enable Express to be used",
   "main": "index.js",
   "repository": {
