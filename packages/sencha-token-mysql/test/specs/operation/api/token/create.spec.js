@@ -25,7 +25,7 @@ describe('api.token.create', function () {
 
             expect(instance.timeframes).to.be.have.deep.property('access',  'INTERVAL 30 MINUTE');
             expect(instance.timeframes).to.be.have.deep.property('code',    'INTERVAL 2 MINUTE');
-            expect(instance.timeframes).to.be.have.deep.property('refresh', 'INTERVAL 36 HOUR');
+            expect(instance.timeframes).to.be.have.deep.property('refresh', 'INTERVAL 96 HOUR');
         });
 
         it('should set all timeframes', function () {
@@ -51,7 +51,7 @@ describe('api.token.create', function () {
 
             expect(instance.timeframes).to.be.have.deep.property('access',  'INTERVAL 5 MINUTE');
             expect(instance.timeframes).to.be.have.deep.property('code',    'INTERVAL 2 MINUTE');
-            expect(instance.timeframes).to.be.have.deep.property('refresh', 'INTERVAL 36 HOUR');
+            expect(instance.timeframes).to.be.have.deep.property('refresh', 'INTERVAL 96 HOUR');
         });
 
         it('should set two timeframes', function () {

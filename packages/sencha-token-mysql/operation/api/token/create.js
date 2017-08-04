@@ -25,13 +25,13 @@ class Token extends Base {
                      *     {
                      *         access  : 'INTERVAL 30 MINUTE',
                      *         code    : 'INTERVAL 2 MINUTE',
-                     *         refresh : 'INTERVAL 36 HOUR'
+                     *         refresh : 'INTERVAL 96 HOUR'
                      *     }
                      */
                     timeframes : {
                         access  : 'INTERVAL 30 MINUTE',
                         code    : 'INTERVAL 2 MINUTE',
-                        refresh : 'INTERVAL 36 HOUR'
+                        refresh : 'INTERVAL 96 HOUR'
                     }
                 }
             }
