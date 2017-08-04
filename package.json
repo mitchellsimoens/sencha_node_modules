@@ -6,6 +6,7 @@
     "clean": "lerna clean",
     "cov": "./scripts/test.sh --coverage",
     "covBrk": "./scripts/test.sh --coverage --break",
+    "deploy": "./scripts/deploy.sh",
     "eslint": "eslint --config ./.eslintrc.json ./packages",
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",

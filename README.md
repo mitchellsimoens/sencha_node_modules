@@ -17,6 +17,24 @@ will be symlinked into the `node_modules` including the nested scoped packages. 
 if you make a change in a required package, it is available to any other package that
 required it.
 
+## Deploy
+
+Since there are many packages in this monorepo, publishing them one by one would take a while.
+Instead, there is a deploy script that, after logging into the npm server, will go through
+each package and run `npm publish` on them. **NOTE** Make sure you update the `version` in the
+`package.json` in the package(s) you want to publish.
+
+To deploy to `https://test.npm.sencha.com`, run `npm run deploy`. For `https://npm.sencha.com/`,
+run `npm run deploy prod`. The script will log you out of the other registry (if logged in already),
+after filling out the steps to log into the appropriate registry it will then iterate through the
+`packages` directory and run the `npm publish` in each.
+
+**NOTE** There are a couple packages that are not ready to be published. In the `scripts/deploy.sh`
+script there is an `IGNORE_PKGS` array that holds these packages.
+
+Of course if you just want to deploy one or two, you can just `npm publish` in that package's directory
+which would be faster than this script going through it all.
+
 ## Tests
 
 The specs for the packages are located in the `test` directory within the individual packages.
