@@ -1,8 +1,10 @@
 const { route : { SimpleRoute } } = require('@extjs/sencha-expressjs');
 
+const path = require('path');
+
 class Require extends SimpleRoute {
     constructor (config = {}) {
-        config.dir = 'node_modules/@extjs/sencha-fiddle/views/require.js';
+        config.dir = path.join(__dirname, '../node_modules/@extjs/sencha-fiddle/views/require.js');
 
         super(config);
     }

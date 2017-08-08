@@ -1,12 +1,13 @@
-const { Server } = require('@extjs/sencha-expressjs');
-const cors       = require('cors');
+const { Server, route : { Routerable } } = require('@extjs/sencha-expressjs');
+
+const cors = require('cors');
+const path = require('path');
 
 class FiddleServer extends Server {
     static get meta () {
         return {
             mixins : [
-                // '@extjs/sencha-expressjs/feature/BodyParserable',
-                '@extjs/sencha-expressjs/route/Routerable'
+                Routerable
             ],
 
             prototype : {
@@ -14,10 +15,11 @@ class FiddleServer extends Server {
                     autoStart : true,
                     port      : 3333,
                     routes    : {
-                        '/example/*'  : 'node_modules/@extjs/sencha-local-fiddle/routes/Example',
-                        '/fiddle/*'   : 'node_modules/@extjs/sencha-local-fiddle/routes/Fiddle',
-                        '/require.js' : 'node_modules/@extjs/sencha-local-fiddle/routes/Require',
-                        '/'           : 'node_modules/@extjs/sencha-local-fiddle/routes/Index' // eslint-disable-line sort-keys
+                        '/example/*'  : path.join(__dirname, 'routes/Example'),
+                        '/fiddle/*'   : path.join(__dirname, 'routes/Fiddle'),
+                        '/reactor.js' : path.join(__dirname, 'routes/Reactor'),
+                        '/require.js' : path.join(__dirname, 'routes/Require'),
+                        '/'           : path.join(__dirname, 'routes/Index') // eslint-disable-line sort-keys
                     },
                     settings  : { // eslint-disable-line key-spacing
                         etag          : false,

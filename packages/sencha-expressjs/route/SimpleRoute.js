@@ -45,7 +45,7 @@ class SimpleRoute extends BaseRoute {
                 dir = dir[ Config.env ];
             }
 
-            dir = path.join(appRoot, dir);
+            dir = path.resolve(appRoot, dir);
         }
 
         return dir;

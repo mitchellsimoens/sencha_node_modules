@@ -94,7 +94,7 @@ class Routerable extends Mixin {
             const { appRoot } = Config;
 
             for (const url in routes) {
-                routes[ url ] = path.join(appRoot, routes[ url ]);
+                routes[ url ] = path.resolve(appRoot, routes[ url ]);
             }
         }
 

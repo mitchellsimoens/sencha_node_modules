@@ -1,8 +1,12 @@
-const { Base } = require('./');
-const fs       = require('fs');
-const JSON5    = require('json5');
-const path     = require('path');
-const pug      = require('pug');
+const {
+    fiddle : { Base },
+    util   : { Squash }
+} = require('../');
+
+const fs    = require('fs');
+const JSON5 = require('json5');
+const path  = require('path');
+const pug   = require('pug');
 
 const { Config } = require('@extjs/sencha-core');
 const { File }   = require('@extjs/sencha-fiddle');
@@ -10,7 +14,8 @@ const { File }   = require('@extjs/sencha-fiddle');
 const extAssetRe   = /\.(js(?!on)|css|html)$/i;
 const numericRe    = /^\d+$/;
 const simpleJsonRe = /\{|\[/;
-const toolkitRe    = /^\/([a-z]+)/i;
+const toolkitRe    = /^[0-9.]+\/([a-z]+)/i;
+const versionRe    = /[0-9.]+\/(.+)/;
 
 class Example extends Base {
     /**
@@ -20,15 +25,10 @@ class Example extends Base {
      * @return {String} The generated URL.
      */
     pathToBaseUrl (url) {
-        const dir = Config.get('examples');
+        const base     = Config.get('examples');
+        const relative = path.relative(base, url);
 
-        url = url.replace(dir, '/example');
-
-        if (url[ url.length - 1 ] !== '/') {
-            url += '/';
-        }
-
-        return url;
+        return relative.replace(versionRe, '$1');
     }
 
     /**
@@ -41,22 +41,34 @@ class Example extends Base {
      */
     handle () {
         return new Promise((resolve, reject) => {
-            const { req }  = this;
-            const dir      = Config.get('examples');
-            let   lookup   = path.resolve(dir, req.params[ 0 ]);
-            const basename = path.basename(lookup);
+            const { req } = this;
+            const base    = Config.get('examples');
 
-            if (basename.toLowerCase() === 'index.html') {
-                lookup = path.dirname(lookup);
-            }
+            const {
+                params : { 0 : loc }
+            } = req;
 
-            fs.stat(lookup, (error, stat) => {
-                const promise = error ? // eslint-disable-line operator-linebreak
-                    Promise.reject(error) : // eslint-disable-line operator-linebreak,indent
-                    this[ stat.isDirectory() ? 'handleDirectory' : 'handleFile' ](lookup);
+            Squash
+                .getPath(base, null, loc)
+                .then(lookup => {
+                    if (lookup) {
+                        const basename = path.basename(lookup);
 
-                promise.then(resolve, reject);
-            });
+                        if (basename.toLowerCase() === 'index.html') {
+                            lookup = path.dirname(lookup);
+                        }
+
+                        fs.stat(lookup, (error, stat) => {
+                            const promise = error ? // eslint-disable-line operator-linebreak
+                                Promise.reject(error) : // eslint-disable-line operator-linebreak,indent
+                                this[ stat.isDirectory() ? 'handleDirectory' : 'handleFile' ](lookup);
+
+                            promise.then(resolve, reject);
+                        });
+                    } else {
+                        reject(new Error('File not found'));
+                    }
+                });
         });
     }
 
@@ -78,7 +90,7 @@ class Example extends Base {
                     if (entries.includes('app.js')) {
                         this.handleExample(lookup, entries).then(resolve, reject);
                     } else {
-                        this.handleDirectoryListing(lookup, entries).then(resolve, reject);
+                        this.handleDirectoryListing(lookup).then(resolve, reject);
                     }
                 } else {
                     resolve('empty directory');
@@ -98,33 +110,35 @@ class Example extends Base {
      * @param {String[]} entries The directory entries.
      * @return {Promise}
      */
-    handleDirectoryListing (lookup, entries) {
-        const dirs = [];
+    handleDirectoryListing (lookup) {
+        const base     = Config.get('examples');
+        const relative = path.relative(base, lookup).split('/');
+        const version  = relative.shift();
 
-        entries.forEach(name => {
-            const fullPath = path.join(lookup, name);
-            const stat     = fs.statSync(fullPath);
+        return Squash
+            .squash(base, version, relative.join('/'))
+            .then((map) => {
+                const dirs = [];
 
-            if (stat.isDirectory()) {
-                const link = this.pathToBaseUrl(fullPath);
+                for (const name in map) {
+                    const fullPath = map[ name ];
+                    const link     = this.endSlashify(path.join('/example', this.pathToBaseUrl(fullPath)));
 
-                dirs.push({
-                    link,
-                    name
-                });
-            }
-        });
+                    dirs.push({
+                        link,
+                        name
+                    });
+                }
 
-        const data = pug.renderFile(
-            path.join(__dirname, '..', 'views/listing.pug'),
-            {
-                cache    : false,
-                examples : dirs,
-                pretty   : true
-            }
-        );
-
-        return Promise.resolve(data);
+                return pug.renderFile(
+                    path.join(__dirname, '..', 'views/listing.pug'),
+                    {
+                        cache    : false,
+                        examples : dirs,
+                        pretty   : true
+                    }
+                );
+            });
     }
 
     /**
@@ -173,7 +187,7 @@ class Example extends Base {
 
     handleDataFile (code, basename, example) {
         const { req }                = this;
-        const { sencha : { files } } = example;
+        const { fiddle : { files } } = example;
         const cfg                    = files && files[ basename ];
         const data                   = Object.assign({
             code
@@ -262,7 +276,7 @@ class Example extends Base {
                         .loadFile(filePath)
                         .then(code => JSON5.parse(code))
                         .then(example => {
-                            example.sencha.path = dir;
+                            example.fiddle.path = dir;
 
                             return example;
                         })
@@ -282,10 +296,10 @@ class Example extends Base {
      * @return {String} The toolkit lower-cased.
      */
     getToolkit (lookup) {
-        const dir = Config.get('examples');
+        const dir      = Config.get('examples');
+        const relative = path.relative(dir, lookup);
 
-        return lookup
-            .replace(dir, '')
+        return relative
             .match(toolkitRe)[ 1 ]
             .toLowerCase();
     }
@@ -318,7 +332,7 @@ class Example extends Base {
             example.reactorCodes = map;
 
             this
-                .buildFileMap(map, example.sencha.path, example)
+                .buildFileMap(map, example.fiddle.path, example)
                 .then(resolve, reject);
         });
     }
@@ -344,7 +358,7 @@ class Example extends Base {
                                 const promise = this
                                     .loadFileSource(filePath)
                                     .then(source => {
-                                        const relativePath = path.relative(example.sencha.path, filePath);
+                                        const relativePath = path.relative(example.fiddle.path, filePath);
 
                                         map[ `/${relativePath}` ] = source;
                                     });

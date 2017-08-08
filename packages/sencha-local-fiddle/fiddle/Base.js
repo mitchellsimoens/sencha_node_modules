@@ -50,7 +50,7 @@ class Base {
             toolkits : {
                 [ toolkit ] : framework
             }
-        } = Config.get('sencha');
+        } = Config.get('extjs');
 
         return framework.ext;
     }
@@ -68,7 +68,7 @@ class Base {
                     themes
                 }
             }
-        } = Config.get('sencha');
+        } = Config.get('extjs');
 
         for (const name in themes) {
             const obj = themes[ name ];
@@ -94,7 +94,7 @@ class Base {
                     themes
                 }
             }
-        } = Config.get('sencha');
+        } = Config.get('extjs');
 
         return themes[ theme ];
     }
@@ -112,7 +112,7 @@ class Base {
                     themes
                 }
             }
-        } = Config.get('sencha');
+        } = Config.get('extjs');
 
         for (const name in themes) {
             const obj = themes[ name ];
@@ -125,18 +125,21 @@ class Base {
 
     getPackageAssets (examplePackages, toolkit, theme) {
         if (Array.isArray(examplePackages)) {
-            const { packages } = Config.get('sencha');
+            const { packages } = Config.get('extjs');
 
             return examplePackages.map(examplePkg => {
-                const pkg            = packages[ examplePkg ];
-                const { css, build } = pkg;
+                const pkg = packages[ examplePkg ];
 
-                if (css) {
-                    const themes = css[ toolkit ];
+                if (pkg) {
+                    const { css, build } = pkg;
 
-                    return {
-                        css : path.join(build, toolkit, themes[ theme ])
-                    };
+                    if (css) {
+                        const themes = css[ toolkit ];
+
+                        return {
+                            css : path.join(build, toolkit, themes[ theme ])
+                        };
+                    }
                 }
 
                 return examplePkg;
@@ -145,7 +148,7 @@ class Base {
     }
 
     hasReactor (example) {
-        const { sencha : { packages } } = example;
+        const { fiddle : { packages } } = example;
 
         return packages && packages.includes('reactor');
     }
@@ -164,6 +167,8 @@ class Base {
     buildAppJs (code, example) {
         if (this.hasReactor(example)) {
             code = `Ext.onReady(function () {
+                Sencha.reactor();
+
                 require('app.js');
             });`;
         } else if (code && !appWrapperRe.test(code)) {
@@ -188,21 +193,34 @@ ${code}
      * @return {String}
      */
     buildRequires (code, example) {
-        const defaultRequires = Config.get('defaultRequires');
+        const {
+            fiddle : {
+                'local-dev' : localDev
+            }
+        } = example;
+
+        const requires        = localDev && localDev.requires;
+        const defaultRequires = Config.get('extjs.defaultRequires');
 
         if (example) {
-            example = example.sencha;
+            example = example.fiddle;
         }
 
         if (defaultRequires) {
-            if (!example) {
+            if (example) {
+                example.requires = defaultRequires.slice();
+            } else {
                 example = {
                     requires : defaultRequires.slice()
                 };
-            } else if (!example.requires) {
-                example.requires = defaultRequires.slice();
-            } else if (!example.requires.includes('Ext.app.Util')) {
-                example.requires.push(...defaultRequires);
+            }
+        }
+
+        if (requires) {
+            if (example.requires) {
+                example.requires.push(...requires);
+            } else {
+                example.requires = requires;
             }
         }
 
@@ -230,24 +248,34 @@ ${code}
             entries = [].concat(example.assets, example.mockdata);
         }
 
-        const base      = this.pathToBaseUrl(lookup);
+        const {
+            fiddle : {
+                'local-dev' : localDev,
+                packages : pkgs,
+                title
+            }
+        } = example;
+
+        const files     = localDev && localDev.files;
         const toolkit   = this.getToolkit(lookup);
         const framework = this.getToolkitFramework(toolkit);
         const themeName = this.getThemeName(toolkit);
         const theme     = this.getToolkitTheme(toolkit, themeName);
-        const packages  = this.getPackageAssets(example.sencha.packages, toolkit, themeName);
-
-        const { sencha : { title } } = example;
+        const packages  = this.getPackageAssets(pkgs, toolkit, themeName);
 
         return {
-            base,
             body,
+            files,
             framework,
             packages,
             theme,
             title,
             toolkit
         };
+    }
+
+    endSlashify (path) {
+        return path.substr(-1) === '/' ? path : `${path}/`;
     }
 }
 

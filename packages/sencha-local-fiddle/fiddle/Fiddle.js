@@ -144,7 +144,7 @@ class Fiddle extends Base {
                     themes
                 }
             }
-        } = Config.get('sencha');
+        } = Config.get('extjs');
 
         return themes[ theme.toLowerCase() ];
     }
