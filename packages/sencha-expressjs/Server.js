@@ -66,15 +66,17 @@ class Server extends Base {
     }
 
     ctor () {
-        const me = this;
-
-        if (me.autoStart) {
-            me.start();
+        if (this.autoStart) {
+            this.start();
         }
     }
 
     dtor () {
-        const { server } = this;
+        const { insecureServer, server } = this;
+
+        if (insecureServer) {
+            insecureServer.close();
+        }
 
         if (server) {
             server.close();
@@ -112,9 +114,7 @@ class Server extends Base {
     start () {
         const { app } = this;
 
-        if (this.autoListen) {
-            this.listen(undefined, app);
-        }
+        this.createServer(undefined, app);
     }
 
     /**
@@ -151,35 +151,45 @@ class Server extends Base {
         return app;
     }
 
-    /**
-     * @protected
-     * @param {Object} app The express application to create a server with.
-     */
-    createServer (app = this.app) {
-        return http.createServer(app);
+    $createServer (app) {
+        return http.Server(app); // eslint-disable-line new-cap
     }
 
     /**
-     * @param {Object} [app=this.app] The app to start the listening on.
-     * @param {Number} [port=this.port] The port to listen on.
+     * @protected
+     * @param {String} [prop=server] The property to set the server onto.
+     * @param {Object} [app=this.app] The express application to create a server with.
      */
-    listen (prop = 'server', app = this.app, port = this.port) {
+    createServer (prop = 'server', app = this.app) {
         const me = this;
-        let   server;
+        let   server = me[ prop ];
 
         me.triggerWatchers('before-server', app);
 
-        if (!me[ prop ]) {
-            server = me.createServer(app);
+        if (!server) {
+            server = me.$createServer(app);
 
             me[ prop ] = server;
         }
 
         me.triggerWatchers('after-server', server);
 
+        if (me.autoListen) {
+            me.listen(server, app);
+        }
+    }
+
+    /**
+     * @param {Object} [server=this.server] The server to start the listening on.
+     * @param {Object} [app=this.app] The app to start the listening on.
+     * @param {Number} [port=this.port] The port to listen on.
+     */
+    listen (server = this.server, app = this.app, port = this.port) {
+        const me = this;
+
         me.triggerWatchers('before-listen', app);
 
-        me[ prop ].listen(port, () => {
+        server.listen(port, () => {
             me.listening = true;
 
             debug.log('Server listening on', `${me.host}:${port}`);

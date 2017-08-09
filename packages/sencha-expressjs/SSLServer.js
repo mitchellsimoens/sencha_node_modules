@@ -64,10 +64,7 @@ class SSLServer extends Server {
         return certificates;
     }
 
-    /**
-     * @inheritdocs
-     */
-    createServer (app = this.app) {
+    $createServer (app) {
         return https.Server(this.certificates, app); // eslint-disable-line new-cap
     }
 }

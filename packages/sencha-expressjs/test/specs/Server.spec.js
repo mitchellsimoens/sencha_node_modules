@@ -1,10 +1,12 @@
 const { expect } = require('chai');
 const { Server } = require('../../');
 
-describe('Server', function() {
+const http = require('http');
+
+describe('Server', () => {
     let server;
 
-    afterEach(function() {
+    afterEach(() => {
         if (server && !server.destroyed) {
             server.destroy();
         }
@@ -12,39 +14,39 @@ describe('Server', function() {
         server = null;
     });
 
-    describe('instantiation', function() {
-        it('should be server', function() {
+    describe('instantiation', () => {
+        it('should be server', () => {
             server = new Server();
 
             expect(server).to.have.property('isExpressServer', true);
         });
 
-        it('should not auto start', function() {
+        it('should not auto start', () => {
             server = new Server();
 
             expect(server.server).to.be.undefined;
-            //use _app to not trigger the getter app method
+            // use _app to not trigger the getter app method
             expect(server._app).to.be.undefined;
         });
 
-        it('should start express but not auto listen', function() {
+        it('should start express but not auto listen', () => {
             server = new Server({
                 autoListen : false,
                 autoStart  : true
             });
 
-            expect(server.server).to.be.undefined;
+            expect(server.server).to.be.instanceof(http.Server);
             expect(server.listening).to.be.undefined;
         });
 
-        it('should start and listen', function(done) {
+        it('should start and listen', done => {
             server = new Server({
                 autoStart : true,
                 host      : 'foo.com',
                 port      : 3000
             });
 
-            setTimeout(function() {
+            setTimeout(() => {
                 expect(server).to.have.property('listening', true);
 
                 done();
@@ -52,8 +54,8 @@ describe('Server', function() {
         });
     });
 
-    describe('start', function() {
-        it('should start manually but not listen', function() {
+    describe('start', () => {
+        it('should start manually but not listen', () => {
             server = new Server({
                 autoListen : false
             });
@@ -61,11 +63,11 @@ describe('Server', function() {
             server.start();
 
             expect(server._app).to.be.a('function');
-            expect(server.server).to.be.undefined;
+            expect(server.server).to.be.instanceof(http.Server);
             expect(server.listening).to.be.undefined;
         });
 
-        it('should start manually and listen', function(done) {
+        it('should start manually and listen', done => {
             server = new Server({
                 host : 'foo.com',
                 port : 3000
@@ -73,7 +75,7 @@ describe('Server', function() {
 
             server.start();
 
-            setTimeout(function() {
+            setTimeout(() => {
                 expect(server._app).to.be.a('function');
                 expect(server).to.have.property('listening', true);
 
@@ -82,8 +84,8 @@ describe('Server', function() {
         });
     });
 
-    describe('listen', function() {
-        it('should listen manually', function(done) {
+    describe('listen', () => {
+        it('should listen manually', done => {
             server = new Server({
                 autoListen : false,
                 autoStart  : true,
@@ -93,7 +95,7 @@ describe('Server', function() {
 
             server.listen();
 
-            setTimeout(function() {
+            setTimeout(() => {
                 expect(server).to.have.property('listening', true);
 
                 done();
