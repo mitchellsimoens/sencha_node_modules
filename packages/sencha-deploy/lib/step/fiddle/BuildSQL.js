@@ -19,10 +19,16 @@ class BuildSQL extends Base {
                 }
             } = runner;
 
-            this.runner = runner;
+            const inserts = [];
+            const sqls    = [];
 
-            const inserts = this.inserts = [];
-            const sqls    = this.sqls    = [];
+            Object.assign(this, {
+                inserts,
+                runner,
+                sqls
+            });
+
+            return resolve();
 
             this
                 .buildMasterSql(group)
@@ -214,7 +220,7 @@ class BuildSQL extends Base {
         const databaseName          = this.getDatabase();
         const { $pkg : { fiddle } } = example;
         const files                 = fiddle && fiddle.files;
-        const file                  = files && files[asset.url];
+        const file                  = files && files[ asset.url ];
 
         sqls.push(
             `INSERT INTO ${databaseName}.fiddle_mockdata (\`fiddleid\`, \`url\`, \`data\`, \`type\`, \`delay\`, \`dynamic\`) VALUES (@fiddleid, ?, ?, ?, ?, ?);`

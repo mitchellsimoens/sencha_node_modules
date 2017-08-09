@@ -262,6 +262,11 @@ class Args {
                     description : 'The product code for the examples (e.g. `ext`, `extreact`)'
                 },
                 {
+                    name        : 'sdk',
+                    type        : 'path',
+                    description : 'The path to the SDK repo'
+                },
+                {
                     name        : 'team',
                     type        : 'int',
                     description : 'The fiddle team to add the fiddles too'

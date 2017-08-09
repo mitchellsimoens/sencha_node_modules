@@ -1,151 +1,138 @@
 const {
-    error : { FatalError },
-    step  : { fiddle : { Base } },
-    util  : { Logger }
+    step : { fiddle : { Base } },
+    util : { Logger }
 } = require('../../');
+
+const { Squash } = require('@extjs/sencha-utils');
 
 const fs    = require('fs');
 const JSON5 = require('json5');
 const path  = require('path');
 
 const assetExtRe    = /^(js(?!on)|css|html)$/i;
-const entryFilterRe = /^\.ds_store$/i;
+const entryFilterRe = /^\.ds_store|package\.json$/i;
 
 class BuildGroups extends Base {
     execute (runner) {
         return new Promise((resolve, reject) => {
             const { info }       = runner;
             const { args, user } = info;
-            const dirPath        = path.join(args.path, 'examples');
-            const group          = {
-                creator          : user.userid,
-                creator_username : user.username,
-                name             : args.name,
-                description      : args.description
-            };
 
             this.runner = runner;
 
             Logger.info('Building groups from SDK repo...');
 
             this
-                .cascade(dirPath, group)
-                .then(() => {
+                .getDirectoryMap()
+                .then(this.cascade.bind(this))
+                .then(children => {
                     Logger.info('Groups built from SDK repo.');
 
-                    info.group = group;
-
-                    delete this.runner;
+                    info.group = {
+                        children,
+                        creator          : user.userid,
+                        creator_username : user.username, // eslint-disable-line camelcase
+                        description      : args.description,
+                        name             : args.name
+                    };
                 })
                 .then(resolve, reject);
         });
     }
 
-    cascade (dirPath, entry) {
+    finish () {
+        delete this.runner;
+    }
+
+    getDirectoryMap () {
+        const { runner : { info : { args : { path : base } } } } = this;
+
+        return Squash.squash({
+            base : path.join(base, 'examples'),
+            deep : true
+        });
+    }
+
+    cascade (map) {
+        const promises = [];
+
+        for (const dirname in map) {
+            const { [ dirname ] : obj } = map;
+
+            promises.push(
+                this.handleDirectory(dirname, obj)
+            );
+        }
+
+        return Promise
+            .all(promises)
+            .then(() => map);
+    }
+
+    handleDirectory (dirname, obj) {
         return new Promise((resolve, reject) => {
             this
-                .readDir(dirPath, entry)
-                .then(entries => this.handleDir(entries, entry))
+                .loadPackageJson(obj.loc)
+                .then(pkg => {
+                    if (pkg) {
+                        obj.$pkg = pkg;
+
+                        const { fiddle } = pkg;
+
+                        if (fiddle) {
+                            if (fiddle.toolkit) {
+                                return this.handleToolkit(dirname, obj);
+                            } else if (fiddle.example) {
+                                return this.handleExample(dirname, obj);
+                            }
+                        }
+                    }
+
+                    return obj;
+                })
+                .then(obj => {
+                    if (obj.children) {
+                        return this.cascade(obj.children);
+                    }
+
+                    return obj;
+                })
                 .then(resolve, reject);
         });
     }
 
-    readDir (dirPath, entry) {
+    loadPackageJson (base) {
         return new Promise((resolve, reject) => {
-            fs.stat(dirPath, (error, stat) => {
-                if (stat.isDirectory()) {
-                    fs.readdir(dirPath, (error, entries) => {
+            const loc = path.join(base, 'package.json');
+
+            fs.stat(loc, (error) => {
+                if (error) {
+                    resolve();
+                } else {
+                    fs.readFile(loc, 'utf8', (error, source) => {
                         if (error) {
-                            reject(new FatalError(error));
+                            reject(error);
                         } else {
-                            entries = entries
-                                .filter(name => !entryFilterRe.test(name))
-                                .map(name => {
-                                    return {
-                                        name,
-                                        path : path.join(dirPath, name)
-                                    };
-                                });
+                            source = JSON5.parse(source);
 
-                            if (entry) {
-                                entry.children = entries;
-                            }
-
-                            resolve(entries);
+                            resolve(source);
                         }
                     });
-                } else {
-                    resolve();
                 }
             });
         });
     }
 
-    handleDir (entries, entry) {
-        return new Promise((resolve, reject) => {
-            const pkg = entries.find(entry => entry.name === 'package.json');
-
-            if (entry && pkg) {
-                entries.splice(entries.indexOf(pkg), 1);
-
-                this
-                    .loadPackageJson(entry.path)
-                    .then(pkg => {
-                        const { fiddle } = pkg;
-
-                        if (fiddle) {
-                            entry.$pkg = pkg;
-
-                            if (fiddle.example) {
-                                return this.buildExample(entry);
-                            } else if (fiddle.toolkit) {
-                                return this
-                                    .parseToolkit(entry)
-                                    .then(this.handleDir.bind(this, entries));
-                            }
-                        }
-
-                        return this.handleDir(entries, entry);
-                    })
-                    .then(resolve, reject);
-            } else if (entries.length) {
-                Promise
-                    .all(
-                        entries.map(dir => this.cascade(dir.path, dir))
-                    )
-                    .then(resolve, reject);
-            } else {
-                resolve(entries);
-            }
-        });
-    }
-
-    loadPackageJson (dirPath) {
-        return new Promise((resolve, reject) => {
-            const filePath = path.join(dirPath, 'package.json');
-
-            fs.readFile(filePath, 'utf8', (error, code) => {
-                if (error) {
-                    reject(new FatalError(error));
-                } else {
-                    code = JSON5.parse(code);
-
-                    resolve(code);
-                }
-            })
-        });
-    }
-
-    parseToolkit (toolkit) {
+    handleToolkit (dirname, obj) {
         return new Promise((resolve, reject) => {
             const { runner } = this;
 
             const {
                 info : {
-                    'package.json' : {
-                        fiddle : {
+                    'fiddle.json' : {
+                        extjs : {
                             toolkits : {
-                                [ toolkit.name ] : {
+                                [ dirname ] : {
                                     themes
                                 }
                             }
@@ -155,24 +142,108 @@ class BuildGroups extends Base {
             } = runner;
 
             for (const name in themes) {
-                const theme = themes[name];
+                const { [ name ] : theme } = themes;
 
                 if (theme.default) {
                     return this
-                        .getFramework(toolkit, name, runner)
-                        .then(() => toolkit)
+                        .getFramework(dirname, name, obj)
+                        .then(() => obj)
                         .then(resolve, reject);
                 }
             }
 
-            resolve(toolkit);
+            resolve(obj);
         });
     }
 
-    getFramework (toolkit, theme, runner) {
+    handleExample (dirname, obj, example) {
+        return this
+            .readDir(obj.loc)
+            .then((entries) => {
+                const promises = entries
+                    .filter(name => !entryFilterRe.test(name))
+                    .map(this.handleExampleEntry.bind(this, example || obj, obj));
+
+                return Promise.all(promises);
+            })
+            .then(() => obj);
+    }
+
+    handleExampleEntry (example, obj, name) {
         return new Promise((resolve, reject) => {
-            const databaseName = this.getDatabase();
-            const {
+            const loc = path.join(obj.loc, name);
+
+            fs.stat(loc, (error, stat) => {
+                if (error) {
+                    reject(error);
+                } else if (stat.isDirectory()) {
+                    const children = obj.children || (obj.children = {});
+                    const entry    = children[ name ];
+
+                    this
+                        .handleExample(name, entry, example)
+                        .then(resolve, reject);
+                } else if (stat.isFile()) {
+                    this
+                        .readFile(loc, name)
+                        .then(info => {
+                            const children = obj.children || (obj.children = {});
+                            const relative = path.relative(example.loc, loc);
+
+                            children[ name ] = {
+                                isAsset : info.isAsset,
+                                loc,
+                                relative,
+                                source  : info.source,
+                                type    : info.type
+                            };
+                        })
+                        .then(resolve, reject);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    readDir (loc) {
+        return new Promise((resolve, reject) => {
+            fs.readdir(loc, (error, entries) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(entries);
+                }
+            });
+        });
+    }
+
+    readFile (loc, name) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(loc, 'utf8', (error, source) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    const type    = path.extname(name).substr(1);
+                    const isAsset = assetExtRe.test(type);
+
+                    resolve({
+                        isAsset,
+                        loc,
+                        name,
+                        source,
+                        type
+                    });
+                }
+            });
+        });
+    }
+
+    getFramework (toolkit, theme, obj) {
+        const databaseName = this.getDatabase();
+
+        const {
+            runner : {
                 info : {
                     app  : {
                         database
@@ -181,131 +252,49 @@ class BuildGroups extends Base {
                         version
                     }
                 }
-            } = runner;
+            }
+        } = this;
 
-            const sqls = [
-                `SET @frameworkid = (
-    SELECT
-        id
-    FROM ${databaseName}.fiddle_catalog
-    WHERE
-        ${databaseName}.fiddle_catalog.toolkit = ?
-        AND
-        ${databaseName}.fiddle_catalog.theme = ?
-        AND
-        LEFT(${databaseName}.fiddle_catalog.version, ${version.length}) = ?
-    ORDER BY LENGTH(${databaseName}.fiddle_catalog.version) DESC, ${databaseName}.fiddle_catalog.version DESC
-    LIMIT 1
+        const sqls = [
+            `SET @frameworkid = (
+SELECT
+    id
+FROM ${databaseName}.fiddle_catalog
+WHERE
+    ${databaseName}.fiddle_catalog.toolkit = ?
+    AND
+    ${databaseName}.fiddle_catalog.theme = ?
+    AND
+    LEFT(${databaseName}.fiddle_catalog.version, ${version.length}) = ?
+ORDER BY LENGTH(${databaseName}.fiddle_catalog.version) DESC, ${databaseName}.fiddle_catalog.version DESC
+LIMIT 1
 );`,
-                `SELECT @frameworkid AS id;`,
-                `SELECT
-    ${databaseName}.fiddle_catalog_packages.id,
-    ${databaseName}.fiddle_catalog_packages.name
+            `SELECT @frameworkid AS id;`,
+            `SELECT
+${databaseName}.fiddle_catalog_packages.id,
+${databaseName}.fiddle_catalog_packages.name
 FROM ${databaseName}.fiddle_catalog_packages
 WHERE ${databaseName}.fiddle_catalog_packages.catalogid = @frameworkid
 ORDER BY ${databaseName}.fiddle_catalog_packages.name;`
-            ];
+        ];
 
-            const inserts = [
-                toolkit.name,
-                theme,
-                version
-            ];
+        const inserts = [
+            toolkit,
+            theme,
+            version
+        ];
 
-            database
-                .query(sqls, inserts)
-                .then(results => {
-                    [ , [ toolkit.framework ], toolkit.packages ] = results;
+        return database
+            .query(sqls, inserts)
+            .then(results => {
+                [
+                    ,
+                    [ obj.framework ],
+                    obj.packages
+                ] = results;
 
-                    return toolkit;
-                })
-                .then(resolve, reject);
-        });
-    }
-
-    buildExample (example) {
-        return new Promise((resolve, reject) => {
-            this
-                .handleExampleChildren(example.children, example)
-                .then(() => example)
-                .then(this.ensureExampleFiles.bind(this))
-                .then(resolve, reject);
-
-            delete example.children;
-        });
-    }
-
-    ensureExampleFiles (example) {
-        const { assets } = example;
-
-        if (!assets.find(asset => asset.name === 'app.js')) {
-            assets.push({
-                code : '',
-                name : 'app.js',
-                type : 'js'
+                return obj;
             });
-        }
-
-        if (!assets.find(asset => asset.name === 'index.html')) {
-            assets.push({
-                code : '',
-                name : 'index.html',
-                type : 'html'
-            });
-        }
-
-        return example;
-    }
-
-    handleExampleChildren (entries, example) {
-        const assets   = example.assets   || (example.assets   = []);
-        const mockdata = example.mockdata || (example.mockdata = []);
-        const dirs     = [];
-
-        entries.forEach(entry => {
-            const stat = fs.statSync(entry.path);
-
-            if (stat.isDirectory()) {
-                dirs.push(entry);
-            } else {
-                const code         = fs.readFileSync(entry.path, 'utf8');
-                const type         = path.extname(entry.path).substr(1);
-                const isAsset      = assetExtRe.test(type);
-                const relativePath = path.relative(example.path, entry.path);
-
-                if (isAsset) {
-                    assets.push({
-                        code, type,
-                        name : relativePath
-                    });
-                } else {
-                    mockdata.push({
-                        type,
-                        data : code,
-                        url  : relativePath
-                    });
-                }
-            }
-        });
-
-        return this.handleExampleChildrenDirectories(dirs, example)
-    }
-
-    handleExampleChildrenDirectories (dirs, example) {
-        if (dirs && dirs.length) {
-            return Promise
-                .all(
-                    dirs.map(dir => this.readDir(dir.path))
-                )
-                .then(entries => {
-                    return Promise
-                        .all(
-                            entries.map(entry => this.handleExampleChildren(entry, example))
-                        );
-                });
-            } else {
-                return Promise.resolve();
-            }
     }
 }
 

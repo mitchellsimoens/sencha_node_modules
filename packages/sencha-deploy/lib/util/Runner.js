@@ -32,7 +32,7 @@ class Runner {
                 index++;
             }
 
-            const step = this.stack[index];
+            const step = this.stack[ index ];
 
             if (step) {
                 const name = step.name || step.constructor.name;
@@ -70,17 +70,18 @@ class Runner {
 
     onStepFinish (step, error) {
         const name = step.name || step.constructor.name;
-        let   diff = process.hrtime(step.$perf),
-              unit = 'ms';
+
+        let diff = process.hrtime(step.$perf),
+            unit = 'ms';
 
         if (step.finish) {
             step.finish(error);
         }
 
-        diff = (diff[0] * 1e9 + diff[1]) / 1000000;
+        diff = (diff[ 0 ] * 1e9 + diff[ 1 ]) / 1000000;
 
         if (diff > 5000) {
-            //convert to seconds
+            // convert to seconds
             diff = diff / 1000;
             unit = 's';
         }
@@ -150,13 +151,13 @@ class Runner {
     addData (key, data) {
         const info = this.$info || (this.$info = {});
 
-        info[key] = data;
+        info[ key ] = data;
     }
 
     getData (key) {
         const info = this.$info || {};
 
-        return info[key];
+        return info[ key ];
     }
 }
 

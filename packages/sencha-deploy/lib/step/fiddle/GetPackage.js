@@ -5,16 +5,16 @@ const {
 
 const Fs    = require('fs');
 const JSON5 = require('json5');
-const Path  = require('path');
+const path  = require('path');
 
 class GetPackage {
     execute (runner) {
         return new Promise((resolve, reject) => {
             const { info }            = runner;
-            const { args : { path } } = info;
-            const pkgPath             = Path.join(path, 'package.json');
+            const { args : { sdk } } = info;
+            const pkgPath             = path.join(sdk, 'fiddle.json');
 
-            Logger.info('Retreiving package.json from SDK repo...');
+            Logger.info('Retreiving fiddle.json from SDK repo...');
 
             Fs.stat(pkgPath, error => {
                 if (error) {
@@ -24,9 +24,9 @@ class GetPackage {
                         if (error) {
                             reject(new FatalError(error));
                         } else {
-                            Logger.info('Retrieved package.json from SDK repo.');
+                            Logger.info('Retrieved fiddle.json from SDK repo.');
 
-                            info['package.json'] = JSON5.parse(code);
+                            info[ 'fiddle.json' ] = JSON5.parse(code);
 
                             resolve();
                         }
