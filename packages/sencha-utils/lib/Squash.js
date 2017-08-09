@@ -2,6 +2,16 @@ const fs   = require('fs');
 const path = require('path');
 
 module.exports = {
+    alphabetizeObject (obj) {
+        const parsed = {};
+
+        const keys = Object.keys(obj).sort();
+
+        keys.forEach(key => parsed[ key ] = obj[ key ]);
+
+        return parsed;
+    },
+
     /**
      * @private
      * Create an object mapping of uniquely named directories.
@@ -14,18 +24,25 @@ module.exports = {
      * @return {Object} The key will be the directory base name with it's
      * value being the full path to the directory.
      */
-    createDirMap (dirs) {
-        const map = {};
+    createDirMap (base, dirs) {
+        const map  = {};
 
         dirs.forEach(dirs => {
             dirs.forEach(dir => {
-                if (!map[ dir.basename ]) {
-                    map[ dir.basename ] = dir.loc;
+                const { basename, loc } = dir;
+
+                if (!map[ basename ]) {
+                    const relative = path.relative(base, loc);
+
+                    map[ basename ] = {
+                        loc,
+                        relative
+                    };
                 }
             });
         });
 
-        return map;
+        return this.alphabetizeObject(map);
     },
 
     /**
@@ -46,7 +63,7 @@ module.exports = {
      * @return {String[]}
      */
     filterVersion (version, dirs) {
-        if (version) {
+        if (version && dirs.length > 1) {
             version = version
                 .split('.')
                 // turn each number into a real number
@@ -152,19 +169,25 @@ module.exports = {
      *     [ '5.2.1', '5.2.0', '5.1.0' ]
      */
     sortVersions (versions) {
-        return versions
-            .map(dir => dir.basename
-                .split('.')
-                .map(n => +n + 100000)
-                .join('.')
-            )
-            .sort()
-            .reverse()
-            .map(dir => dir
-                .split('.')
-                .map(n => +n - 100000)
-                .join('.')
-            );
+        if (versions.length === 1) {
+            return versions.map(dir => dir.basename);
+        } else if (versions.length > 1) {
+            return versions
+                .map(dir => dir.basename
+                    .split('.')
+                    .map(n => +n + 100000)
+                    .join('.')
+                )
+                .sort()
+                .reverse()
+                .map(dir => dir
+                    .split('.')
+                    .map(n => +n - 100000)
+                    .join('.')
+                );
+        } else {
+            return versions;
+        }
     },
 
     /**
@@ -189,8 +212,8 @@ module.exports = {
      *         foo : '/path/to/foo'
      *     }
      */
-    squash (base, version, loc) {
-        return this
+    squash ({ base, deep, loc, version }) {
+        let promise = this
             // get versions first
             .getDirs(base)
             // sort versions in DESC
@@ -198,13 +221,66 @@ module.exports = {
             // filter out any newer versions is version is passed
             .then(this.filterVersion.bind(this, version))
             // get child directories of the filtered versions
-            .then(versions => Promise
-                .all(versions
-                    .map(version => loc ? this.getDirs(path.join(base, version, loc), true) : this.getDirs(path.join(base, version), true))
-                )
-            )
+            .then(versions => {
+                return Promise
+                    .all(versions
+                        .map(version => {
+                            return loc ? this.getDirs(path.join(base, version, loc), true) : this.getDirs(path.join(base, version), true);
+                        })
+                    );
+            })
             // create a map of directory name : directory path
-            .then(this.createDirMap.bind(this));
+            .then(this.createDirMap.bind(this, base));
+
+        if (deep) {
+            promise = promise
+                .then((map) => {
+                    const promises = [];
+                    const objs     = [];
+
+                    for (const dirname in map) {
+                        const obj          = map[ dirname ];
+                        const { relative } = obj;
+
+                        let loc = relative.split('/');
+
+                        loc.shift();
+
+                        loc = loc.join('/');
+
+                        objs.push(obj);
+
+                        promises.push(
+                            this.squash({
+                                base,
+                                deep,
+                                loc,
+                                version
+                            })
+                        );
+                    }
+
+                    return Promise
+                        .all(promises)
+                        .then(results => {
+                            results.forEach((childMap, index) => {
+                                const obj = objs[ index ];
+
+                                if (Object.values(childMap).length) {
+                                    if (obj.children) {
+                                        Object.assign(obj.children, childMap);
+                                    } else {
+                                        obj.children = childMap;
+                                    }
+                                }
+                            });
+
+                            return map;
+                        });
+                });
+        }
+
+        return promise;
     },
 
     /**

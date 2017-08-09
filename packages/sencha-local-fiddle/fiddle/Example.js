@@ -1,6 +1,5 @@
 const {
-    fiddle : { Base },
-    util   : { Squash }
+    fiddle : { Base }
 } = require('../');
 
 const fs    = require('fs');
@@ -10,6 +9,7 @@ const pug   = require('pug');
 
 const { Config } = require('@extjs/sencha-core');
 const { File }   = require('@extjs/sencha-fiddle');
+const { Squash } = require('@extjs/sencha-utils');
 
 const extAssetRe   = /\.(js(?!on)|css|html)$/i;
 const numericRe    = /^\d+$/;
@@ -116,7 +116,11 @@ class Example extends Base {
         const version  = relative.shift();
 
         return Squash
-            .squash(base, version, relative.join('/'))
+            .squash({
+                base,
+                loc : relative.join('/'),
+                version
+            })
             .then((map) => {
                 const dirs = [];
 

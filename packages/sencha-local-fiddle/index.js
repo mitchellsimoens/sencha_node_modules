@@ -9,9 +9,5 @@ module.exports = {
 
     get routes () {
         return require('./routes'); // eslint-disable-line global-require
-    },
-
-    get util () {
-        return require('./util'); // eslint-disable-line global-require
     }
 };
