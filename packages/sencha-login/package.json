@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Module containing APIs user logins (forum & portal)",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sencha/EngOpsServer.git"

@@ -3,6 +3,9 @@
   "version": "1.0.6",
   "description": "Allow Ext.Direct to be used.",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sencha/EngOpsServer.git"

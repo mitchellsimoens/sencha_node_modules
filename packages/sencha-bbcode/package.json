@@ -3,6 +3,9 @@
   "version": "1.0.5",
   "description": "Module containing APIs for working with BBCode",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sencha/EngOpsServer.git"

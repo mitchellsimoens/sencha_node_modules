@@ -3,6 +3,9 @@
   "version": "1.0.6",
   "description": "A module to handle local fiddle things",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mitchellsimoens/EngOpsServer.git"

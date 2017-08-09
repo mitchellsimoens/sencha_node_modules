@@ -8,8 +8,10 @@
     "covBrk": "./scripts/test.sh --coverage --break",
     "deploy": "./scripts/deploy.sh",
     "eslint": "eslint --config ./.eslintrc.json ./packages",
+    "help": "./scripts/test.sh --help",
     "increment": "lerna publish --skip-git --skip-npm",
     "install:clean": "npm cache clear --force && lerna clean && npm install",
+    "nsp": "lerna run nsp",
     "postinstall": "lerna bootstrap",
     "test": "./scripts/test.sh",
     "testBrk": "./scripts/test.sh --break"
@@ -19,6 +21,7 @@
     "eslint": "^4.3.0",
     "lerna": "^2.0.0",
     "mocha": "^3.4.2",
+    "nsp": "^2.7.0",
     "nyc": "^11.1.0",
     "proxyquire": "^1.8.0",
     "sinon": "^2.4.1",

@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Module containing APIs for the Sencha Support Portal",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sencha/EngOpsServer.git"

@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "A module to handle 2FA requests",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mitchellsimoens/EngOpsServer.git"

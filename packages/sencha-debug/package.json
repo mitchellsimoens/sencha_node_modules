@@ -3,6 +3,9 @@
   "version": "1.0.4",
   "description": "Simple debugger",
   "main": "index.js",
+  "scripts": {
+    "nsp": "nsp check"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sencha/EngOpsServer.git"
