@@ -1,0 +1,127 @@
+{
+    "defaults": {
+        "logger": {
+            "level": "INFO"
+        },
+        "apiserver": "https://api.sencha.com",
+        "db": {
+            "multipleStatements": true,
+            "timezone": "Z"
+        },
+        "versioning": {
+            "continueIfOutdated": true
+        },
+        "cdn": {
+            "key": "/Users/space/.ssh/id_rsa",
+            "server": "cdn-origin.sencha.com",
+            "user": "sencha-cdn"
+        },
+        "qa": {
+            "key": "/Users/space/.ssh/id_rsa",
+            "server": "qa.sencha.com",
+            "user": "teamcity"
+        },
+        "modules": {
+            "fiddle": {
+            },
+            "nightly": {
+                /**
+                 * @cfg {Boolean} [failOnDup=false] Whether or not to stop the process if
+                 * matches a row in the database (based on sha1 and deleted fields).
+                 */
+                "failOnDup": false,
+                /**
+                 * @cfg {Boolean} [forceStorageUpload=false] Whether or not to upload the nightly
+                 * to the storage. Upload would be skipped if an existing database record was found.
+                 */
+                "forceStorageUpload": false,
+                /**
+                 * @cfg {Number} [min=5] The number of nightlies to keep as a minimum regardless
+                 * what {@link #ttl} is set to.
+                 */
+                "min": 5,
+                /**
+                 * @cfg {Boolean} [prune=true] `true` to prune old nightlies from
+                 * the database and storage.
+                 */
+                "prune": true,
+                /**
+                 * @cfg {Number} [ttl=10] The number of days to look for old nightlies.
+                 * Also see {@link #min}.
+                 */
+                "ttl": 10,
+                /**
+                 * @cfg {Object} mysql The mysql config object to use. Currently only
+                 * `table` is used.
+                 */
+                "mysql": {
+                    "table": "product_nightly"
+                },
+                /**
+                 * @cfg {Object} s3 The s3 config object to use. Currently only `bucket` and
+                 * `prefix` are used.
+                 */
+                "s3": {
+                    "bucket": "product-nightly",
+                    "prefix": "product-nightly-"
+                }
+            },
+            "release": {
+                /**
+                 * @cfg {Boolean} [failOnDup=false] Whether or not to stop the process if
+                 * matches a row in the database (based on sha1 and deleted fields).
+                 */
+                "failOnDup": false,
+                /**
+                 * @cfg {Boolean} [forceStorageUpload=false] Whether or not to upload the release
+                 * to the storage. Upload would be skipped if an existing database record was found.
+                 */
+                "forceStorageUpload": false,
+                /**
+                 * @cfg {Object} mysql The mysql config object to use. Currently only
+                 * `table` is used.
+                 */
+                "mysql": {
+                    "table": "product_release"
+                },
+                /**
+                 * @cfg {Object} s3 The s3 config object to use. Currently only `bucket` and
+                 * `prefix` are used.
+                 */
+                "s3": {
+                    "bucket": "sencha-support-kb",
+                    "prefix": "portal-release-"
+                }
+            }
+        }
+    },
+    "production": {
+    },
+    "testing": {
+        "apiserver": "https://api-test.sencha.com"
+    },
+    "development": {
+        "logger": {
+            "level": "ALL"
+        },
+        "apiserver": "https://api-dev.sencha.com",
+        "cdn": {
+            "key": "/Users/mitchellsimoens/.ssh/id_rsa"
+        },
+        "qa": {
+            "key": "/Users/mitchellsimoens/.ssh/id_rsa"
+        },
+        "modules": {
+            "nightly": {
+                "s3": {
+                    "bucket": "mitchell-simoens-sencha"
+                }
+            },
+            "release" : {
+                "s3": {
+                    "bucket": "mitchell-simoens-sencha"
+                }
+            }
+        }
+    }
+}

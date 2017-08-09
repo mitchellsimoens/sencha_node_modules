@@ -1,0 +1,39 @@
+{
+  "name": "@extjs/sencha-deploy",
+  "version": "0.1.18",
+  "description": "Sencha Deploy Client",
+  "scripts": {
+    "extjs": "clear && ./test/ignored/extjs.sh",
+    "nightly": "clear && ./test/ignored/nightly.sh",
+    "reactor": "clear && ./test/ignored/reactor.sh",
+    "release": "clear && ./test/ignored/release.sh",
+    "version": "clear && ./test/ignored/version.sh",
+    "nsp": "nsp check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitchellsimoens/EngOpsServer.git"
+  },
+  "author": {
+    "name": "Mitchell Simoens",
+    "email": "mitchell.simoens@sencha.com",
+    "url": "https://sencha.com"
+  },
+  "bin": {
+    "sencha-deploy": "bin/sencha_deploy.js"
+  },
+  "homepage": "https://github.com/sencha/EngOpsServer/tree/npm_modules#readme",
+  "dependencies": {
+    "argv": "0.0.2",
+    "aws-sdk": "^2.6.3",
+    "deepmerge": "^1.3.1",
+    "github": "^6.1.0",
+    "hash-files": "^1.1.1",
+    "json5": "^0.5.1",
+    "mkdirp": "^0.5.1",
+    "mysql": "^2.11.1",
+    "rsync": "^0.5.0",
+    "scp2": "^0.5.0",
+    "ssh2": "^0.5.4"
+  }
+}
