@@ -1,0 +1,32 @@
+doctype html
+html
+    head
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(http-equiv="Content-Type" content="text/html; charset=UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+        meta(name="google" content="notranslate")
+        meta(charset="UTF-8")
+
+        title #{title}
+
+        link(rel="stylesheet" href=`/ext/build/${toolkit}/${theme.css}`)
+
+        if Array.isArray(files)
+            each file in files
+                if file.substr(-3) === '.js'
+                    script(type="text/javascript" src=`${file}`)
+                else
+                    link(rel="stylesheet" href=`${file}`)
+
+        if Array.isArray(packages)
+            each pkg in packages
+                if pkg.css
+                    link(rel="stylesheet" href=pkg.css)
+
+        script(type="text/javascript" src=`/ext/${framework}`)
+        script(type="text/javascript" src=`/ext/build/${toolkit}/${theme.override}`)
+
+        script(type="text/javascript" src=`${base}app.js`)
+    body
+        if (body)
+            | !{body}

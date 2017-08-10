@@ -22,7 +22,9 @@ updater({
         // delete process.env.npm_package_name;
         // delete process.env.npm_config_heading;
 
-        this.notify();
+        if (update && update.type !== 'latest') {
+            this.notify();
+        }
 
         notifier.resolve();
     },

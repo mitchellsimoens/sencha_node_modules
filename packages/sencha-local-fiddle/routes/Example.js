@@ -1,4 +1,4 @@
-const { Config } = require('@extjs/sencha-core');
+const { Config }                      = require('@extjs/sencha-core');
 const { Response, route : { Route } } = require('@extjs/sencha-expressjs');
 const { fiddle : { Example } }        = require('../');
 

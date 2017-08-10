@@ -2,14 +2,37 @@
 
 const { Server }  = require('../');
 
-const { Container } = require('switchit');
-const { Config }    = require('@extjs/sencha-core');
-const { Console }   = require('@extjs/sencha-debug');
-const fs            = require('fs');
-const JSON5         = require('json5');
-const path          = require('path');
+const { Container }        = require('switchit');
+const { Config, Deferred } = require('@extjs/sencha-core');
+const { Console }          = require('@extjs/sencha-debug');
+const fs                   = require('fs');
+const JSON5                = require('json5');
+const path                 = require('path');
+const updater              = require('update-notifier');
+const pkg                  = require('../package.json');
 
 require('./Path');
+
+const notifier = new Deferred();
+
+updater({
+    callback (error, update) {
+        this.update = update;
+
+        // uncomment these lines to test the update notifier
+        // these envs are checked by the is-npm module
+        delete process.env.npm_config_username;
+        delete process.env.npm_package_name;
+        delete process.env.npm_config_heading;
+
+        if (update && update.type !== 'latest') {
+            this.notify();
+        }
+
+        notifier.resolve();
+    },
+    pkg
+});
 
 process.on('unhandledRejection', console.log);
 
@@ -43,4 +66,9 @@ Fiddle.define({
     switches : `[example:path] sdk:path [reactor:path] [version:string]`
 });
 
-new Fiddle().run();
+new Fiddle()
+    .run()
+    .then(() => new Promise((resolve, reject) => {
+        // wait for the update deferral to resolve
+        notifier.then(resolve, reject);
+    }));

@@ -119,6 +119,10 @@ class Fiddle extends Base {
         return `/fiddle/${id}/`;
     }
 
+    getBase () {
+        return `/fiddle/${this.fiddleid}/`;
+    }
+
     getToolkit () {
         const {
             fiddle : {
@@ -159,6 +163,11 @@ class Fiddle extends Base {
 
             body = index.code;
         }
+
+        example.fiddle = {
+            packages : example.packages,
+            title    : example.title
+        };
 
         return super.prepareForIndex(fiddle, entries, example, body);
     }

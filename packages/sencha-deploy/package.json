@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-deploy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Sencha Deploy Client",
   "scripts": {
     "extjs": "clear && ./test/ignored/extjs.sh",

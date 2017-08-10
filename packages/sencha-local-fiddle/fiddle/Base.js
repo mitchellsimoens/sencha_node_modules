@@ -33,6 +33,10 @@ class Base {
         });
     }
 
+    getBase () {
+        return '';
+    }
+
     getToolkit () {
         const { req : { query } } = this;
 
@@ -165,7 +169,7 @@ class Base {
      * @return {String}
      */
     buildAppJs (code, example) {
-        if (this.hasReactor(example)) {
+        if (example && this.hasReactor(example)) {
             code = `Ext.onReady(function () {
                 Sencha.reactor();
 
@@ -193,13 +197,18 @@ ${code}
      * @return {String}
      */
     buildRequires (code, example) {
-        const {
-            fiddle : {
-                'local-dev' : localDev
-            }
-        } = example;
+        let requires;
 
-        const requires        = localDev && localDev.requires;
+        if (example) {
+            const {
+                fiddle : {
+                    'local-dev' : localDev
+                }
+            } = example;
+
+            requires = localDev && localDev.requires;
+        }
+
         const defaultRequires = Config.get('extjs.defaultRequires');
 
         if (example) {
@@ -251,12 +260,13 @@ ${code}
         const {
             fiddle : {
                 'local-dev' : localDev,
-                packages : pkgs,
+                packages    : pkgs,
                 title
             }
         } = example;
 
         const files     = localDev && localDev.files;
+        const base      = this.getBase();
         const toolkit   = this.getToolkit(lookup);
         const framework = this.getToolkitFramework(toolkit);
         const themeName = this.getThemeName(toolkit);
@@ -264,6 +274,7 @@ ${code}
         const packages  = this.getPackageAssets(pkgs, toolkit, themeName);
 
         return {
+            base,
             body,
             files,
             framework,
