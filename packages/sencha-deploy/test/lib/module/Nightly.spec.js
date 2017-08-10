@@ -1,62 +1,58 @@
 const { expect } = require('chai');
 const proxyquire = require('proxyquire');
+const sinon      = require('sinon');
 
 const {
     module : { Nightly },
     util   : { Logger }
 } = require('../../../');
 
-describe('Nightly Module', function () {
-    it('instantiate', function () {
-        let instance = new Nightly('foo');
+describe('Nightly Module', () => {
+    it('instantiate', () => {
+        const instance = new Nightly('foo');
 
         expect(instance.config).to.eql('foo');
     });
 
-    describe('run', function () {
-        it('should run all steps', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
+    describe('run', () => {
+        it('should run all steps', () => {
+            const mock        = sinon.mock(Logger);
             const Nightly     = proxyquire(
                 '../../../lib/module/Nightly',
                 {
                     '../' : {
                         step : {
-                            CheckProductExistence : sandbox.stub().returns({
-                                name    : 'CheckProductExistence',
-                                execute : () => {}
+                            CheckProductExistence : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CheckProductExistence'
                             }),
-                            CheckUpdate           : sandbox.stub().returns({
-                                name    : 'CheckUpdate',
-                                execute : () => {}
+                            GetProduct : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'GetProduct'
                             }),
-                            GetProduct            : sandbox.stub().returns({
-                                name    : 'GetProduct',
-                                execute : () => {}
+                            HashFile : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'HashFile'
                             }),
-                            HashFile              : sandbox.stub().returns({
-                                name    : 'HashFile',
-                                execute : () => {}
+                            PruneNightly : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'PruneNightly'
                             }),
-                            PruneNightly          : sandbox.stub().returns({
-                                name    : 'PruneNightly',
-                                execute : () => {}
+                            QA : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'QA'
                             }),
-                            QA                    : sandbox.stub().returns({
-                                name    : 'QA',
-                                execute : () => {}
+                            SaveToDatabase : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToDatabase'
                             }),
-                            SaveToDatabase        : sandbox.stub().returns({
-                                name    : 'SaveToDatabase',
-                                execute : () => {}
+                            SaveToStorage : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToStorage'
                             }),
-                            SaveToStorage         : sandbox.stub().returns({
-                                name    : 'SaveToStorage',
-                                execute : () => {}
-                            }),
-                            ValidateArguments     : sandbox.stub().returns({
-                                name    : 'ValidateArguments',
-                                execute : () => {}
+                            ValidateArguments : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'ValidateArguments'
                             })
                         }
                     }
@@ -66,7 +62,7 @@ describe('Nightly Module', function () {
                 modules : {}
             });
 
-            mock.expects('log').exactly(24);
+            mock.expects('log').exactly(22);
 
             const res = instance.run({
                 args : {
@@ -79,60 +75,53 @@ describe('Nightly Module', function () {
                 .then(() => {
                     mock.verify();
                 })
-                .catch(() => {
+                .catch((e) => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle error in step', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const undo_stub   = sandbox.stub();
+        it('should handle error in step', () => {
+            const mock        = sinon.mock(Logger);
+            const undoStub    = sinon.stub();
             const Nightly     = proxyquire(
                 '../../../lib/module/Nightly',
                 {
                     '../' : {
                         step : {
-                            CheckProductExistence : sandbox.stub().returns({
-                                name    : 'CheckProductExistence',
-                                execute : () => {}
+                            CheckProductExistence : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CheckProductExistence'
                             }),
-                            CheckUpdate           : sandbox.stub().returns({
-                                name    : 'CheckUpdate',
-                                execute : () => {}
+                            GetProduct : sinon.stub().returns({
+                                execute : () => new Promise((resolve, reject) => {
+                                    reject(new Error('foo'));
+                                }),
+                                name : 'GetProduct'
                             }),
-                            GetProduct            : sandbox.stub().returns({
-                                name    : 'GetProduct',
-                                execute : () => {
-                                    return new Promise((resolve, reject) => {
-                                        reject(new Error('foo'));
-                                    });
-                                }
+                            HashFile : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'HashFile'
                             }),
-                            HashFile              : sandbox.stub().returns({
-                                name    : 'HashFile',
-                                execute : () => {}
+                            PruneNightly : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'PruneNightly'
                             }),
-                            PruneNightly          : sandbox.stub().returns({
-                                name    : 'PruneNightly',
-                                execute : () => {}
+                            QA : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'QA'
                             }),
-                            QA                    : sandbox.stub().returns({
-                                name    : 'QA',
-                                execute : () => {}
+                            SaveToDatabase : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToDatabase'
                             }),
-                            SaveToDatabase        : sandbox.stub().returns({
-                                name    : 'SaveToDatabase',
-                                execute : () => {}
+                            SaveToStorage : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToStorage'
                             }),
-                            SaveToStorage         : sandbox.stub().returns({
-                                name    : 'SaveToStorage',
-                                execute : () => {}
-                            }),
-                            ValidateArguments     : sandbox.stub().returns({
+                            ValidateArguments : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
                                 name    : 'ValidateArguments',
-                                execute : () => {},
-                                undo    : undo_stub
+                                undo    : undoStub
                             })
                         }
                     }
@@ -142,7 +131,7 @@ describe('Nightly Module', function () {
                 modules : {}
             });
 
-            mock.expects('log').exactly(12);
+            mock.expects('log').exactly(10);
 
             const res = instance.run({
                 args : {
@@ -156,7 +145,7 @@ describe('Nightly Module', function () {
                     expect(false).to.be.true;
                 })
                 .catch(() => {
-                    expect(undo_stub).to.be.called;
+                    expect(undoStub).to.be.called;
 
                     mock.verify();
                 });

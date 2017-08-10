@@ -6,7 +6,7 @@ const {
     util  : { Logger, Shutdown }
 } = require('../../');
 
-describe('Sencha Deploy', function () {
+xdescribe('Sencha Deploy', function () {
     beforeEach(function () {
         Logger.init();
     });

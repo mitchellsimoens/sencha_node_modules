@@ -14,41 +14,46 @@ const _config = {
     }
 };
 const _env = {
-    DB_HOST        : 'host',
     DB_DATABASE    : 'database',
-    DB_USER        : 'user',
+    DB_HOST        : 'host',
     DB_PASSWORD    : 'pass',
     DB_PORT        : 333,
-    DB_SOCKET_PATH : 'spath'
+    DB_SOCKET_PATH : 'spath',
+    DB_USER        : 'user'
 };
 
-describe('MySQL', function () {
-    let db;
+describe('MySQL', () => {
+    let db, envStub;
 
-    beforeEach(function () {
-        this.sandbox.stub(process, 'env').value(_env);
+    beforeEach(() => {
+        Logger.init();
+
+        envStub = sinon.stub(process, 'env').value(_env);
     });
 
-    afterEach(function () {
-        db = null;
+    afterEach(() => {
+        envStub.restore();
+
+        db      = null;
+        envStub = null;
     });
 
-    describe('instantiation', function () {
-        it('should init with config nested as config.db', function () {
+    describe('instantiation', () => {
+        it('should init with config nested as config.db', () => {
             db = new MySQL(_config);
 
             expect(db).to.have.property('multipleStatements', true);
             expect(db).to.have.property('timezone',           1);
         });
 
-        it('should init with config', function () {
+        it('should init with config', () => {
             db = new MySQL(_config.db);
 
             expect(db).to.have.property('multipleStatements', true);
             expect(db).to.have.property('timezone',           1);
         });
 
-        it('should init module with process env', function () {
+        it('should init module with process env', () => {
             db = new MySQL(_config);
 
             expect(db).to.have.property('host',       _env.DB_HOST);
@@ -60,8 +65,8 @@ describe('MySQL', function () {
         });
     });
 
-    describe('getConnectionConfig', function () {
-        it('returns configuration options', function () {
+    describe('getConnectionConfig', () => {
+        it('returns configuration options', () => {
             db = new MySQL(_config);
 
             const opts = db.getConnectionConfig();
@@ -77,18 +82,18 @@ describe('MySQL', function () {
         });
     });
 
-    describe('debug', function () {
+    describe('debug', () => {
         let mock;
 
-        beforeEach(function () {
+        beforeEach(() => {
             db = new MySQL();
 
-            mock = this.sandbox.mock(Logger);
+            mock = sinon.mock(Logger);
 
             mock.expects('log').exactly(5);
         });
 
-        it('should log out debug info', function () {
+        it('should log out debug info', () => {
             db.debug(
                 'SELECT 1 FROM ?;',
                 [ 'foo' ]
@@ -97,7 +102,7 @@ describe('MySQL', function () {
             mock.verify();
         });
 
-        it('should handle an array of sqls', function () {
+        it('should handle an array of sqls', () => {
             db.debug(
                 [ 'SELECT 1 FROM ?;' ],
                 [ 'foo' ]
@@ -106,7 +111,7 @@ describe('MySQL', function () {
             mock.verify();
         });
 
-        it('should handle no inserts', function () {
+        it('should handle no inserts', () => {
             db.debug(
                 'SELECT 1 FROM ?;'
             );
@@ -115,25 +120,27 @@ describe('MySQL', function () {
         });
     });
 
-    describe('query', function () {
-        beforeEach(function () {
+    describe('query', () => {
+        beforeEach(() => {
             db = new MySQL();
         });
 
-        it('should query single connection if is not pull-based', function () {
-            const { sandbox } = this;
-            const _spy1       = sandbox.spy();
-            const _spy2       = sandbox.stub();
-            const _spy3       = sandbox.spy();
+        it('should query single connection if is not pull-based', () => {
+            const _spy1       = sinon.spy();
+            const _spy2       = sinon.stub();
+            const _spy3       = sinon.spy();
             const connection  = {
                 connect : _spy1,
-                query   : _spy2.callsArgWith(2, null, {}),
-                end     : _spy3
+                end     : _spy3,
+                query   : _spy2.callsArgWith(2, null, {})
             };
 
-            const mock = sandbox.mock(mysql);
+            const mock = sinon.mock(mysql);
 
-            mock.expects('createConnection').once().returns(connection);
+            mock
+                .expects('createConnection')
+                .once()
+                .returns(connection);
 
             const promise = db.query('SELECT 1;', []);
 
@@ -144,26 +151,30 @@ describe('MySQL', function () {
                     sinon.assert.called(_spy1);
                     sinon.assert.calledWith(_spy2, 'SELECT 1;', []);
                     sinon.assert.called(_spy3);
+
+                    mock.verify();
                 })
                 .catch(() => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle mutliple sql statements', function () {
-            const { sandbox } = this;
-            const _spy1      = sandbox.spy();
-            const _spy2      = sandbox.stub();
-            const _spy3      = sandbox.spy();
+        it('should handle mutliple sql statements', () => {
+            const _spy1      = sinon.spy();
+            const _spy2      = sinon.stub();
+            const _spy3      = sinon.spy();
             const connection = {
                 connect : _spy1,
-                query   : _spy2.callsArgWith(2, null, {}),
-                end     : _spy3
+                end     : _spy3,
+                query   : _spy2.callsArgWith(2, null, {})
             };
 
-            const mock = sandbox.mock(mysql);
+            const mock = sinon.mock(mysql);
 
-            mock.expects('createConnection').once().returns(connection);
+            mock
+                .expects('createConnection')
+                .once()
+                .returns(connection);
 
             const promise = db.query([ 'SELECT 1;' ], []);
 
@@ -174,26 +185,30 @@ describe('MySQL', function () {
                     sinon.assert.called(_spy1);
                     sinon.assert.calledWith(_spy2, 'SELECT 1;', []);
                     sinon.assert.called(_spy3);
+
+                    mock.verify();
                 })
                 .catch(() => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle query error', function () {
-            const { sandbox } = this;
-            const _spy1      = sandbox.spy();
-            const _spy2      = sandbox.stub();
-            const _spy3      = sandbox.spy();
+        it('should handle query error', () => {
+            const _spy1      = sinon.spy();
+            const _spy2      = sinon.stub();
+            const _spy3      = sinon.spy();
             const connection = {
                 connect : _spy1,
-                query   : _spy2.callsArgWith(2, new Error('foo')),
-                end     : _spy3
+                end     : _spy3,
+                query   : _spy2.callsArgWith(2, new Error('foo'))
             };
 
-            const mock = sandbox.mock(mysql);
+            const mock = sinon.mock(mysql);
 
-            mock.expects('createConnection').once().returns(connection);
+            mock
+                .expects('createConnection')
+                .once()
+                .returns(connection);
 
             const promise = db.query('SELECT 1;', []);
 
@@ -209,25 +224,28 @@ describe('MySQL', function () {
                     sinon.assert.called(_spy1);
                     sinon.assert.calledWith(_spy2, 'SELECT 1;', []);
                     sinon.assert.called(_spy3);
+
+                    mock.verify();
                 });
         });
     });
 
-    describe('ping', function () {
-        beforeEach(function () {
+    describe('ping', () => {
+        beforeEach(() => {
             db = new MySQL();
         });
 
-        it('should ping connection', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(mysql);
+        it('should ping connection', () => {
+            const mock = sinon.mock(mysql);
+            const stub = sinon.stub(db, 'doPing').resolves({ success : true });
 
-            mock.expects('createConnection').once().returns({
-                connect : sandbox.stub().resolves(),
-                end     : sandbox.stub().resolves()
-            });
-
-            sandbox.stub(db, 'doPing').resolves({ success : true });
+            mock
+                .expects('createConnection')
+                .once()
+                .returns({
+                    connect : sinon.stub().resolves(),
+                    end     : sinon.stub().resolves()
+                });
 
             const promise = db.ping();
 
@@ -236,22 +254,26 @@ describe('MySQL', function () {
             return promise
                 .then(() => {
                     expect(true).to.be.true;
+
+                    mock.verify();
+                    stub.restore();
                 })
                 .catch(() => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle ping error', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(mysql);
+        it('should handle ping error', () => {
+            const mock = sinon.mock(mysql);
+            const stub = sinon.stub(db, 'doPing').rejects(new Error('foo'));
 
-            mock.expects('createConnection').once().returns({
-                connect : sandbox.stub().resolves(),
-                end     : sandbox.stub().resolves()
-            });
-
-            sandbox.stub(db, 'doPing').rejects(new Error('foo'));
+            mock
+                .expects('createConnection')
+                .once()
+                .returns({
+                    connect : sinon.stub().resolves(),
+                    end     : sinon.stub().resolves()
+                });
 
             const promise = db.ping();
 
@@ -263,22 +285,25 @@ describe('MySQL', function () {
                 })
                 .catch(error => {
                     expect(error.message).to.equal('foo');
+
+                    mock.verify();
+                    stub.restore();
                 });
         });
     });
 
-    describe('doPing', function () {
-        beforeEach(function () {
+    describe('doPing', () => {
+        beforeEach(() => {
             db = new MySQL();
         });
 
-        it('should resolve ping', function () {
-            function FakeConnection () {}
+        it('should resolve ping', () => {
+            function FakeConnection () {} // eslint-disable-line no-empty-function
 
-            FakeConnection.prototype.ping = function () {};
+            FakeConnection.prototype.ping = () => {}; // eslint-disable-line no-empty-function
 
             const connection = new FakeConnection();
-            const stub       = this.sandbox.stub(connection, 'ping').callsArgWith(0, null);
+            const stub       = sinon.stub(connection, 'ping').callsArgWith(0, null);
             const promise    = db.doPing(connection);
 
             expect(promise).to.be.a('promise');
@@ -286,19 +311,21 @@ describe('MySQL', function () {
             return promise
                 .then(() => {
                     expect(stub).to.be.called;
+
+                    stub.restore();
                 })
                 .catch(() => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should reject ping', function () {
-            function FakeConnection () {}
+        it('should reject ping', () => {
+            function FakeConnection () {} // eslint-disable-line no-empty-function
 
-            FakeConnection.prototype.ping = function () {};
+            FakeConnection.prototype.ping = () => {}; // eslint-disable-line no-empty-function
 
             const connection = new FakeConnection();
-            const stub       = this.sandbox.stub(connection, 'ping').callsArgWith(0, new Error('foo'));
+            const stub       = sinon.stub(connection, 'ping').callsArgWith(0, new Error('foo'));
             const promise    = db.doPing(connection);
 
             expect(promise).to.be.a('promise');
@@ -310,6 +337,8 @@ describe('MySQL', function () {
                 .catch(error => {
                     expect(error.message).to.equal('foo');
                     expect(stub).to.be.called;
+
+                    stub.restore();
                 });
         });
     });

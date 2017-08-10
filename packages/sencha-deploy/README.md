@@ -32,8 +32,6 @@ Besides, you need to declare this ENV variables:
 * `S3_SECRET` AWS Secret key
 * `S3_BUCKET` AWS S3 Bucket name
 
-* `GITHUB_TOKEN` Github api token
-
 * `NODE_ENV` Env, could be either `development`, `testing` or `production`
 
 ## Release Module

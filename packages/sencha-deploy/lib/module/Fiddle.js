@@ -3,7 +3,6 @@ const {
         Base
     },
     step   : {
-        CheckUpdate,
         fiddle : {
             BuildGroups,
             BuildSQL,
@@ -21,7 +20,6 @@ class Fiddle extends Base {
         const runner = new Runner();
 
         runner.add(
-            new CheckUpdate(),
             new GetPackage(),
             new GetCreator(),
             new BuildGroups(),

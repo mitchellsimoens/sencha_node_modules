@@ -1,56 +1,58 @@
 const { expect } = require('chai');
+const sinon      = require('sinon');
 
 const {
     error : { FatalError },
     util  : { Logger, Shutdown }
 } = require('../../../');
 
-describe('Shutdown', function () {
-    it('calls specified callbacks on shutdown', function () {
-        const { sandbox } = this;
+describe('Shutdown', () => {
+    it('calls specified callbacks on shutdown', () => {
+        const stub = sinon.stub(process, 'exit');
 
-        sandbox.stub(process, 'exit');
-
-        const stub1 = sandbox.stub();
-        const stub2 = sandbox.stub();
+        const stub1 = sinon.stub();
+        const stub2 = sinon.stub();
 
         Shutdown.onShutdown(stub1);
         Shutdown.onShutdown(stub2);
 
-        const mock = sandbox.mock(Logger);
+        const mock = sinon.mock(Logger);
 
         mock.expects('log').twice();
 
         const res = Shutdown.execCallbacks();
 
-        return res.then(
-            () => {
+        return res
+            .then(() => {
                 expect(stub1).to.be.calledOnce;
                 expect(stub2).to.be.calledOnce;
 
                 mock.verify();
-            }
-        );
+                stub.restore();
+            })
+            .catch(() => {
+                expect(false).to.be.true;
+            });
     });
 
-    describe('onUncaught', function () {
-        it('should not quit if test environment', function () {
-            const { sandbox } = this;
-            const stub        = sandbox.stub(process, 'exit');
-
-            sandbox.stub(process, 'env').value({
+    describe('onUncaught', () => {
+        it('should not quit if test environment', () => {
+            const stub    = sinon.stub(process, 'exit');
+            const envStub = sinon.stub(process, 'env').value({
                 NODE_ENV : 'test'
             });
 
             Shutdown.onUncaught(new Error('foo'));
 
             expect(stub).to.not.be.called;
+
+            envStub.restore();
+            stub.restore();
         });
 
-        it('should quit if not test environment', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const stub        = sandbox.stub(process, 'exit');
+        it('should quit if not test environment', () => {
+            const mock = sinon.mock(Logger);
+            const stub = sinon.stub(process, 'exit');
 
             mock.expects('log').once();
 
@@ -60,12 +62,12 @@ describe('Shutdown', function () {
             expect(stub).to.be.calledWith(0);
 
             mock.verify();
+            stub.restore();
         });
 
-        it('should quit if not test environment with FatalError', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const stub        = sandbox.stub(process, 'exit');
+        it('should quit if not test environment with FatalError', () => {
+            const mock = sinon.mock(Logger);
+            const stub = sinon.stub(process, 'exit');
 
             mock.expects('log').once();
 
@@ -75,57 +77,47 @@ describe('Shutdown', function () {
             expect(stub).to.be.calledWith(1);
 
             mock.verify();
+            stub.restore();
         });
     });
 
-    describe('execCallbacks', function () {
-        afterEach(function () {
+    describe('execCallbacks', () => {
+        afterEach(() => {
             Shutdown.callbacks.length = 0;
         });
 
-        it('should handle no errors in callbacks', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const stub        = sandbox.stub(process, 'exit');
+        it('should handle no errors in callbacks', () => {
+            const mock = sinon.mock(Logger);
 
             mock.expects('log').twice();
 
-            Shutdown.onShutdown(function() {});
+            Shutdown.onShutdown(() => {}); // eslint-disable-line no-empty-function
 
             const promise = Shutdown.execCallbacks();
 
             return promise
                 .then(() => {
-                    expect(stub).to.be.calledOnce;
-                    expect(stub).to.be.calledWith(0);
-
                     mock.verify();
                 })
-                .catch(() => {
+                .catch((e) => {
+                    console.log(e);
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle error in a callback', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const stub        = sandbox.stub(process, 'exit');
+        it('should handle error in a callback', () => {
+            const mock = sinon.mock(Logger);
 
             mock.expects('log').twice();
 
-            Shutdown.onShutdown(function () {
-                return new Promise((resolve, reject) => {
-                    reject('foo');
-                });
-            });
+            Shutdown.onShutdown(() => new Promise((resolve, reject) => {
+                reject(new Error('foo'));
+            }));
 
             const promise = Shutdown.execCallbacks();
 
             return promise
                 .then(() => {
-                    expect(stub).to.be.calledOnce;
-                    expect(stub).to.be.calledWith(0);
-
                     mock.verify();
                 })
                 .catch(() => {

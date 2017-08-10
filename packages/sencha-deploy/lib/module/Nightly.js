@@ -2,7 +2,6 @@ const {
     module : { Base },
     step   : {
         CheckProductExistence,
-        CheckUpdate,
         GetProduct,
         HashFile,
         PruneNightly,
@@ -19,7 +18,6 @@ class NightlyModule extends Base {
         const runner = new Runner();
 
         runner.add(
-            new CheckUpdate(),
             new ValidateArguments(),
             this.mergeModuleConfig.bind(this, 'nightly', info),
             this.logInfo.bind(this, info),

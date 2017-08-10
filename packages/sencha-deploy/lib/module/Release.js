@@ -3,7 +3,6 @@ const {
     step   : {
         CDN,
         CheckProductExistence,
-        CheckUpdate,
         GetProduct,
         HashFile,
         SaveToDatabase,
@@ -18,7 +17,6 @@ class ReleaseModule extends Base {
         const runner = new Runner();
 
         runner.add(
-            new CheckUpdate(),
             new ValidateArguments(),
             this.mergeModuleConfig.bind(this, 'release', info),
             this.logInfo.bind(this, info),

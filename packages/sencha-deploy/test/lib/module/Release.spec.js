@@ -1,15 +1,16 @@
 const { expect } = require('chai');
 const proxyquire = require('proxyquire');
+const sinon      = require('sinon');
 
 const { util : { Logger } } = require('../../../');
 
-describe('Release Module', function () {
-    it('instantiate', function () {
+describe('Release Module', () => {
+    it('instantiate', () => {
         const Module = proxyquire(
             '../../../lib/module/Release',
             {
-                '../util/Logger' : {},
-                '../storage'     : {}
+                '../storage'     : {},
+                '../util/Logger' : {}
             }
         );
 
@@ -18,46 +19,41 @@ describe('Release Module', function () {
         expect(module.config).to.equal('foo');
     });
 
-    describe('run', function () {
-        it('should run all steps', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
+    describe('run', () => {
+        it('should run all steps', () => {
+            const mock        = sinon.mock(Logger);
             const Release     = proxyquire(
                 '../../../lib/module/Release',
                 {
                     '../' : {
                         step : {
-                            CDN                   : sandbox.stub().returns({
-                                name    : 'CDN',
-                                execute : () => {}
+                            CDN : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CDN'
                             }),
-                            CheckProductExistence : sandbox.stub().returns({
-                                name    : 'CheckProductExistence',
-                                execute : () => {}
+                            CheckProductExistence : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CheckProductExistence'
                             }),
-                            CheckUpdate           : sandbox.stub().returns({
-                                name    : 'CheckUpdate',
-                                execute : () => {}
+                            GetProduct : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'GetProduct'
                             }),
-                            GetProduct            : sandbox.stub().returns({
-                                name    : 'GetProduct',
-                                execute : () => {}
+                            HashFile : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'HashFile'
                             }),
-                            HashFile              : sandbox.stub().returns({
-                                name    : 'HashFile',
-                                execute : () => {}
+                            SaveToDatabase : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToDatabase'
                             }),
-                            SaveToDatabase        : sandbox.stub().returns({
-                                name    : 'SaveToDatabase',
-                                execute : () => {}
+                            SaveToStorage : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToStorage'
                             }),
-                            SaveToStorage         : sandbox.stub().returns({
-                                name    : 'SaveToStorage',
-                                execute : () => {}
-                            }),
-                            ValidateArguments     : sandbox.stub().returns({
-                                name    : 'ValidateArguments',
-                                execute : () => {}
+                            ValidateArguments : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'ValidateArguments'
                             })
                         }
                     }
@@ -67,7 +63,7 @@ describe('Release Module', function () {
                 modules : {}
             });
 
-            mock.expects('log').exactly(22);
+            mock.expects('log').exactly(20);
 
             const promise = instance.run({
                 args : {
@@ -85,51 +81,46 @@ describe('Release Module', function () {
                 });
         });
 
-        it('should handle error in step', function () {
-            const { sandbox } = this;
-            const mock        = sandbox.mock(Logger);
-            const undo_stub   = sandbox.stub();
+        it('should handle error in step', () => {
+            const mock        = sinon.mock(Logger);
+            const undoStub    = sinon.stub();
             const Release     = proxyquire(
                 '../../../lib/module/Release',
                 {
                     '../' : {
                         step : {
-                            CDN                   : sandbox.stub().returns({
-                                name    : 'CDN',
-                                execute : () => {}
+                            CDN : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CDN'
                             }),
-                            CheckProductExistence : sandbox.stub().returns({
-                                name    : 'CheckProductExistence',
-                                execute : () => {}
+                            CheckProductExistence : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'CheckProductExistence'
                             }),
-                            CheckUpdate           : sandbox.stub().returns({
-                                name    : 'CheckUpdate',
-                                execute : () => {}
-                            }),
-                            GetProduct            : sandbox.stub().returns({
-                                name    : 'GetProduct',
-                                execute : function () {
+                            GetProduct : sinon.stub().returns({
+                                execute : () => {
                                     return new Promise((resolve, reject) => {
                                         reject(new Error('foo'));
                                     });
-                                }
+                                },
+                                name : 'GetProduct'
                             }),
-                            HashFile              : sandbox.stub().returns({
-                                name    : 'HashFile',
-                                execute : () => {}
+                            HashFile : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'HashFile'
                             }),
-                            SaveToDatabase        : sandbox.stub().returns({
-                                name    : 'SaveToDatabase',
-                                execute : () => {}
+                            SaveToDatabase : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToDatabase'
                             }),
-                            SaveToStorage         : sandbox.stub().returns({
-                                name    : 'SaveToStorage',
-                                execute : () => {}
+                            SaveToStorage : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
+                                name    : 'SaveToStorage'
                             }),
-                            ValidateArguments     : sandbox.stub().returns({
+                            ValidateArguments : sinon.stub().returns({
+                                execute : () => {}, // eslint-disable-line no-empty-function
                                 name    : 'ValidateArguments',
-                                execute : () => {},
-                                undo    : undo_stub
+                                undo    : undoStub
                             })
                         }
                     }
@@ -139,7 +130,7 @@ describe('Release Module', function () {
                 modules : {}
             });
 
-            mock.expects('log').exactly(12);
+            mock.expects('log').exactly(10);
 
             const promise = instance.run({
                 args : {
@@ -155,7 +146,7 @@ describe('Release Module', function () {
                 .catch(error => {
                     expect(error.message).to.equal('foo');
 
-                    expect(undo_stub).to.be.called;
+                    expect(undoStub).to.be.called;
 
                     mock.verify();
                 });

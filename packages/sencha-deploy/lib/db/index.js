@@ -7,7 +7,7 @@ const Connection = require('./Connection');
 module.exports = {
     create (type, config) {
         return new Promise((resolve, reject) => {
-            const cls = this[type];
+            const cls = this[ type ];
 
             if (cls) {
                 const instance = new Connection(config);
@@ -22,15 +22,15 @@ module.exports = {
         });
     },
 
-    get Connection () {
+    get Connection () { // eslint-disable-line sort-keys
         return Connection;
     },
 
-    get mysql () {
-        return require('./MySQL.js');
+    get MySQL () {
+        return require('./MySQL.js'); // eslint-disable-line global-require
     },
 
-    get MySQL () {
-        return require('./MySQL.js');
+    get mysql () {
+        return require('./MySQL.js'); // eslint-disable-line global-require
     }
 };

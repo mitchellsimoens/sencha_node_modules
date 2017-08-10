@@ -7,7 +7,7 @@ chai.use(sinonChai);
 chai.should();
 
 before(function () {
-    this.$helper = Helper(this);
+    this.$helper = Helper(this); // eslint-disable-line new-cap
 });
 
 beforeEach(function () {

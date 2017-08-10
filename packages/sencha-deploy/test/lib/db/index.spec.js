@@ -1,10 +1,19 @@
 const { expect } = require('chai');
-const index      = require('../../../lib/db/index.js');
 const proxyquire = require('proxyquire');
+const sinon      = require('sinon');
 
-describe('lib/db/index.js', function () {
-    describe('create', function () {
-        it('should reject if type is not found', function () {
+const {
+    db   : index,
+    util : { Logger }
+} = require('../../../');
+
+describe('lib/db/index.js', () => {
+    beforeEach(() => {
+        Logger.init();
+    });
+
+    describe('create', () => {
+        it('should reject if type is not found', () => {
             const promise = index.create('foo');
 
             return promise
@@ -17,24 +26,20 @@ describe('lib/db/index.js', function () {
         });
 
         it('should create and ping connection', function () {
-            const ping_stub = this.sandbox.stub().resolves({ success : true });
+            const pingStub = sinon.stub().resolves({ success : true });
 
             const Connection = this[ 'sencha-deploy' ].createObservable({
                 create () {
                     return this;
                 },
 
-                ping : ping_stub
+                ping : pingStub
             });
 
             const index = proxyquire(
                 '../../../lib/db/index.js',
                 {
-                    '../' : {
-                        db : {
-                            Connection
-                        }
-                    }
+                    './Connection' : Connection
                 }
             );
 
@@ -50,9 +55,9 @@ describe('lib/db/index.js', function () {
         });
     });
 
-    it('should retrieve MySQL', function () {
+    it('should retrieve MySQL', () => {
         const test = index.mysql;
 
-        expect(test).to.be.equal(require('../../../lib/db/MySQL'));
+        expect(test).to.be.equal(require('../../../lib/db/MySQL')); // eslint-disable-line global-require
     });
 });
