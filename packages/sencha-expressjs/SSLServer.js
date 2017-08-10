@@ -65,7 +65,13 @@ class SSLServer extends Server {
     }
 
     $createServer (app) {
-        return https.Server(this.certificates, app); // eslint-disable-line new-cap
+        const { certificates } = this;
+
+        if (!certificates || !certificates.key || !certificates.cert) {
+            throw new Error('No certificates were provided to create a secure server with');
+        }
+
+        return https.Server(certificates, app); // eslint-disable-line new-cap
     }
 }
 

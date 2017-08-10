@@ -106,7 +106,7 @@ describe('SSLServer', () => {
                 server.start();
             };
 
-            expect(fn).to.throw(/NPNProtocols/);
+            expect(fn).to.throw('No certificates were provided to create a secure server with');
         });
     });
 
