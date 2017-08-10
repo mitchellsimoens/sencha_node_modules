@@ -12,7 +12,7 @@ class Shutdown {
 
         this.callbacks = [];
 
-        //register for shutdown events
+        // register for shutdown events
         process.on('SIGINT',  execCallbacks);
         process.on('SIGTERM', execCallbacks);
         process.on('SIGHUP',  execCallbacks);
@@ -28,8 +28,6 @@ class Shutdown {
     onUncaught (error) {
         if (!testEnvRe.test(process.env.NODE_ENV)) {
             const errorCode = FatalError.isFatal(error) ? 1 : 0;
-
-            // console.log(error);
 
             Logger.error('uncaught', error);
 
@@ -47,8 +45,6 @@ class Shutdown {
 
     doExit () {
         Logger.info('Process', process.pid, 'shut down');
-
-        process.exit(0);
     }
 }
 
