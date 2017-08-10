@@ -22,13 +22,13 @@ class QA {
                 const { extract, extractDest } = this.getExtractInfo(args);
 
                 new SSHRunner({
-                        stagedPath,
-                        destinationPath,
-                        extract,
-                        extractDest,
-                        ssh,
-                        file : args.path
-                    })
+                    destinationPath,
+                    extract,
+                    extractDest,
+                    file : args.path,
+                    ssh,
+                    stagedPath
+                })
                     .execute(runner)
                     .then(resolve, reject);
             } else {
@@ -40,7 +40,7 @@ class QA {
     }
 
     getStagePath (args) {
-        return args['qa-stage'] || args.qa;
+        return args[ 'qa-stage' ] || args.qa;
     }
 
     getDestinationPath (args) {
@@ -48,13 +48,13 @@ class QA {
     }
 
     getExtractInfo (args) {
-        const extract = args['qa-extract'];
+        const extract = args[ 'qa-extract' ];
 
         if (extract) {
-            if (args['qa-extract-destination']) {
+            if (args[ 'qa-extract-destination' ]) {
                 return {
                     extract,
-                    extractDest : path.resolve(args['qa-extract-destination'], this.getDate())
+                    extractDest : path.resolve(args[ 'qa-extract-destination' ], this.getDate())
                 };
             } else {
                 return {

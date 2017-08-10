@@ -17,7 +17,7 @@ class Rsync extends Base {
     upload (source = this.config.source, destination = this.config.destination) {
         return new Promise((resolve, reject) => {
             const { config } = this;
-            const instance   = new rsync()
+            const instance   = new rsync() // eslint-disable-line new-cap
                 .shell(config.shell)
                 .flags(config.flags)
                 .source(source)

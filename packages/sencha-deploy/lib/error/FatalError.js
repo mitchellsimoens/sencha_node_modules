@@ -22,7 +22,7 @@ class FatalError extends ExtendableError {
     }
 
     static isFatal (error) {
-        return error && (error.isFatal || error instanceof FatalError)
+        return error && (error.isFatal || error instanceof FatalError);
     }
 }
 

@@ -17,19 +17,19 @@ class SaveToDatabase {
         const _platform = args.platform ? args.platform.replace(/\s+/g, '-').toLowerCase() : null;
         const platform  = args.platform ? `(${args.platform})` : '';
         const data      = {
-                product_id     : product.id,
-                name           : args.name ? args.name : `${product.name} ${args.version} ${platform}`.trim(),
-                version        : args.version + (_platform ? `-${_platform}` : (args.license ? `-${args.license}` : '')),
-                release_date   : new Date().toISOString().substr(0, 10) + ' 00:00:00',
-                md5            : file.md5,
-                sha1           : file.sha1,
-                active         : args.active    ? args.active    : 0,
-                dashboard      : args.dashboard ? args.dashboard : 0,
-                versionDisplay : args.version,
-                platform       : _platform,
-                license        : args.license,
-                jre            : args.jre || false
-            };
+            active         : args.active    ? args.active    : 0,
+            dashboard      : args.dashboard ? args.dashboard : 0,
+            jre            : args.jre || false,
+            license        : args.license,
+            md5            : file.md5,
+            name           : args.name ? args.name : `${product.name} ${args.version} ${platform}`.trim(),
+            platform       : _platform,
+            product_id     : product.id, // eslint-disable-line camelcase
+            release_date   : `${new Date().toISOString().substr(0, 10)} 00:00:00`, // eslint-disable-line camelcase,newline-per-chained-call
+            sha1           : file.sha1,
+            version        : args.version + (_platform ? `-${_platform}` : args.license ? `-${args.license}` : ''),
+            versionDisplay : args.version
+        };
 
         Logger.info('Inserting into database...');
 

@@ -23,8 +23,8 @@ class SSHRunner extends SSHBase {
                     this.extract()
                 )
                 .begin({
-                    args,
                     app,
+                    args,
                     file,
                     moduleCfg
                 })

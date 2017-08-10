@@ -8,8 +8,7 @@ class HashFile {
 
             Promise
                 .all([
-                    this.hash(info.args.path, 'md5'),
-                    this.hash(info.args.path)
+                    this.hash(info.args.path, 'md5'), this.hash(info.args.path)
                 ])
                 .then(hashes => {
                     [ file.md5, file.sha1 ] = hashes;
@@ -21,11 +20,11 @@ class HashFile {
 
     hash (path, algorithm = 'sha1') {
         return new Promise((resolve, reject) => {
-            HashFiles(
+            HashFiles( // eslint-disable-line new-cap
                 {
-                    algorithm : algorithm,
-                    files     : [ path ],
-                    noGlob    : true
+                    algorithm,
+                    files  : [ path ],
+                    noGlob : true
                 },
                 (error, hash) => {
                     if (error) {

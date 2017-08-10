@@ -37,15 +37,16 @@ class Connection {
 
     query (...args) {
         return new Promise((resolve, reject) => {
-            this.connection
-                .query.apply(this.connection, args)
+            this
+                .connection
+                .query(...args)
                 .then(resolve)
                 .catch(reject);
         });
     }
 
     debug (...args)  {
-        this.connection.debug.apply(this.connection, args);
+        this.connection.debug(...args);
     }
 }
 

@@ -11,6 +11,7 @@ class GetProduct {
                 app  : { database },
                 args : { product }
             } = info;
+
             Logger.info('Retreiving product from database...');
 
             database

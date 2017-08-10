@@ -12,11 +12,15 @@ class Config {
             if (config) {
                 if (typeof config === 'object') {
                     if (config.config) {
-                        _config = config = JSON5.parse(config.config);
+                        config = JSON5.parse(config.config);
+
+                        _config = config;
                     } else if (config.path) {
-                        _config = config = JSON5.parse(
+                        config = JSON5.parse(
                             fs.readFileSync(config.path, 'utf8')
                         );
+
+                        _config = config;
                     } else {
                         _config = config;
                     }
@@ -39,7 +43,7 @@ class Config {
             return this.config = deepmerge.all([
                 {},
                 _config.defaults,
-                _config[process.env.NODE_ENV || 'development']
+                _config[ process.env.NODE_ENV || 'development' ]
             ]);
         } catch (error) {
             // Try to output a error with not fully initialized logger
@@ -53,8 +57,8 @@ class Config {
         const { config } = this;
 
         if (key) {
-            //TODO recursify
-            return config[key];
+            // TODO recursify
+            return config[ key ];
         } else {
             return config;
         }

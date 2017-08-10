@@ -2,3 +2,4 @@ coverage
 node_modules
 example
 test
+/packages/sencha-local-fiddle/routes/webpack/*.js

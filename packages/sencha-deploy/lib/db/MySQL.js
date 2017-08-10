@@ -23,14 +23,14 @@ class MySQL {
 
     getConnectionConfig () {
         return {
-            host               : this.host,
             database           : this.database,
-            user               : this.user,
+            host               : this.host,
+            multipleStatements : this.multipleStatements,
             password           : this.password,
             port               : this.port,
-            multipleStatements : this.multipleStatements,
             socketPath         : this.socketPath,
-            timezone           : this.timezone
+            timezone           : this.timezone,
+            user               : this.user
         };
     }
 
@@ -55,11 +55,7 @@ class MySQL {
             Logger.debug(sql);
         } else {
             Logger.debug(
-                '\n\n' +
-                    mysql
-                        .format(sql, inserts)
-                        .split(';')
-                        .join(';\n')
+                `\n\n${mysql.format(sql, inserts).split(';').join(';\n')}` // eslint-disable-line newline-per-chained-call
             );
         }
 

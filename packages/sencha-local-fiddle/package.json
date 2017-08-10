@@ -4,7 +4,8 @@
   "description": "A module to handle local fiddle things",
   "main": "index.js",
   "scripts": {
-    "nsp": "nsp check"
+    "nsp": "nsp check",
+    "start": "clear && ./bin/fiddle.js --sdk ../../../../SDK"
   },
   "repository": {
     "type": "git",

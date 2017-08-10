@@ -21,8 +21,8 @@ class SSH extends Base {
                 .connect({
                     host       : config.server,
                     port       : 22,
-                    username   : config.user,
-                    privateKey : config.key
+                    privateKey : config.key,
+                    username   : config.user
                 });
         });
     }
@@ -30,41 +30,39 @@ class SSH extends Base {
     execCommand (cmd) {
         return this
             .createConnection()
-            .then(conn => {
-                return new Promise((resolve, reject) => {
-                    Logger.debug('Executing SSH Commands:', cmd);
+            .then(conn => new Promise((resolve, reject) => {
+                Logger.debug('Executing SSH Commands:', cmd);
 
-                    conn.exec(cmd, (error, stream) => {
-                        if (error) {
-                            reject(error);
-                        } else {
-                            stream
-                                .on('close', () => {
-                                    resolve();
+                conn.exec(cmd, (error, stream) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        stream
+                            .on('close', () => {
+                                resolve();
 
-                                    conn.end();
-                                })
-                                .on('data', data => {
-                                    if (Buffer.isBuffer(data)) {
-                                        data = data.toString('utf8');
-                                    }
+                                conn.end();
+                            })
+                            .on('data', data => {
+                                if (Buffer.isBuffer(data)) {
+                                    data = data.toString('utf8');
+                                }
 
-                                    Logger.debug(data);
-                                })
-                                .stderr
-                                    .on('data', data => {
-                                        if (Buffer.isBuffer(data)) {
-                                            data = data.toString('utf8');
-                                        }
+                                Logger.debug(data);
+                            })
+                            .stderr
+                            .on('data', data => {
+                                if (Buffer.isBuffer(data)) {
+                                    data = data.toString('utf8');
+                                }
 
-                                        Logger.debug(data);
+                                Logger.debug(data);
 
-                                        reject();
-                                    });
-                        }
-                    });
+                                reject();
+                            });
+                    }
                 });
-            });
+            }));
     }
 }
 

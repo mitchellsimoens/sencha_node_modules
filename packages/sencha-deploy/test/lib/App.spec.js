@@ -1,19 +1,19 @@
 const { expect } = require('chai');
 const proxyquire = require('proxyquire');
+const sinon      = require('sinon');
 
-describe('App', function () {
-    it('should read args and loads config on app create', function () {
-        const { sandbox } = this;
-        const args_stub   = sandbox.stub().returns({ config : 'foo' });
-        const conf_stub   = sandbox.stub();
+describe('App', () => {
+    it('should read args and loads config on app create', () => {
+        const argsStub   = sinon.stub().returns({ config : 'foo' });
+        const confStub   = sinon.stub();
         const App         = proxyquire(
             '../../lib/App',
             {
                 './' : {
                     util : {
-                        Args   : args_stub,
+                        Args   : argsStub,
                         Config : {
-                            load : conf_stub
+                            load : confStub
                         }
                     }
                 }
@@ -22,31 +22,30 @@ describe('App', function () {
 
         new App();
 
-        expect(args_stub).to.be.called;
-        expect(conf_stub).to.be.called;
-        expect(conf_stub.args[0][0]).to.eql('foo');
+        expect(argsStub).to.be.called;
+        expect(confStub).to.be.called;
+        expect(confStub.args[ 0 ][ 0 ]).to.eql('foo');
     });
 
     it('should validate db and storage connection', function * () {
-        const { sandbox } = this;
-        const db_stub     = sandbox.stub().resolves();
-        const str_stub    = sandbox.stub().resolves();
-        const args_stub   = sandbox.stub().returns({ config : 'foo' });
-        const conf_stub   = sandbox.stub();
+        const dbStub     = sinon.stub().resolves();
+        const strStub    = sinon.stub().resolves();
+        const argsStub   = sinon.stub().returns({ config : 'foo' });
+        const confStub   = sinon.stub();
         const App         = proxyquire(
             '../../lib/App',
             {
                 './' : {
-                    db      : {
-                        create : db_stub
+                    db : {
+                        create : dbStub
                     },
                     storage : {
-                        create : str_stub
+                        create : strStub
                     },
-                    util    : {
-                        Args   : args_stub,
+                    util : {
+                        Args   : argsStub,
                         Config : {
-                            load : conf_stub
+                            load : confStub
                         }
                     }
                 }
@@ -57,14 +56,13 @@ describe('App', function () {
 
         yield app.createConnections();
 
-        expect(db_stub).to.be.called;
-        expect(str_stub).to.be.called;
+        expect(dbStub).to.be.called;
+        expect(strStub).to.be.called;
     });
 
-    it('should throw an error if db or storage connection is invalid', function () {
-        const { sandbox } = this;
-        const conf_stub   = sandbox.stub();
-        const args_stub   = sandbox.stub().returns({
+    it('should throw an error if db or storage connection is invalid', () => {
+        const confStub   = sinon.stub();
+        const argsStub   = sinon.stub().returns({
             arguments : {
                 database : 'foo',
                 storage  : 'bar'
@@ -75,9 +73,9 @@ describe('App', function () {
             {
                 './' : {
                     util : {
-                        Args   : args_stub,
+                        Args   : argsStub,
                         Config : {
-                            load : conf_stub
+                            load : confStub
                         }
                     }
                 }
@@ -96,22 +94,21 @@ describe('App', function () {
             });
     });
 
-    it('should resolve arguments', function () {
-        const { sandbox }   = this;
-        const get_args_stub = sandbox.stub();
-        const args_stub     = sandbox.stub().returns({
+    it('should resolve arguments', () => {
+        const getArgsStub = sinon.stub();
+        const argsStub    = sinon.stub().returns({
             config       : 'foo',
-            getArguments : get_args_stub
+            getArguments : getArgsStub
         });
-        const conf_stub     = sandbox.stub();
-        const App           = proxyquire(
+        const confStub     = sinon.stub();
+        const App          = proxyquire(
             '../../lib/App',
             {
                 './' : {
                     util : {
-                        Args   : args_stub,
+                        Args   : argsStub,
                         Config : {
-                            load : conf_stub
+                            load : confStub
                         }
                     }
                 }
@@ -122,26 +119,28 @@ describe('App', function () {
 
         app.getArguments();
 
-        expect(get_args_stub).to.be.called;
+        expect(getArgsStub).to.be.called;
     });
 
-    describe('getArgument', function () {
-        it('should return an argument', function () {
-            const { sandbox }  = this;
-            const get_arg_stub = sandbox.stub().withArgs('foo').returns('bar');
-            const args_stub    = sandbox.stub().returns({
+    describe('getArgument', () => {
+        it('should return an argument', () => {
+            const getArgStub = sinon
+                .stub()
+                .withArgs('foo')
+                .returns('bar');
+            const argsStub   = sinon.stub().returns({
                 config      : 'foo',
-                getArgument : get_arg_stub
+                getArgument : getArgStub
             });
-            const conf_stub     = sandbox.stub();
-            const App           = proxyquire(
+            const confStub   = sinon.stub();
+            const App        = proxyquire(
                 '../../lib/App',
                 {
                     './' : {
                         util : {
-                            Args   : args_stub,
+                            Args   : argsStub,
                             Config : {
-                                load : conf_stub
+                                load : confStub
                             }
                         }
                     }
@@ -152,26 +151,28 @@ describe('App', function () {
 
             const arg = app.getArgument('foo');
 
-            expect(get_arg_stub).to.be.called;
+            expect(getArgStub).to.be.called;
             expect(arg).to.equal('bar');
         });
 
-        it('should not return an argument', function () {
-            const { sandbox }  = this;
-            const get_arg_stub = sandbox.stub().withArgs('foo').returns(undefined);
-            const args_stub    = sandbox.stub().returns({
+        it('should not return an argument', () => {
+            const getArgStub = sinon
+                .stub()
+                .withArgs('foo')
+                .returns(undefined);
+            const argsStub   = sinon.stub().returns({
                 config      : 'foo',
-                getArgument : get_arg_stub
+                getArgument : getArgStub
             });
-            const conf_stub     = sandbox.stub();
-            const App           = proxyquire(
+            const confStub   = sinon.stub();
+            const App        = proxyquire(
                 '../../lib/App',
                 {
                     './' : {
                         util : {
-                            Args   : args_stub,
+                            Args   : argsStub,
                             Config : {
-                                load : conf_stub
+                                load : confStub
                             }
                         }
                     }
@@ -181,38 +182,37 @@ describe('App', function () {
             const app = new App();
             const arg = app.getArgument('foo');
 
-            expect(get_arg_stub).to.be.called;
+            expect(getArgStub).to.be.called;
             expect(arg).to.be.undefined;
         });
     });
 
-    describe('module', function () {
-        it('should run nightly module', function () {
-            const { sandbox }  = this;
-            const mod_run_stub = sandbox.stub();
-            const module_stub  = sandbox.stub().returns({ run : mod_run_stub });
-            const args_stub    = sandbox.stub().returns({
+    describe('module', () => {
+        it('should run nightly module', () => {
+            const modRunStub = sinon.stub();
+            const moduleStub = sinon.stub().returns({ run : modRunStub });
+            const argsStub   = sinon.stub().returns({
                 module  : 'nightly',
                 product : 'ext',
                 version : '1.0.0'
             });
-            const conf_stub    = sandbox.stub().returns({
+            const confStub   = sinon.stub().returns({
                 modules : {
                     nightly : {}
                 },
-                s3      : {}
+                s3 : {}
             });
-            const App          = proxyquire(
+            const App        = proxyquire(
                 '../../lib/App',
                 {
                     './' : {
                         module : {
-                            nightly : module_stub
+                            nightly : moduleStub
                         },
-                        util   : {
-                            Args   : args_stub,
+                        util : {
+                            Args   : argsStub,
                             Config : {
-                                load : conf_stub
+                                load : confStub
                             }
                         }
                     }
@@ -223,35 +223,34 @@ describe('App', function () {
 
             app.run();
 
-            expect(mod_run_stub).to.be.called;
+            expect(modRunStub).to.be.called;
         });
 
-        it('should run release module', function () {
-            const { sandbox }  = this;
-            const mod_run_stub = sandbox.stub();
-            const module_stub  = sandbox.stub().returns({ run : mod_run_stub });
-            const args_stub    = sandbox.stub().returns({
+        it('should run release module', () => {
+            const modRunStub = sinon.stub();
+            const moduleStub = sinon.stub().returns({ run : modRunStub });
+            const argsStub   = sinon.stub().returns({
                 module  : 'release',
                 product : 'ext',
                 version : '1.0.0'
             });
-            const conf_stub    = sandbox.stub().returns({
+            const confStub   = sinon.stub().returns({
                 modules : {
                     release : {}
                 },
-                s3      : {}
+                s3 : {}
             });
-            const App         = proxyquire(
+            const App        = proxyquire(
                 '../../lib/App',
                 {
                     './' : {
                         module : {
-                            release : module_stub
+                            release : moduleStub
                         },
-                        util   : {
-                            Args   : args_stub,
+                        util : {
+                            Args   : argsStub,
                             Config : {
-                                load : conf_stub
+                                load : confStub
                             }
                         }
                     }
@@ -262,35 +261,34 @@ describe('App', function () {
 
             app.run();
 
-            expect(mod_run_stub).to.be.called;
+            expect(modRunStub).to.be.called;
         });
 
-        it('should not recognize module', function () {
-            const { sandbox }  = this;
-            const mod_run_stub = sandbox.stub();
-            const module_stub  = sandbox.stub().returns({ run : mod_run_stub });
-            const args_stub    = sandbox.stub().returns({
+        it('should not recognize module', () => {
+            const modRunStub = sinon.stub();
+            const moduleStub = sinon.stub().returns({ run : modRunStub });
+            const argsStub   = sinon.stub().returns({
                 module  : 'foo',
                 product : 'ext',
                 version : '1.0.0'
             });
-            const conf_stub    = sandbox.stub().returns({
+            const confStub   = sinon.stub().returns({
                 modules : {
                     release : {}
                 },
-                s3      : {}
+                s3 : {}
             });
-            const App          = proxyquire(
+            const App        = proxyquire(
                 '../../lib/App',
                 {
                     './' : {
                         module : {
-                            release : module_stub
+                            release : moduleStub
                         },
-                        util   : {
-                            Args   : args_stub,
+                        util : {
+                            Args   : argsStub,
                             Config : {
-                                load : conf_stub
+                                load : confStub
                             }
                         }
                     }
@@ -302,8 +300,8 @@ describe('App', function () {
                 app.run();
             };
 
-            expect(fn).to.throw(Error, /^Class constructor FatalError cannot be invoked without 'new'$/);
-            expect(mod_run_stub).to.not.be.called;
+            expect(fn).to.throw(Error, 'Module not recognized');
+            expect(modRunStub).to.not.be.called;
         });
     });
 });

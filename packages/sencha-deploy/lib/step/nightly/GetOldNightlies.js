@@ -12,8 +12,7 @@ class GetOldNightlies {
             } = runner;
 
             const inserts  = [
-                id,
-                id
+                id, id
             ];
 
             const sql = `SELECT
@@ -55,7 +54,7 @@ GROUP BY ${table}.id;`;
              * which would allow the minimum of 5 for each dot release.
              */
 
-            //database.debug(sql, inserts);
+            // database.debug(sql, inserts);
 
             Logger.info('Retreiving old nightlies...');
 

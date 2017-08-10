@@ -30,7 +30,7 @@ class CheckProductExistence {
 
                         Logger.info('Release already in database.');
 
-                        runner.addData('existing', releases[0]);
+                        runner.addData('existing', releases[ 0 ]);
 
                         if (fail) {
                             reject(new Error('Such release already exists in the database.'));

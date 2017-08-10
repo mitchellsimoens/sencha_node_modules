@@ -7,7 +7,10 @@ const AWS = require('aws-sdk');
 const fs  = require('fs');
 
 class S3 {
-    constructor (config = { partSize : 10, queueSize : 20 }) {
+    constructor (config = {
+        partSize  : 10,
+        queueSize : 20
+    }) {
         this.bucket = process.env.S3_BUCKET;
 
         Object.assign(this, config);

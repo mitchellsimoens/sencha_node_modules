@@ -222,14 +222,10 @@ module.exports = {
             // filter out any newer versions is version is passed
             .then(this.filterVersion.bind(this, version))
             // get child directories of the filtered versions
-            .then(versions => {
-                return Promise
-                    .all(versions
-                        .map(version => {
-                            return loc ? this.getDirs(path.join(base, version, loc), true) : this.getDirs(path.join(base, version), true);
-                        })
-                    );
-            })
+            .then(versions => Promise
+                .all(versions
+                    .map(version => loc ? this.getDirs(path.join(base, version, loc), true) : this.getDirs(path.join(base, version), true))
+                ))
             // create a map of directory name : directory path
             .then(this.createDirMap.bind(this, base));
 

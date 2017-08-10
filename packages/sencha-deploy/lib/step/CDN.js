@@ -14,19 +14,19 @@ class CDN {
             const { cdn } = args;
 
             if (cdn && cdn !== true) {
-                let ssh                      = Config.get('cdn'),
-                    stagedPath               = this.getStagePath(args),
-                    destinationPath          = this.getDestinationPath(args),
-                    { extract, extractDest } = this.getExtractInfo(args);
+                const ssh                      = Config.get('cdn');
+                const stagedPath               = this.getStagePath(args);
+                const destinationPath          = this.getDestinationPath(args);
+                const { extract, extractDest } = this.getExtractInfo(args);
 
                 new SSHRunner({
-                        stagedPath,
-                        destinationPath,
-                        extract,
-                        extractDest,
-                        ssh,
-                        file : args.path
-                    })
+                    destinationPath,
+                    extract,
+                    extractDest,
+                    file : args.path,
+                    ssh,
+                    stagedPath
+                })
                     .execute(runner)
                     .then(resolve, reject);
             } else {
@@ -38,7 +38,7 @@ class CDN {
     }
 
     getStagePath (args) {
-        return args['cdn-stage'] || args.cdn;
+        return args[ 'cdn-stage' ] || args.cdn;
     }
 
     getDestinationPath (args) {
@@ -46,13 +46,13 @@ class CDN {
     }
 
     getExtractInfo (args) {
-        const extract = args['cdn-extract'];
+        const extract = args[ 'cdn-extract' ];
 
         if (extract) {
-            if (args['cdn-extract-destination']) {
+            if (args[ 'cdn-extract-destination' ]) {
                 return {
                     extract,
-                    extractDest : args['cdn-extract-destination']
+                    extractDest : args[ 'cdn-extract-destination' ]
                 };
             } else {
                 return {

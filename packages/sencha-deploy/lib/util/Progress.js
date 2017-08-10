@@ -33,8 +33,7 @@ class Progress {
 
             const num = Math.floor(length * progress);
             const str = [
-                '[',
-                ']'
+                '[', ']'
             ];
 
             for (let i = 0; i < length; i++) {
@@ -50,9 +49,9 @@ class Progress {
             let msg = progressRounded;
 
             if (msg < 10) {
-                msg = '  ' + msg;
+                msg = `  ${msg}`;
             } else if (msg < 100) {
-                msg = ' ' + msg;
+                msg = ` ${msg}`;
             }
 
             Logger.info(
@@ -67,6 +66,6 @@ class Progress {
             }
         }
     }
-};
+}
 
 module.exports = Progress;

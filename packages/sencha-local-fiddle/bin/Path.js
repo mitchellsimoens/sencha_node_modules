@@ -5,14 +5,9 @@ const path = require('path');
 class PathType extends Type {
     constructor () {
         super({
-            // Checks if the path begins with a dot (`.`) or has a slash (`foo/bar`)
-            // in the path to not cause ambiguity with the String type since a path
-            // is a relative path to `process.cwd()`.
-            pathRe: /^\.|\//,
-
-            default: '',
-            name: 'path',
-            help: 'A path relative to the location the script is executed at'
+            default : '',
+            help    : 'A path relative to the location the script is executed at',
+            name    : 'path'
         });
     }
 
@@ -38,8 +33,8 @@ class PathType extends Type {
         return String(value);
     }
 
-    is (value) {
-        return value && typeof value === 'string' && this.pathRe.test(value);
+    is () {
+        return false;
     }
 }
 

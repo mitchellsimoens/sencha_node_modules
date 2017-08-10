@@ -2,11 +2,11 @@ const { util : { Logger } } = require('../../');
 
 class RemoveFromStorage {
     _cloneObj (obj, newObj = {}) {
-        for (let i in obj) {
-            if (typeof obj[i] === 'object' && Object.keys(obj[i]).length) {
-                newObj[i] = this._cloneObj(obj[i], newObj[i]);
+        for (const i in obj) {
+            if (typeof obj[ i ] === 'object' && Object.keys(obj[ i ]).length) {
+                newObj[ i ] = this._cloneObj(obj[ i ], newObj[ i ]);
             } else {
-                newObj[i] = obj[i];
+                newObj[ i ] = obj[ i ];
             }
         }
 

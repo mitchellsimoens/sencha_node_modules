@@ -20,10 +20,10 @@ class ExampleRoute extends Route {
         return new Response({
             data,
             extra : {
-                isView  : false,
                 headers : {
                     ContentType : 'application/javascript'
-                }
+                },
+                isView : false
             }
         });
     }

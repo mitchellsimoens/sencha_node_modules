@@ -11,7 +11,7 @@ class SaveToStorage {
         }
 
         if (existing && !force) {
-            //file should already be uploaded and not forced
+            // file should already be uploaded and not forced
 
             Logger.info('Skipping storage...');
 

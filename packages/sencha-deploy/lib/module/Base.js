@@ -37,7 +37,7 @@ class Base {
 
         info.moduleCfg = Object.assign(
             {},
-            config.modules[mod]
+            config.modules[ mod ]
         );
     }
 }

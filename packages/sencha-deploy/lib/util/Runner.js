@@ -118,7 +118,7 @@ class Runner {
             if (index < 0) {
                 resolve();
             } else {
-                const step = this.stack[index];
+                const step = this.stack[ index ];
 
                 this.index = index - 1;
 

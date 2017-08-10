@@ -28,9 +28,9 @@ class SCP extends Base {
                 source,
                 {
                     host       : config.server,
-                    path       : endingSlash.test(destination) ? destination : destination + '/',
-                    username   : config.user,
-                    privateKey : config.key
+                    path       : endingSlash.test(destination) ? destination : `${destination}/`,
+                    privateKey : config.key,
+                    username   : config.user
                 },
                 client,
                 (error) => {

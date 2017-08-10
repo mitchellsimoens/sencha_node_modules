@@ -1,5 +1,5 @@
 const {
-    db      : Database ,
+    db      : Database,
     error   : { FatalError },
     module  : modules,
     storage : Storage,
@@ -17,8 +17,7 @@ class App {
 
         return Promise
             .all([
-                Database.create(database, this.config),
-                Storage .create(storage,  this.config)
+                Database.create(database, this.config), Storage.create(storage, this.config)
             ])
             .then((connections) => {
                 [ this.database, this.storage ] = connections;
@@ -44,7 +43,7 @@ class App {
                 args : this.args.arguments
             });
         } else {
-            throw FatalError('Module not recognized');
+            throw new FatalError('Module not recognized');
         }
     }
 }
