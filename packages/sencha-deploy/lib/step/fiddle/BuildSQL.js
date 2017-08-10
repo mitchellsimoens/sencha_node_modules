@@ -1,7 +1,20 @@
 const {
     step : { fiddle : { Base } },
     util : { Logger }
-} = require('../../')
+} = require('../../');
+
+const requiredAssets = {
+    'app.js' : {
+        relative : 'app.js',
+        source   : '',
+        type     : 'js'
+    },
+    'index.html' : {
+        relative : 'index.html',
+        source   : '',
+        type     : 'html'
+    }
+};
 
 class BuildSQL extends Base {
     constructor () {
@@ -27,8 +40,6 @@ class BuildSQL extends Base {
                 runner,
                 sqls
             });
-
-            return resolve();
 
             this
                 .buildMasterSql(group)
@@ -75,9 +86,10 @@ class BuildSQL extends Base {
     }
 
     buildChildSqls (children, group, toolkit, parentid, rootparentid) {
-        if (Array.isArray(children) && children.length) {
-            children.forEach((child) => {
-                const { $pkg : { fiddle } } = child;
+        if (children) {
+            for (const dirname in children) {
+                const { [ dirname ] : child } = children;
+                const { $pkg : { fiddle } }   = child;
 
                 if (fiddle.toolkit) {
                     this.buildToolkitSqls(child, group, toolkit, parentid, parentid);
@@ -86,10 +98,8 @@ class BuildSQL extends Base {
                 } else if (fiddle.example) {
                     this.buildExampleSqls(child, group, toolkit, parentid);
                 }
-            });
+            }
         }
-
-        return this;
     }
 
     buildToolkitSqls (child, group, toolkit, parentid, rootparentid) {
@@ -181,11 +191,7 @@ class BuildSQL extends Base {
             pkg.description
         );
 
-        child.assets.forEach(this.buildAssetSqls.bind(this, child));
-
-        if (Array.isArray(child.mockdata) && child.mockdata.length) {
-            child.mockdata.forEach(this.buildMockdataSqls.bind(this, child));
-        }
+        this.buildExampleChildren(child);
 
         if (fiddle.packages) {
             fiddle.packages.forEach(this.buildPackagesSqls.bind(this, child, toolkit));
@@ -198,41 +204,6 @@ class BuildSQL extends Base {
         if (team) {
             this.buildTeamSqls(child, team);
         }
-    }
-
-    buildAssetSqls (example, asset) {
-        const { inserts, sqls } = this;
-        const databaseName      = this.getDatabase();
-
-        sqls.push(
-            `INSERT INTO ${databaseName}.fiddle_assets (\`fiddleid\`, \`name\`, \`code\`, \`type\`) VALUES (@fiddleid, ?, ?, ?);`
-        );
-
-        inserts.push(
-            asset.name,
-            asset.code,
-            asset.type
-        );
-    }
-
-    buildMockdataSqls (example, asset) {
-        const { inserts, sqls }     = this;
-        const databaseName          = this.getDatabase();
-        const { $pkg : { fiddle } } = example;
-        const files                 = fiddle && fiddle.files;
-        const file                  = files && files[ asset.url ];
-
-        sqls.push(
-            `INSERT INTO ${databaseName}.fiddle_mockdata (\`fiddleid\`, \`url\`, \`data\`, \`type\`, \`delay\`, \`dynamic\`) VALUES (@fiddleid, ?, ?, ?, ?, ?);`
-        );
-
-        inserts.push(
-            asset.url,
-            asset.data,
-            asset.type,
-            file ? file.delay   || 0     : 0,
-            file ? file.dynamic || false : false
-        );
     }
 
     buildPackagesSqls (example, toolkit, packageName) {
@@ -280,6 +251,63 @@ class BuildSQL extends Base {
 
         inserts.push(
             team
+        );
+    }
+
+    buildExampleChildren (example) {
+        const { children } = example;
+
+        for (const name in requiredAssets) {
+            if (!children[ name ]) {
+                Logger.info(`Added missing required asset "${name}" to "${example.$pkg.fiddle.title}"`);
+
+                children[ name ] = requiredAssets[ name ];
+            }
+        }
+
+        for (const name in children) {
+            const { [ name ] : child } = children;
+
+            if (child.isAsset) {
+                this.buildAssetSqls(example, child);
+            } else {
+                this.buildMockdataSqls(example, child);
+            }
+        }
+    }
+
+    buildAssetSqls (example, asset) {
+        const { inserts, sqls } = this;
+        const databaseName      = this.getDatabase();
+
+        sqls.push(
+            `INSERT INTO ${databaseName}.fiddle_assets (\`fiddleid\`, \`name\`, \`code\`, \`type\`) VALUES (@fiddleid, ?, ?, ?);`
+        );
+
+        inserts.push(
+            asset.relative,
+            asset.source,
+            asset.type
+        );
+    }
+
+    buildMockdataSqls (example, asset) {
+        const { inserts, sqls }     = this;
+        const databaseName          = this.getDatabase();
+        const { $pkg : { fiddle } } = example;
+        const files                 = fiddle && fiddle.files;
+        const file                  = files && files[ asset.relative ];
+
+        sqls.push(
+            `INSERT INTO ${databaseName}.fiddle_mockdata (\`fiddleid\`, \`url\`, \`data\`, \`type\`, \`delay\`, \`dynamic\`) VALUES (@fiddleid, ?, ?, ?, ?, ?);`
+        );
+
+        inserts.push(
+            asset.relative,
+            asset.source,
+            asset.type,
+            file ? file.delay   || 0     : 0,
+            file ? file.dynamic || false : false
         );
     }
 }

@@ -36,6 +36,7 @@ module.exports = {
 
                     map[ basename ] = {
                         loc,
+                        name : basename,
                         relative
                     };
                 }
