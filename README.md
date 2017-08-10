@@ -1,5 +1,7 @@
 # EngOps NPM Modules
 
+[![NPM Modules Build](https://teamcity.sencha.com/app/rest/builds/buildType:EngineeringOperations_NodeModulesTest/statusIcon "Sencha Deploy Status")](https://teamcity.sencha.com/viewType.html?buildTypeId=EngineeringOperations_NodeModulesTest&guest=1)
+
 This is a monorepo that uses [lerna](https://www.npmjs.com/package/lerna) to
 bootstrap the seperate packages together. This allows for developing on multiple
 packages at the same time much more efficient than keeping them separate.
