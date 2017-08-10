@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-deploy",
-  "version": "0.1.18",
+  "version": "1.0.0",
   "description": "Sencha Deploy Client",
   "scripts": {
     "extjs": "clear && ./test/ignored/extjs.sh",
@@ -36,6 +36,7 @@
     "mysql": "^2.11.1",
     "rsync": "^0.5.0",
     "scp2": "^0.5.0",
-    "ssh2": "^0.5.4"
+    "ssh2": "^0.5.4",
+    "update-notifier": "^2.2.0"
   }
 }
