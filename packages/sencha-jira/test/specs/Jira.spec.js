@@ -1,12 +1,13 @@
 const { expect }      = require('chai');
 const { Issue, Jira } = require('../../');
-const { JiraApi }     = require('jira');
+const JiraApi         = require('jira-client');
 const proxyquire      = require('proxyquire');
+const sinon           = require('sinon');
 
-describe('Jira', function () {
+describe('Jira', () => {
     let instance;
 
-    afterEach(function () {
+    afterEach(() => {
         if (instance && !instance.destroyed) {
             instance.destroy();
         }
@@ -14,42 +15,40 @@ describe('Jira', function () {
         instance = null;
     });
 
-    describe('instantiation', function () {
-        beforeEach(function () {
+    describe('instantiation', () => {
+        beforeEach(() => {
             instance = new Jira();
         });
 
-        it('should be a jira', function () {
+        it('should be a jira', () => {
             expect(instance).to.have.property('isInstance', true);
             expect(instance).to.have.property('isJira',      true);
         });
     });
 
-    describe('ctor', function () {
-        beforeEach(function () {
+    describe('ctor', () => {
+        beforeEach(() => {
             instance = new Jira();
         });
 
-        it('should create a jira api instance', function () {
+        it('should create a jira api instance', () => {
             expect(instance).to.have.property('jira');
             expect(instance.jira).to.be.instanceOf(JiraApi);
         });
     });
 
-    describe('get', function () {
-        it('should handle a jira api error', function () {
-            const findIssue = this.sandbox.stub().callsArgWith(1, new Error('failed'));
+    describe('get', () => {
+        it('should handle a jira api error', () => {
+            const findIssue = sinon.stub().callsArgWith(1, new Error('failed'));
             const JiraApi   = class {
-                findIssue(...args) {
+                findIssue (...args) {
                     findIssue(...args);
                 }
             };
             const Jira      = proxyquire(
                 '../../Jira',
                 {
-                    jira : {
-                        JiraApi
-                    }
+                    'jira-client' : JiraApi
                 }
             );
 
@@ -70,19 +69,17 @@ describe('Jira', function () {
                 });
         });
 
-        it('should create an issue on success', function () {
-            const findIssue = this.sandbox.stub().callsArgWith(1, null, { foo : 'bar' });
+        it('should create an issue on success', () => {
+            const findIssue = sinon.stub().callsArgWith(1, null, { foo : 'bar' });
             const JiraApi   = class {
-                findIssue(...args) {
+                findIssue (...args) {
                     findIssue(...args);
                 }
             };
             const Jira      = proxyquire(
                 '../../Jira',
                 {
-                    jira : {
-                        JiraApi
-                    }
+                    'jira-client' : JiraApi
                 }
             );
 
@@ -105,20 +102,18 @@ describe('Jira', function () {
         });
     });
 
-    describe('search', function () {
-        it('should handle a jira api error', function () {
-            const searchJira = this.sandbox.stub().callsArgWith(2, new Error('failed'));
+    describe('search', () => {
+        it('should handle a jira api error', () => {
+            const searchJira = sinon.stub().callsArgWith(2, new Error('failed'));
             const JiraApi    = class {
-                searchJira(...args) {
+                searchJira (...args) {
                     searchJira(...args);
                 }
             };
             const Jira       = proxyquire(
                 '../../Jira',
                 {
-                    jira : {
-                        JiraApi
-                    }
+                    'jira-client' : JiraApi
                 }
             );
 
@@ -139,19 +134,17 @@ describe('Jira', function () {
                 });
         });
 
-        it('should create an issue on success', function () {
-            const searchJira = this.sandbox.stub().callsArgWith(2, null, { issues : [ { foo : 'bar' } ] });
+        it('should create an issue on success', () => {
+            const searchJira = sinon.stub().callsArgWith(2, null, { issues : [ { foo : 'bar' } ] });
             const JiraApi    = class {
-                searchJira(...args) {
+                searchJira (...args) {
                     searchJira(...args);
                 }
             };
             const Jira      = proxyquire(
                 '../../Jira',
                 {
-                    jira : {
-                        JiraApi
-                    }
+                    'jira-client' : JiraApi
                 }
             );
 
@@ -172,27 +165,25 @@ describe('Jira', function () {
                     expect(issues.issues).to.be.an('array');
                     expect(issues.issues).to.have.lengthOf(1);
 
-                    expect(issues.issues[0]).to.be.instanceOf(Issue);
-                    expect(issues.issues[0]).to.have.property('foo', 'bar');
+                    expect(issues.issues[ 0 ]).to.be.instanceOf(Issue);
+                    expect(issues.issues[ 0 ]).to.have.property('foo', 'bar');
                 })
                 .catch(() => {
                     expect(false).to.be.true;
                 });
         });
 
-        it('should handle having no issues', function () {
-            const searchJira = this.sandbox.stub().callsArgWith(2, null, {  });
+        it('should handle having no issues', () => {
+            const searchJira = sinon.stub().callsArgWith(2, null, {  });
             const JiraApi    = class {
-                searchJira(...args) {
+                searchJira (...args) {
                     searchJira(...args);
                 }
             };
             const Jira      = proxyquire(
                 '../../Jira',
                 {
-                    jira : {
-                        JiraApi
-                    }
+                    'jira-client' : JiraApi
                 }
             );
 

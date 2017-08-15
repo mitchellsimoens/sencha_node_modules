@@ -1,10 +1,10 @@
 const { expect } = require('chai');
 const { Issue }  = require('../../');
 
-describe('Issue', function () {
+describe('Issue', () => {
     let instance;
 
-    afterEach(function () {
+    afterEach(() => {
         if (instance && !instance.destroyed) {
             instance.destroy();
         }
@@ -12,12 +12,12 @@ describe('Issue', function () {
         instance = null;
     });
 
-    describe('instantiation', function () {
-        beforeEach(function () {
+    describe('instantiation', () => {
+        beforeEach(() => {
             instance = new Issue();
         });
 
-        it('should be a jira issue', function () {
+        it('should be a jira issue', () => {
             expect(instance).to.have.property('isInstance', true);
             expect(instance).to.have.property('isJiraIssue', true);
         });

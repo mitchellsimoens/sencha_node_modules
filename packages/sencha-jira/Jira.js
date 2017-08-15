@@ -1,6 +1,6 @@
-const { Base }    = require('@extjs/sencha-core');
-const { Issue }   = require('./');
-const { JiraApi } = require('jira-client');
+const { Base }  = require('@extjs/sencha-core');
+const { Issue } = require('./');
+const JiraApi   = require('jira-client');
 
 /**
  * @class Sencha.jira.Jira
