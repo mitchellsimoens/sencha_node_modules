@@ -22,9 +22,16 @@ class Example extends Base {
      * Turns a file path to a relative URL. Will also
      * always append a `/` to the end of the url.
      *
+     * @param {String/Object} url
+     * The url to calculate the base url from. If an object, it
+     * will use the `loc` key value.
      * @return {String} The generated URL.
      */
     pathToBaseUrl (url) {
+        if (typeof url === 'object') {
+            url = url.loc;
+        }
+
         const base     = Config.get('examples');
         const relative = path.relative(base, url);
 
