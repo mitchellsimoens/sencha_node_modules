@@ -1,0 +1,5 @@
+{
+    "views"       : "views",
+    "view engine" : "pug",
+    "etag"        : false
+}

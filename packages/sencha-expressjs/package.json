@@ -1,6 +1,6 @@
 {
   "name": "@extjs/sencha-expressjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Module to enable Express to be used",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "express": "^4.14.0",
     "express-http-proxy": "^0.10.1",
     "express-minify": "^0.2.0",

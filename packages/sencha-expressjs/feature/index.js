@@ -11,6 +11,10 @@ module.exports =  {
         return require('./Cookieable'); // eslint-disable-line global-require
     },
 
+    get Corsable () {
+        return require('./Corsable'); // eslint-disable-line global-require
+    },
+
     get Expressable () {
         return require('./Expressable'); // eslint-disable-line global-require
     },

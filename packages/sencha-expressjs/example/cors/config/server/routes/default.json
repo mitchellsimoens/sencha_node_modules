@@ -1,0 +1,4 @@
+{
+    "/set" : "routes/Set",
+    "/"    : "routes/Public"
+}

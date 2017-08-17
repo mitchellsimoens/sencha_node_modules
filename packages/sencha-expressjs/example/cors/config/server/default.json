@@ -1,0 +1,9 @@
+{
+    "autoStart"         : true,
+    "disabledPoweredBy" : true,
+    "favicon"           : "views/favicon.ico",
+    "port"              : 4000,
+    "url"              : "localhost",
+    "forceToPort"      : null,
+    "startInsecureApp" : true
+}

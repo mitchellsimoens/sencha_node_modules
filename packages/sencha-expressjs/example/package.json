@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cors.js",
+  "scripts": {
+    "cors": "clear && node cors"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,5 @@
+{
+    "credentials"          : true,
+    "optionsSuccessStatus" : 200,
+    "origin"               : "/^(https?:\\/\\/(?:(?:(?:.+\\.)*sencha\\.com)|(?:localhost))(?::\\d+)?)/i"
+}
